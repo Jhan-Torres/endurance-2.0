@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../presentation/pages/Home.vue";
-import Login from "../presentation/pages/Login.vue";
-import Passwords from "../presentation/pages/Passwords.vue";
-import Notes from "../presentation/pages/Notes.vue";
+import HomePage from "../pages/HomePage.vue";
+import LoginPage from "../pages/LoginPage.vue";
+import PasswordsPage from "../pages/PasswordsPage.vue";
+import NotesPage from "../pages/NotesPage.vue";
 
 // Simple authentication check
 const isAuthenticated = (): boolean => {
-  return localStorage.getItem("endurance_user") !== null;
+  return localStorage.getItem("endurance_auth") !== null;
 };
 
 const router = createRouter({
@@ -15,12 +15,12 @@ const router = createRouter({
     {
       path: "/",
       name: "Home",
-      component: Home,
+      component: HomePage,
     },
     {
       path: "/login",
       name: "Login",
-      component: Login,
+      component: LoginPage,
       beforeEnter: (to, from, next) => {
         if (isAuthenticated()) {
           next({ name: "Passwords" });
@@ -32,13 +32,13 @@ const router = createRouter({
     {
       path: "/passwords",
       name: "Passwords",
-      component: Passwords,
+      component: PasswordsPage,
       meta: { requiresAuth: true },
     },
     {
       path: "/notes",
       name: "Notes",
-      component: Notes,
+      component: NotesPage,
       meta: { requiresAuth: true },
     },
     // Redirect any unknown routes to home

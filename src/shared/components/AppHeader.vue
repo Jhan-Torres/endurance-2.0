@@ -243,12 +243,12 @@
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { useDarkMode } from "../../presentation/composables/useDarkMode";
-import { useAuth } from "../composables/useAuth";
+import { useDarkMode } from "../composables/useDarkMode";
+import { useAuth } from "../../features/auth/composables/useAuth";
 
 const router = useRouter();
 const { isDark, toggleDarkMode } = useDarkMode();
-const { isLoggedIn, user, logout } = useAuth();
+const { isAuthenticated: isLoggedIn, user, logout } = useAuth();
 
 const handleLogout = () => {
   logout();

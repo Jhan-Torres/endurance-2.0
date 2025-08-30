@@ -11,5 +11,13 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from "vue";
 import AppHeader from "./shared/components/AppHeader.vue";
+import { useAuth } from "./features/auth/composables/useAuth";
+
+const { initializeAuth } = useAuth();
+
+onMounted(() => {
+  initializeAuth();
+});
 </script>
