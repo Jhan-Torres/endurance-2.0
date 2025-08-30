@@ -1,7 +1,8 @@
 {
-  "name": "vue-personal-manager",
+  "name": "endurance",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Endurance - The Ultimate Password Manager with enterprise-grade security and privacy-first approach",
   "type": "module",
   "scripts": {
     "dev": "vite",
