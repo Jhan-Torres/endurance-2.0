@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomePage from "../pages/HomePage.vue";
-import LoginPage from "../pages/LoginPage.vue";
-import PasswordsPage from "../pages/PasswordsPage.vue";
-import NotesPage from "../pages/NotesPage.vue";
+import LandingPage from "../features/landing/components/LandingPage.vue";
+import AuthPage from "../features/auth/components/AuthPage.vue";
+import PasswordsPage from "../features/passwords/components/PasswordsPage.vue";
+import NotesPage from "../features/notes/components/NotesPage.vue";
 
 // Simple authentication check
 const isAuthenticated = (): boolean => {
@@ -15,12 +15,12 @@ const router = createRouter({
     {
       path: "/",
       name: "Home",
-      component: HomePage,
+      component: LandingPage,
     },
     {
       path: "/login",
       name: "Login",
-      component: LoginPage,
+      component: AuthPage,
       beforeEnter: (to, from, next) => {
         if (isAuthenticated()) {
           next({ name: "Passwords" });
