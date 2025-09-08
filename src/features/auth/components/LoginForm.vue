@@ -1,6 +1,27 @@
 <template>
   <form class="mt-8 space-y-6" @submit.prevent="handleLogin">
     <div class="space-y-4">
+      <!-- Name field for signup -->
+      <div v-if="isSignup">
+        <label
+          for="name"
+          class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+        >
+          Full Name
+        </label>
+        <input
+          id="name"
+          v-model="name"
+          name="name"
+          type="text"
+          autocomplete="name"
+          required
+          class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+          placeholder="Enter your full name"
+          :disabled="loading"
+        />
+      </div>
+
       <div>
         <label
           for="email"
@@ -32,10 +53,33 @@
           v-model="password"
           name="password"
           type="password"
-          autocomplete="current-password"
+          :autocomplete="isSignup ? 'new-password' : 'current-password'"
           required
           class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
-          placeholder="Enter your password"
+          :placeholder="
+            isSignup ? 'Choose a strong password' : 'Enter your password'
+          "
+          :disabled="loading"
+        />
+      </div>
+
+      <!-- Confirm password field for signup -->
+      <div v-if="isSignup">
+        <label
+          for="confirmPassword"
+          class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+        >
+          Confirm Password
+        </label>
+        <input
+          id="confirmPassword"
+          v-model="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          autocomplete="new-password"
+          required
+          class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+          placeholder="Confirm your password"
           :disabled="loading"
         />
       </div>
@@ -51,7 +95,12 @@
     <div>
       <button
         type="submit"
-        :disabled="loading || !email || !password"
+        :disabled="
+          loading ||
+          !email ||
+          !password ||
+          (isSignup && (!name || !confirmPassword))
+        "
         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
       >
         <span
@@ -78,7 +127,30 @@
             ></path>
           </svg>
         </span>
-        {{ loading ? "Signing in..." : "Sign in" }}
+        {{
+          loading
+            ? isSignup
+              ? "Creating account..."
+              : "Signing in..."
+            : isSignup
+            ? "Create Account"
+            : "Sign in"
+        }}
+      </button>
+    </div>
+
+    <!-- Toggle between login and signup -->
+    <div class="text-center">
+      <button
+        type="button"
+        @click="$emit('toggle-mode')"
+        class="text-sm text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300"
+      >
+        {{
+          isSignup
+            ? "Already have an account? Sign in"
+            : "Don't have an account? Sign up"
+        }}
       </button>
     </div>
 
@@ -91,34 +163,96 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import { useAuth } from "../composables/useAuth";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline";
+
+interface Props {
+  isSignup?: boolean;
+}
+
+interface Emits {
+  (e: "toggle-mode"): void;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  isSignup: false,
+});
+
+const emit = defineEmits<Emits>();
 
 const router = useRouter();
 const { login, loading } = useAuth();
 
 const email = ref("");
 const password = ref("");
+const name = ref("");
+const confirmPassword = ref("");
 const error = ref("");
+const showPassword = ref(false);
+const showConfirmPassword = ref(false);
 
-const handleLogin = async () => {
+const { isSignup } = toRefs(props);
+
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value;
+};
+
+const toggleConfirmPasswordVisibility = () => {
+  showConfirmPassword.value = !showConfirmPassword.value;
+};
+
+const validateForm = () => {
   if (!email.value || !password.value) {
-    error.value = "Please enter both email and password";
-    return;
+    error.value = "Email and password are required";
+    return false;
+  }
+
+  if (isSignup.value) {
+    if (!name.value) {
+      error.value = "Name is required";
+      return false;
+    }
+    if (password.value !== confirmPassword.value) {
+      error.value = "Passwords do not match";
+      return false;
+    }
+    if (password.value.length < 8) {
+      error.value = "Password must be at least 8 characters long";
+      return false;
+    }
   }
 
   error.value = "";
+  return true;
+};
+
+const handleLogin = async () => {
+  if (!validateForm()) return;
 
   try {
-    const success = await login(email.value, password.value);
-    if (success) {
-      router.push("/passwords");
+    if (isSignup.value) {
+      // TODO: Implement signup logic
+      console.log("Signup attempt:", {
+        name: name.value,
+        email: email.value,
+        password: password.value,
+      });
+      // For now, just redirect to login
+      emit("toggle-mode");
     } else {
-      error.value = "Invalid credentials";
+      const success = await login(email.value, password.value);
+      if (success) {
+        router.push("/passwords");
+      } else {
+        error.value = "Invalid credentials";
+      }
     }
   } catch (err) {
-    error.value = "Login failed. Please try again.";
+    error.value = isSignup.value
+      ? "Signup failed. Please try again."
+      : "Login failed. Please try again.";
   }
 };
 </script>

@@ -120,13 +120,7 @@
 </template>
 
 <script setup lang="ts">
-interface Password {
-  id: string;
-  website: string;
-  username: string;
-  password: string;
-  updatedAt: Date;
-}
+import type { Password } from "../model";
 
 interface Props {
   passwords: Password[];

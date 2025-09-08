@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LandingPage from "../features/landing/components/LandingPage.vue";
-import AuthPage from "../features/auth/components/AuthPage.vue";
 import PasswordsPage from "../features/passwords/components/PasswordsPage.vue";
 import NotesPage from "../features/notes/components/NotesPage.vue";
+import { useAuthModal } from "../features/auth/composables/useAuthModal";
 
 // Simple authentication check
 const isAuthenticated = (): boolean => {
@@ -16,18 +16,6 @@ const router = createRouter({
       path: "/",
       name: "Home",
       component: LandingPage,
-    },
-    {
-      path: "/login",
-      name: "Login",
-      component: AuthPage,
-      beforeEnter: (to, from, next) => {
-        if (isAuthenticated()) {
-          next({ name: "Passwords" });
-        } else {
-          next();
-        }
-      },
     },
     {
       path: "/passwords",
@@ -54,7 +42,9 @@ router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
 
   if (requiresAuth && !isAuthenticated()) {
-    next({ name: "Login" });
+    const { openLoginModal } = useAuthModal();
+    openLoginModal();
+    next({ name: "Home" });
   } else {
     next();
   }

@@ -18,14 +18,24 @@
       </svg>
     </div>
     <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
-      Sign in to Endurance
+      {{ isSignup ? "Create Account" : "Sign in to Endurance" }}
     </h2>
     <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-      Access your secure password and notes vault
+      {{
+        isSignup
+          ? "Join thousands of users securing their digital life"
+          : "Access your secure password and notes vault"
+      }}
     </p>
   </div>
 </template>
 
 <script setup lang="ts">
-// Auth header component
+interface Props {
+  isSignup?: boolean;
+}
+
+withDefaults(defineProps<Props>(), {
+  isSignup: false,
+});
 </script>

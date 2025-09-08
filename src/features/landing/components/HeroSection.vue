@@ -14,32 +14,33 @@
         <h1
           class="text-4xl sm:text-6xl font-bold text-gray-900 dark:text-white mb-6"
         >
-          The Ultimate
+          {{ isSpanish ? "El Mejor" : "The Ultimate" }}
           <span
             class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-primary-800 dark:from-primary-400 dark:to-primary-600"
           >
-            Password Manager
+            {{ isSpanish ? "Gestor de Contraseñas" : "Password Manager" }}
           </span>
         </h1>
         <p
           class="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed"
         >
-          Take control of your digital security with our advanced password
-          management solution. Generate unbreakable passwords, store them
-          securely, and access them instantly - all with military-grade
-          encryption that keeps your data safe on your device.
+          {{
+            isSpanish
+              ? "Toma el control de tu seguridad digital con nuestra solución avanzada de gestión de contraseñas. Genera contraseñas irrompibles, almacénalas de forma segura y accede a ellas al instante, todo con cifrado de grado militar que mantiene tus datos seguros en tu dispositivo."
+              : "Take control of your digital security with our advanced password management solution. Generate unbreakable passwords, store them securely, and access them instantly - all with military-grade encryption that keeps your data safe on your device."
+          }}
         </p>
 
         <nav
           class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
           aria-label="Hero actions"
         >
-          <router-link
-            to="/passwords"
+          <button
+            @click="openSignupModal"
             class="inline-flex items-center px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
             aria-describedby="get-started-description"
           >
-            Secure My Passwords Now
+            {{ isSpanish ? "Comenzar Gratis" : "Get Started Free" }}
             <svg
               class="ml-2 w-5 h-5"
               fill="none"
@@ -54,14 +55,14 @@
                 d="M13 7l5 5m0 0l-5 5m5-5H6"
               ></path>
             </svg>
-          </router-link>
+          </button>
 
-          <router-link
-            to="/notes"
+          <button
+            @click="openLoginModal"
             class="inline-flex items-center px-8 py-4 bg-white dark:bg-gray-800 border-2 border-primary-600 hover:bg-primary-50 dark:hover:bg-gray-700 text-primary-600 dark:text-primary-400 font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
           >
-            Try Notes Manager
-          </router-link>
+            {{ isSpanish ? "Iniciar Sesión" : "Sign In" }}
+          </button>
         </nav>
       </header>
     </div>
@@ -69,5 +70,9 @@
 </template>
 
 <script setup lang="ts">
-// Hero section component for landing page
+import { useAuthModal } from "../../auth/composables/useAuthModal";
+import { useLanguage } from "../../../shared/composables/useLanguage";
+
+const { openLoginModal, openSignupModal } = useAuthModal();
+const { isSpanish } = useLanguage();
 </script>

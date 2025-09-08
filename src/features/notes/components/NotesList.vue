@@ -98,12 +98,7 @@
 </template>
 
 <script setup lang="ts">
-interface Note {
-  id: string;
-  title: string;
-  content: string;
-  updatedAt: Date;
-}
+import type { Note } from "../model";
 
 interface Props {
   notes: Note[];
