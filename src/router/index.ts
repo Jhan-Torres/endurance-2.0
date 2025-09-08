@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LandingPage from "../features/landing/components/LandingPage.vue";
 import PasswordsPage from "../features/passwords/components/PasswordsPage.vue";
 import NotesPage from "../features/notes/components/NotesPage.vue";
+import ProfilePage from "../features/profile/components/ProfilePage.vue";
 import { useAuthModal } from "../features/auth/composables/useAuthModal";
 
 // Simple authentication check
@@ -27,6 +28,12 @@ const router = createRouter({
       path: "/notes",
       name: "Notes",
       component: NotesPage,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/profile",
+      name: "Profile",
+      component: ProfilePage,
       meta: { requiresAuth: true },
     },
     // Redirect any unknown routes to home

@@ -286,7 +286,10 @@
       class="absolute bottom-0 w-full p-4 border-t border-gray-200 dark:border-gray-700"
     >
       <div class="flex items-center justify-between">
-        <div class="flex items-center">
+        <button
+          @click="goToProfile"
+          class="flex items-center flex-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-2 transition-colors duration-200"
+        >
           <div class="flex-shrink-0">
             <div
               class="h-8 w-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center"
@@ -304,7 +307,7 @@
               </svg>
             </div>
           </div>
-          <div class="ml-3">
+          <div class="ml-3 text-left">
             <p class="text-sm font-medium text-gray-700 dark:text-gray-300">
               {{ user && user.name }}
             </p>
@@ -312,7 +315,7 @@
               {{ user && user.email }}
             </p>
           </div>
-        </div>
+        </button>
 
         <button
           @click="handleLogout"
@@ -399,5 +402,10 @@ const handleLogout = () => {
   logout();
   closeSideMenu();
   router.push("/");
+};
+
+const goToProfile = () => {
+  closeSideMenu();
+  router.push("/profile");
 };
 </script>
