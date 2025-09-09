@@ -1,31 +1,21 @@
 <template>
   <!-- Backdrop -->
-  <div
-    v-if="isSideMenuOpen"
-    class="fixed inset-0 z-40 lg:hidden"
-    @click="closeSideMenu"
-  >
-    <div class="fixed inset-0 bg-gray-600 bg-opacity-75"></div>
+  <div v-if="isSideMenuOpen" class="backdrop lg:hidden" @click="closeSideMenu">
+    <div class="backdrop-overlay"></div>
   </div>
 
   <!-- Side Menu -->
   <div
     :class="[
-      'side-menu fixed top-0 left-0 z-50 h-full w-64 bg-white dark:bg-gray-800 shadow-xl transform transition-transform duration-300 ease-in-out',
+      'side-menu sidemenu-container',
       isSideMenuOpen ? 'translate-x-0' : '-translate-x-full',
     ]"
   >
     <!-- Header -->
-    <div
-      class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700"
-    >
+    <div class="sidemenu-header">
       <div class="flex items-center space-x-2">
-        <div class="w-8 h-8 flex items-center justify-center">
-          <svg
-            viewBox="0 0 24 24"
-            class="w-full h-full text-primary-600 dark:text-primary-400"
-            fill="currentColor"
-          >
+        <div class="icon-container-sm">
+          <svg viewBox="0 0 24 24" class="icon-primary" fill="currentColor">
             <path
               d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"
             />
@@ -35,17 +25,12 @@
             />
           </svg>
         </div>
-        <span class="text-lg font-bold text-gray-900 dark:text-white">
-          Endurance
-        </span>
+        <span class="text-heading-md text-foreground"> Endurance </span>
       </div>
 
-      <button
-        @click="closeSideMenu"
-        class="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
-      >
+      <button @click="closeSideMenu" class="btn-close">
         <svg
-          class="h-6 w-6"
+          class="icon-sm"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -61,24 +46,25 @@
     </div>
 
     <!-- Navigation -->
-    <nav class="mt-5 px-2">
-      <div class="space-y-1">
+    <nav class="sidemenu-nav">
+      <!-- Authenticated Navigation -->
+      <div v-if="user" class="space-y-1">
         <router-link
           to="/passwords"
-          class="group flex items-center px-2 py-2 text-base font-medium rounded-md transition-colors duration-200"
+          class="group nav-link"
           :class="
             $route.path === '/passwords'
-              ? 'bg-primary-100 dark:bg-primary-900 text-primary-900 dark:text-primary-100'
-              : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
+              ? 'nav-link-active'
+              : 'nav-link-inactive'
           "
           @click="closeSideMenu"
         >
           <svg
-            class="mr-4 h-6 w-6 flex-shrink-0"
+            class="nav-icon"
             :class="
               $route.path === '/passwords'
-                ? 'text-primary-500 dark:text-primary-400'
-                : 'text-gray-400 group-hover:text-gray-500 dark:group-hover:text-gray-300'
+                ? 'nav-icon-active'
+                : 'nav-icon-inactive'
             "
             fill="none"
             stroke="currentColor"
@@ -96,20 +82,16 @@
 
         <router-link
           to="/notes"
-          class="group flex items-center px-2 py-2 text-base font-medium rounded-md transition-colors duration-200"
+          class="group nav-link"
           :class="
-            $route.path === '/notes'
-              ? 'bg-primary-100 dark:bg-primary-900 text-primary-900 dark:text-primary-100'
-              : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
+            $route.path === '/notes' ? 'nav-link-active' : 'nav-link-inactive'
           "
           @click="closeSideMenu"
         >
           <svg
-            class="mr-4 h-6 w-6 flex-shrink-0"
+            class="nav-icon"
             :class="
-              $route.path === '/notes'
-                ? 'text-primary-500 dark:text-primary-400'
-                : 'text-gray-400 group-hover:text-gray-500 dark:group-hover:text-gray-300'
+              $route.path === '/notes' ? 'nav-icon-active' : 'nav-icon-inactive'
             "
             fill="none"
             stroke="currentColor"
@@ -125,19 +107,87 @@
           {{ isSpanish ? "Notas" : "Notes" }}
         </router-link>
       </div>
+
+      <!-- Non-authenticated Navigation -->
+      <div v-else class="space-y-1">
+        <router-link
+          to="/"
+          class="group nav-link"
+          :class="$route.path === '/' ? 'nav-link-active' : 'nav-link-inactive'"
+          @click="closeSideMenu"
+        >
+          <svg
+            class="nav-icon"
+            :class="
+              $route.path === '/' ? 'nav-icon-active' : 'nav-icon-inactive'
+            "
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+            />
+          </svg>
+          {{ isSpanish ? "Inicio" : "Home" }}
+        </router-link>
+
+        <div class="h-px bg-gray-200 dark:bg-gray-700 my-4"></div>
+
+        <!-- Auth Actions for non-authenticated users -->
+        <button
+          @click="openLoginModal"
+          class="group nav-link nav-link-inactive w-full text-left"
+        >
+          <svg
+            class="nav-icon nav-icon-inactive"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+            />
+          </svg>
+          {{ isSpanish ? "Iniciar Sesión" : "Sign In" }}
+        </button>
+
+        <button
+          @click="openSignupModal"
+          class="group nav-link nav-link-inactive w-full text-left"
+        >
+          <svg
+            class="nav-icon nav-icon-inactive"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+            />
+          </svg>
+          {{ isSpanish ? "Registrarse" : "Sign Up" }}
+        </button>
+      </div>
     </nav>
 
     <!-- Settings Section -->
-    <div class="mt-6 px-2">
+    <div class="sidemenu-settings">
       <div class="space-y-1">
         <!-- Language Selector -->
         <div class="relative language-dropdown">
-          <button
-            @click="toggleLanguageDropdown"
-            class="group flex items-center w-full px-2 py-2 text-base font-medium rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
-          >
+          <button @click="toggleLanguageDropdown" class="group settings-button">
             <svg
-              class="mr-4 h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500 dark:group-hover:text-gray-300"
+              class="settings-icon"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -158,7 +208,7 @@
               {{ isSpanish ? "ES" : "EN" }}
             </span>
             <svg
-              class="ml-2 h-4 w-4 transform transition-transform duration-200"
+              class="dropdown-arrow"
               :class="{ 'rotate-180': showLanguageDropdown }"
               fill="none"
               stroke="currentColor"
@@ -174,16 +224,12 @@
           </button>
 
           <!-- Dropdown Menu -->
-          <div
-            v-if="showLanguageDropdown"
-            class="absolute right-0 mt-1 w-32 bg-white dark:bg-gray-700 rounded-md shadow-lg border border-gray-200 dark:border-gray-600 z-50"
-          >
+          <div v-if="showLanguageDropdown" class="dropdown-menu">
             <button
               @click="selectLanguage('en')"
-              class="flex items-center w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-t-md"
+              class="dropdown-item dropdown-item-top"
               :class="{
-                'bg-primary-50 dark:bg-primary-900 text-primary-600 dark:text-primary-400':
-                  !isSpanish,
+                'dropdown-item-active': !isSpanish,
               }"
             >
               <span
@@ -193,7 +239,7 @@
               English
               <svg
                 v-if="!isSpanish"
-                class="ml-auto h-4 w-4 text-primary-600 dark:text-primary-400"
+                class="dropdown-checkmark"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -206,17 +252,16 @@
             </button>
             <button
               @click="selectLanguage('es')"
-              class="flex items-center w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-b-md"
+              class="dropdown-item dropdown-item-bottom"
               :class="{
-                'bg-primary-50 dark:bg-primary-900 text-primary-600 dark:text-primary-400':
-                  isSpanish,
+                'dropdown-item-active': isSpanish,
               }"
             >
               <span class="mr-2">🇪🇸</span>
               Español
               <svg
                 v-if="isSpanish"
-                class="ml-auto h-4 w-4 text-primary-600 dark:text-primary-400"
+                class="dropdown-checkmark"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -231,12 +276,10 @@
         </div>
 
         <!-- Dark Mode Toggle -->
-        <div
-          class="group flex items-center w-full px-2 py-2 text-base font-medium rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
-        >
+        <div class="group settings-button">
           <svg
             v-if="isDark"
-            class="mr-4 h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500 dark:group-hover:text-gray-300"
+            class="settings-icon"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -250,7 +293,7 @@
           </svg>
           <svg
             v-else
-            class="mr-4 h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500 dark:group-hover:text-gray-300"
+            class="settings-icon"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -269,11 +312,11 @@
           <!-- Toggle Switch -->
           <button
             @click="toggleDarkMode"
-            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+            class="toggle-switch"
             :class="isDark ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-600'"
           >
             <span
-              class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+              class="toggle-thumb"
               :class="isDark ? 'translate-x-6' : 'translate-x-1'"
             ></span>
           </button>
@@ -281,21 +324,14 @@
       </div>
     </div>
 
-    <!-- User Info & Logout -->
-    <div
-      class="absolute bottom-0 w-full p-4 border-t border-gray-200 dark:border-gray-700"
-    >
+    <!-- User Info & Logout (only for authenticated users) -->
+    <div v-if="user" class="sidemenu-footer">
       <div class="flex items-center justify-between">
-        <button
-          @click="goToProfile"
-          class="flex items-center flex-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg p-2 transition-colors duration-200"
-        >
+        <button @click="goToProfile" class="user-profile-button">
           <div class="flex-shrink-0">
-            <div
-              class="h-8 w-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center"
-            >
+            <div class="user-avatar">
               <svg
-                class="h-5 w-5 text-primary-600 dark:text-primary-400"
+                class="user-avatar-icon"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -308,22 +344,18 @@
             </div>
           </div>
           <div class="ml-3 text-left">
-            <p class="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <p class="user-name">
               {{ user && user.name }}
             </p>
-            <p class="text-xs text-gray-500 dark:text-gray-400">
+            <p class="user-email">
               {{ user && user.email }}
             </p>
           </div>
         </button>
 
-        <button
-          @click="handleLogout"
-          class="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
-          title="Logout"
-        >
+        <button @click="handleLogout" class="logout-button" title="Logout">
           <svg
-            class="w-5 h-5"
+            class="icon-sm"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -348,12 +380,14 @@ import { useSideMenu } from "../composables/useSideMenu";
 import { useLanguage } from "../composables/useLanguage";
 import { useDarkMode } from "../composables/useDarkMode";
 import { useAuth } from "../../features/auth/composables/useAuth";
+import { useAuthModal } from "../../features/auth/composables/useAuthModal";
 
 const router = useRouter();
 const { isSideMenuOpen, closeSideMenu } = useSideMenu();
 const { isSpanish, setLanguage } = useLanguage();
 const { isDark, toggleDarkMode } = useDarkMode();
 const { user, logout } = useAuth();
+const { openLoginModal, openSignupModal } = useAuthModal();
 
 // Language dropdown state
 const showLanguageDropdown = ref(false);

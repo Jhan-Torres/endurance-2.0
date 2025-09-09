@@ -5,9 +5,21 @@
     <AppHeader />
     <SideMenu />
 
-    <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8" role="main">
+    <!-- Main Content Area -->
+    <main
+      :class="[
+        'transition-all duration-300',
+        $route.path === '/'
+          ? ''
+          : 'max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8',
+      ]"
+      role="main"
+    >
       <router-view />
     </main>
+
+    <!-- Footer (only on landing page) -->
+    <AppFooter v-if="$route.path === '/'" />
 
     <!-- Auth Modal -->
     <AuthModal
@@ -23,6 +35,7 @@
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import AppHeader from "./shared/components/AppHeader.vue";
+import AppFooter from "./shared/components/AppFooter.vue";
 import SideMenu from "./shared/components/SideMenu.vue";
 import AuthModal from "./features/auth/components/AuthModal.vue";
 import { useAuth } from "./features/auth/composables/useAuth";

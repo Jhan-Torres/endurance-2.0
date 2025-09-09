@@ -2,35 +2,23 @@
   <!-- Modal Backdrop -->
   <div
     v-if="isOpen"
-    class="fixed inset-0 z-50 overflow-y-auto"
+    class="modal-backdrop"
     aria-labelledby="modal-title"
     role="dialog"
     aria-modal="true"
   >
     <!-- Background overlay -->
-    <div
-      class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-      @click="closeModal"
-    ></div>
+    <div class="modal-overlay" @click="closeModal"></div>
 
     <!-- Modal panel -->
-    <div
-      class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
-    >
-      <div
-        class="relative transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md sm:p-6"
-        @click.stop
-      >
+    <div class="modal-container">
+      <div class="modal-panel" @click.stop>
         <!-- Close button -->
-        <div class="absolute right-0 top-0 pr-4 pt-4">
-          <button
-            type="button"
-            class="rounded-md bg-white dark:bg-gray-800 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
-            @click="closeModal"
-          >
+        <div class="modal-close-container">
+          <button type="button" class="modal-close-btn" @click="closeModal">
             <span class="sr-only">Close</span>
             <svg
-              class="h-6 w-6"
+              class="icon-sm"
               fill="none"
               viewBox="0 0 24 24"
               stroke-width="1.5"
@@ -46,8 +34,8 @@
         </div>
 
         <!-- Modal content -->
-        <div class="sm:flex sm:items-start">
-          <div class="w-full mt-3 text-center sm:mt-0 sm:text-left">
+        <div class="modal-content">
+          <div class="modal-content-inner">
             <AuthHeader :is-signup="isSignup" />
             <div class="mt-6">
               <LoginForm
