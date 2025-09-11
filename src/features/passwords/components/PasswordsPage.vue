@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto px-4 py-8">
+  <main class="container mx-auto px-4 py-8">
     <PasswordsHeader />
     <PasswordsSearch v-model:search-term="searchTerm" />
     <PasswordsList
@@ -10,7 +10,7 @@
       @edit-password="handleEditPassword"
       @delete-password="handleDeletePassword"
     />
-  </div>
+  </main>
 </template>
 
 <script setup lang="ts">

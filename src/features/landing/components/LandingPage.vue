@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen">
+  <main class="min-h-screen">
     <HeroSection />
     <FeaturesSection />
     <SecuritySection />
     <ToolsSection />
     <PlatformSection />
     <CTASection />
-  </div>
+  </main>
 </template>
 
 <script setup lang="ts">

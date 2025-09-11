@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto px-4 py-8">
+  <main class="container mx-auto px-4 py-8">
     <NotesHeader />
     <NotesSearch v-model:search-term="searchTerm" />
     <NotesList
@@ -9,7 +9,7 @@
       @edit-note="handleEditNote"
       @delete-note="handleDeleteNote"
     />
-  </div>
+  </main>
 </template>
 
 <script setup lang="ts">

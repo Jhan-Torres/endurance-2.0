@@ -8,46 +8,46 @@
     <div class="absolute inset-0" aria-hidden="true">
       <!-- Base geometric pattern -->
       <div class="absolute inset-0 opacity-20 dark:opacity-10">
-        <div class="geometric-pattern"></div>
+        <div class="geometric-pattern" />
       </div>
 
       <!-- Floating geometric shapes -->
       <div class="absolute inset-0">
         <div class="geometric-shape shape-hexagon shape-1">
-          <div class="hexagon"></div>
+          <div class="hexagon" />
         </div>
         <div class="geometric-shape shape-triangle shape-2">
-          <div class="triangle"></div>
+          <div class="triangle" />
         </div>
         <div class="geometric-shape shape-circle shape-3">
-          <div class="circle"></div>
+          <div class="circle" />
         </div>
         <div class="geometric-shape shape-diamond shape-4">
-          <div class="diamond"></div>
+          <div class="diamond" />
         </div>
         <div class="geometric-shape shape-hexagon shape-5">
-          <div class="hexagon small"></div>
+          <div class="hexagon small" />
         </div>
         <div class="geometric-shape shape-triangle shape-6">
-          <div class="triangle small"></div>
+          <div class="triangle small" />
         </div>
       </div>
 
       <!-- Animated geometric lines -->
-      <div class="geometric-line line-2"></div>
-      <div class="geometric-line line-3"></div>
+      <div class="geometric-line line-2" />
+      <div class="geometric-line line-3" />
     </div>
 
     <div class="container-responsive relative">
       <header class="text-center animate-fade-in">
         <h1 class="text-heading-xl">
-          {{ t('hero.title') }}
+          {{ t("hero.title") }}
           <span class="text-gradient">
-            {{ t('hero.subtitle') }}
+            {{ t("hero.subtitle") }}
           </span>
         </h1>
         <p class="text-body mb-8 max-w-2xl mx-auto">
-          {{ t('hero.description') }}
+          {{ t("hero.description") }}
         </p>
 
         <nav
@@ -59,7 +59,7 @@
             class="btn-hero"
             aria-describedby="get-started-description"
           >
-            {{ t('hero.getStarted') }}
+            {{ t("hero.getStarted") }}
             <svg
               class="ml-3 w-6 h-6"
               fill="none"
@@ -72,7 +72,7 @@
                 stroke-linejoin="round"
                 stroke-width="2"
                 d="M13 7l5 5m0 0l-5 5m5-5H6"
-              ></path>
+              />
             </svg>
           </button>
         </nav>

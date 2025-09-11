@@ -8,7 +8,7 @@
     aria-modal="true"
   >
     <!-- Background overlay -->
-    <div class="modal-overlay" @click="closeModal"></div>
+    <div class="modal-overlay" @click="closeModal" />
 
     <!-- Modal panel -->
     <div class="modal-container">

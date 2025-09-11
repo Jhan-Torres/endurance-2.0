@@ -1,7 +1,7 @@
 <template>
   <!-- Backdrop -->
   <div v-if="isSideMenuOpen" class="backdrop" @click="closeSideMenu">
-    <div class="backdrop-overlay"></div>
+    <div class="backdrop-overlay" />
   </div>
 
   <!-- Side Menu -->
@@ -135,7 +135,7 @@
           {{ t("nav.home") }}
         </router-link>
 
-        <div class="h-px bg-gray-200 dark:bg-gray-700 my-4"></div>
+        <div class="h-px bg-gray-200 dark:bg-gray-700 my-4" />
 
         <!-- Auth Actions for non-authenticated users -->
         <button
