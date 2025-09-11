@@ -2,13 +2,13 @@
 import { reactive } from "vue";
 import { AuthState } from "../features/auth/model";
 import { NotesState } from "../features/notes/model";
-import { PasswordsState } from "../features/passwords/model";
+import { LoginsState } from "../features/logins/model";
 import { LandingState } from "../features/landing/model";
 
 export interface AppState {
   auth: AuthState;
   notes: NotesState;
-  passwords: PasswordsState;
+  logins: LoginsState;
   landing: LandingState;
 }
 
@@ -23,10 +23,10 @@ export const store = reactive<AppState>({
     loading: false,
     selectedNote: null,
   },
-  passwords: {
-    passwords: [],
+  logins: {
+    logins: [],
     loading: false,
-    selectedPassword: null,
+    selectedLogin: null,
   },
   landing: {
     content: [],

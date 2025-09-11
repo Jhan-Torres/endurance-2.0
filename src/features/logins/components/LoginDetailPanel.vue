@@ -28,14 +28,14 @@
   >
     <div
       v-if="isOpen"
-      class="fixed right-0 top-0 z-50 h-full w-96 bg-white dark:bg-gray-800 shadow-xl overflow-y-auto"
+      class="fixed right-0 top-0 z-50 h-full w-80 bg-white dark:bg-gray-800 shadow-xl overflow-y-auto"
     >
       <!-- Panel Header -->
       <div
-        class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700"
+        class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700"
       >
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
-          {{ isEditing ? "Edit Password" : "Password Details" }}
+        <h2 class="text-base font-semibold text-gray-900 dark:text-white">
+          {{ isEditing ? "Edit Login" : "Login Details" }}
         </h2>
         <button
           @click="closePanel"
@@ -58,51 +58,51 @@
       </div>
 
       <!-- Panel Content -->
-      <div class="p-6">
-        <div v-if="!isEditing" class="space-y-6">
+      <div class="p-4">
+        <div v-if="!isEditing" class="space-y-4">
           <!-- Website Icon and Name -->
-          <div class="flex items-center space-x-4">
-            <div class="flex-shrink-0 h-12 w-12">
+          <div class="flex items-center space-x-3">
+            <div class="flex-shrink-0 h-10 w-10">
               <div
-                class="h-12 w-12 rounded-lg bg-gray-100 dark:bg-gray-600 flex items-center justify-center text-xl"
+                class="h-10 w-10 rounded-lg bg-gray-100 dark:bg-gray-600 flex items-center justify-center text-lg"
               >
-                {{ password.favicon || getWebsiteIcon(password.website) }}
+                {{ login.favicon || getWebsiteIcon(login.website) }}
               </div>
             </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                {{ password.website }}
+            <div class="min-w-0 flex-1">
+              <h3
+                class="text-lg font-semibold text-gray-900 dark:text-white truncate"
+              >
+                {{ login.website }}
               </h3>
-              <p class="text-sm text-gray-500 dark:text-gray-400">
-                {{
-                  password.url || `https://${password.website.toLowerCase()}`
-                }}
+              <p class="text-xs text-gray-500 dark:text-gray-400 truncate">
+                {{ login.url || `https://${login.website.toLowerCase()}` }}
               </p>
             </div>
           </div>
 
-          <!-- Password Details -->
-          <div class="space-y-4">
+          <!-- Login Details -->
+          <div class="space-y-3">
             <!-- Username -->
             <div>
               <label
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
                 Username
               </label>
               <div class="flex items-center space-x-2">
                 <div
-                  class="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm"
+                  class="flex-1 px-2 py-1.5 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-xs text-gray-900 dark:text-white"
                 >
-                  {{ password.username }}
+                  {{ login.username }}
                 </div>
                 <button
-                  @click="copyToClipboard(password.username, 'Username')"
-                  class="p-2 text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
+                  @click="copyToClipboard(login.username, 'Username')"
+                  class="p-1.5 text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
                   title="Copy username"
                 >
                   <svg
-                    class="w-4 h-4"
+                    class="w-3.5 h-3.5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -121,24 +121,24 @@
             <!-- Password -->
             <div>
               <label
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
                 Password
               </label>
               <div class="flex items-center space-x-2">
                 <div
-                  class="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-mono"
+                  class="flex-1 px-2 py-1.5 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-xs font-mono text-gray-900 dark:text-white"
                 >
-                  {{ showPassword ? password.password : "••••••••••••" }}
+                  {{ showPassword ? login.password : "••••••••••••" }}
                 </div>
                 <button
                   @click="togglePasswordVisibility"
-                  class="p-2 text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
+                  class="p-1.5 text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
                   title="Toggle password visibility"
                 >
                   <svg
                     v-if="showPassword"
-                    class="w-4 h-4"
+                    class="w-3.5 h-3.5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -152,7 +152,7 @@
                   </svg>
                   <svg
                     v-else
-                    class="w-4 h-4"
+                    class="w-3.5 h-3.5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -172,12 +172,12 @@
                   </svg>
                 </button>
                 <button
-                  @click="copyToClipboard(password.password, 'Password')"
-                  class="p-2 text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
+                  @click="copyToClipboard(login.password, 'Password')"
+                  class="p-1.5 text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
                   title="Copy password"
                 >
                   <svg
-                    class="w-4 h-4"
+                    class="w-3.5 h-3.5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -194,25 +194,25 @@
             </div>
 
             <!-- URL -->
-            <div v-if="password.url">
+            <div v-if="login.url">
               <label
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
                 Website URL
               </label>
               <div class="flex items-center space-x-2">
                 <div
-                  class="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm"
+                  class="flex-1 px-2 py-1.5 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-xs text-gray-900 dark:text-white truncate"
                 >
-                  {{ password.url }}
+                  {{ login.url }}
                 </div>
                 <button
                   @click="openWebsite"
-                  class="p-2 text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
+                  class="p-1.5 text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
                   title="Open website"
                 >
                   <svg
-                    class="w-4 h-4"
+                    class="w-3.5 h-3.5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -231,23 +231,21 @@
             <!-- Collections -->
             <div>
               <label
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
                 Collections
               </label>
-              <div class="flex flex-wrap gap-2">
+              <div class="flex flex-wrap gap-1">
                 <span
-                  v-for="collection in password.collections"
+                  v-for="collection in login.collections"
                   :key="collection"
-                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200"
+                  class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200"
                 >
                   {{ collection }}
                 </span>
                 <span
-                  v-if="
-                    !password.collections || password.collections.length === 0
-                  "
-                  class="text-sm text-gray-400 dark:text-gray-500"
+                  v-if="!login.collections || login.collections.length === 0"
+                  class="text-xs text-gray-400 dark:text-gray-500"
                 >
                   No collections
                 </span>
@@ -255,35 +253,35 @@
             </div>
 
             <!-- Notes -->
-            <div v-if="password.notes">
+            <div v-if="login.notes">
               <label
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
                 Notes
               </label>
               <div
-                class="px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm"
+                class="px-2 py-1.5 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-xs text-gray-900 dark:text-white"
               >
-                {{ password.notes }}
+                {{ login.notes }}
               </div>
             </div>
 
             <!-- Metadata -->
-            <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div class="pt-3 border-t border-gray-200 dark:border-gray-700">
               <div
-                class="grid grid-cols-1 gap-3 text-xs text-gray-500 dark:text-gray-400"
+                class="grid grid-cols-1 gap-2 text-xs text-gray-500 dark:text-gray-400"
               >
-                <div v-if="password.lastUsed">
+                <div v-if="login.lastUsed">
                   <span class="font-medium">Last used:</span>
-                  {{ formatLastUsed(password.lastUsed) }}
+                  {{ formatLastUsed(login.lastUsed) }}
                 </div>
                 <div>
                   <span class="font-medium">Created:</span>
-                  {{ formatDate(password.createdAt) }}
+                  {{ formatDate(login.createdAt) }}
                 </div>
                 <div>
                   <span class="font-medium">Modified:</span>
-                  {{ formatDate(password.updatedAt) }}
+                  {{ formatDate(login.updatedAt) }}
                 </div>
               </div>
             </div>
@@ -291,14 +289,17 @@
 
           <!-- Action Buttons -->
           <div
-            class="flex space-x-3 pt-6 border-t border-gray-200 dark:border-gray-700"
+            class="flex space-x-2 pt-4 border-t border-gray-200 dark:border-gray-700"
           >
-            <button @click="startEditing" class="flex-1 btn-primary">
-              Edit Password
+            <button
+              @click="startEditing"
+              class="flex-1 btn-primary text-sm py-2"
+            >
+              Edit Login
             </button>
             <button
-              @click="deletePassword"
-              class="px-4 py-2 text-red-600 dark:text-red-400 border border-red-300 dark:border-red-600 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+              @click="deleteLogin"
+              class="px-3 py-2 text-red-600 dark:text-red-400 border border-red-300 dark:border-red-600 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors text-sm"
             >
               Delete
             </button>
@@ -306,9 +307,9 @@
         </div>
 
         <!-- Edit Form -->
-        <PasswordEditForm
+        <LoginEditForm
           v-else
-          :password="password"
+          :login="login"
           @save="handleSave"
           @cancel="cancelEditing"
         />
@@ -319,17 +320,17 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import type { Password } from "../model";
-import PasswordEditForm from "./PasswordEditForm.vue";
+import type { Login } from "../model";
+import LoginEditForm from "./LoginEditForm.vue";
 
 interface Props {
   isOpen: boolean;
-  password: Password;
+  login: Login;
 }
 
 interface Emits {
   (e: "close"): void;
-  (e: "save", password: Password): void;
+  (e: "save", login: Login): void;
   (e: "delete", id: string): void;
 }
 
@@ -389,40 +390,18 @@ const formatLastUsed = (lastUsed?: Date): string => {
 };
 
 const formatDate = (date: Date): string => {
-  return new Date(date).toLocaleDateString("en-US", {
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
     month: "short",
     day: "numeric",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  }).format(date);
 };
 
 // Actions
 const closePanel = () => {
+  emit("close");
   isEditing.value = false;
   showPassword.value = false;
-  emit("close");
-};
-
-const togglePasswordVisibility = () => {
-  showPassword.value = !showPassword.value;
-};
-
-const copyToClipboard = async (text: string, type: string) => {
-  try {
-    await navigator.clipboard.writeText(text);
-    // TODO: Show toast notification
-    console.log(`${type} copied to clipboard`);
-  } catch (err) {
-    console.error("Failed to copy to clipboard:", err);
-  }
-};
-
-const openWebsite = () => {
-  if (props.password.url) {
-    window.open(props.password.url, "_blank");
-  }
 };
 
 const startEditing = () => {
@@ -433,19 +412,33 @@ const cancelEditing = () => {
   isEditing.value = false;
 };
 
-const handleSave = (updatedPassword: Password) => {
-  emit("save", updatedPassword);
+const handleSave = (updatedLogin: Login) => {
+  emit("save", updatedLogin);
   isEditing.value = false;
 };
 
-const deletePassword = () => {
-  if (
-    confirm(
-      `Are you sure you want to delete the password for ${props.password.website}?`
-    )
-  ) {
-    emit("delete", props.password.id);
-    closePanel();
+const deleteLogin = () => {
+  if (confirm("Are you sure you want to delete this login?")) {
+    emit("delete", props.login.id);
   }
+};
+
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value;
+};
+
+const copyToClipboard = async (text: string, type: string) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    // TODO: Add toast notification
+    console.log(`${type} copied to clipboard`);
+  } catch (err) {
+    console.error("Failed to copy:", err);
+  }
+};
+
+const openWebsite = () => {
+  const url = props.login.url || `https://${props.login.website.toLowerCase()}`;
+  window.open(url, "_blank");
 };
 </script>

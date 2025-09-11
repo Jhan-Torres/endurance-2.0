@@ -1,5 +1,5 @@
-// Tipos y estado local de passwords
-export interface Password {
+// Tipos y estado local de logins
+export interface Login {
   id: string;
   website: string;
   username: string;
@@ -13,8 +13,8 @@ export interface Password {
   updatedAt: Date;
 }
 
-export interface PasswordsState {
-  passwords: Password[];
+export interface LoginsState {
+  logins: Login[];
   loading: boolean;
-  selectedPassword: Password | null;
+  selectedLogin: Login | null;
 }

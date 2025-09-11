@@ -48,7 +48,7 @@ const { initializeLanguage } = useLanguage();
 const { isAuthModalOpen, authModalMode, closeAuthModal } = useAuthModal();
 
 const handleAuthSuccess = () => {
-  router.push("/passwords");
+  router.push("/logins");
 };
 
 onMounted(() => {

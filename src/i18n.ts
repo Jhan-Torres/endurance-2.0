@@ -4,7 +4,7 @@ const messages = {
   en: {
     nav: {
       home: "Home",
-      passwords: "Passwords",
+      logins: "Logins",
       notes: "Notes",
       signIn: "Sign In",
       signUp: "Sign Up",
@@ -31,7 +31,7 @@ const messages = {
   es: {
     nav: {
       home: "Inicio",
-      passwords: "Contraseñas",
+      logins: "Inicios de Sesión",
       notes: "Notas",
       signIn: "Iniciar Sesión",
       signUp: "Registrarse",

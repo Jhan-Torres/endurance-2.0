@@ -1,7 +1,7 @@
 {
   "nav": {
     "home": "Inicio",
-    "passwords": "Contraseñas",
+    "logins": "Inicios de Sesión",
     "notes": "Notas",
     "signIn": "Iniciar Sesión",
     "signUp": "Registrarse",

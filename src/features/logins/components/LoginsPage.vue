@@ -1,29 +1,29 @@
 <template>
   <main class="container mx-auto px-4 py-8">
-    <PasswordsHeader @add-password="handleAddPassword" />
+    <LoginsHeader @add-login="handleAddLogin" />
 
     <div class="mt-8">
-      <PasswordsSearch v-model:search-term="searchTerm" />
+      <LoginsSearch v-model:search-term="searchTerm" />
     </div>
 
     <div class="mt-6">
-      <PasswordsList
-        :passwords="filteredPasswords"
+      <LoginsTable
+        :logins="filteredLogins"
         :loading="loading"
         :search-term="searchTerm"
         @copy-password="handleCopyPassword"
-        @edit-password="handleEditPassword"
-        @delete-password="handleDeletePassword"
-        @password-updated="handlePasswordUpdate"
+        @edit-login="handleEditLogin"
+        @delete-login="handleDeleteLogin"
+        @login-updated="handleLoginUpdate"
       />
     </div>
 
-    <!-- Add Password Side Panel -->
-    <PasswordDetailPanel
-      :is-open="showAddPassword"
-      :password="newPasswordTemplate"
-      @close="closeAddPassword"
-      @save="handlePasswordUpdate"
+    <!-- Add Login Side Panel -->
+    <LoginDetailPanel
+      :is-open="showAddLogin"
+      :login="newLoginTemplate"
+      @close="closeAddLogin"
+      @save="handleLoginUpdate"
       @delete="() => {}"
     />
   </main>
@@ -31,16 +31,16 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import PasswordsHeader from "./PasswordsHeader.vue";
-import PasswordsSearch from "./PasswordsSearch.vue";
-import PasswordsList from "./PasswordsList.vue";
-import PasswordDetailPanel from "./PasswordDetailPanel.vue";
-import type { Password } from "../model";
+import LoginsHeader from "./LoginsHeader.vue";
+import LoginsSearch from "./LoginsSearch.vue";
+import LoginsTable from "./LoginsTable.vue";
+import LoginDetailPanel from "./LoginDetailPanel.vue";
+import type { Login } from "../model";
 
 const searchTerm = ref("");
 const loading = ref(false);
-const showAddPassword = ref(false);
-const passwords = ref<Password[]>([
+const showAddLogin = ref(false);
+const logins = ref<Login[]>([
   {
     id: "1",
     website: "Amazon",
@@ -95,12 +95,12 @@ const passwords = ref<Password[]>([
   },
 ]);
 
-const filteredPasswords = computed(() => {
-  if (!searchTerm.value) return passwords.value;
-  return passwords.value.filter(
-    (password) =>
-      password.website.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-      password.username.toLowerCase().includes(searchTerm.value.toLowerCase())
+const filteredLogins = computed(() => {
+  if (!searchTerm.value) return logins.value;
+  return logins.value.filter(
+    (login) =>
+      login.website.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+      login.username.toLowerCase().includes(searchTerm.value.toLowerCase())
   );
 });
 
@@ -109,41 +109,41 @@ const handleCopyPassword = (id: string) => {
   // TODO: Implement copy to clipboard
 };
 
-const handleEditPassword = (password: Password) => {
-  console.log("Edit password:", password);
-  // TODO: Implement edit password
+const handleEditLogin = (login: Login) => {
+  console.log("Edit login:", login);
+  // TODO: Implement edit login
 };
 
-const handleDeletePassword = (id: string) => {
-  console.log("Delete password:", id);
-  // TODO: Implement delete password
-  const index = passwords.value.findIndex((p) => p.id === id);
+const handleDeleteLogin = (id: string) => {
+  console.log("Delete login:", id);
+  // TODO: Implement delete login
+  const index = logins.value.findIndex((l) => l.id === id);
   if (index > -1) {
-    passwords.value.splice(index, 1);
+    logins.value.splice(index, 1);
   }
 };
 
-const handlePasswordUpdate = (updatedPassword: Password) => {
-  const index = passwords.value.findIndex((p) => p.id === updatedPassword.id);
+const handleLoginUpdate = (updatedLogin: Login) => {
+  const index = logins.value.findIndex((l) => l.id === updatedLogin.id);
   if (index > -1) {
-    passwords.value[index] = updatedPassword;
+    logins.value[index] = updatedLogin;
   } else {
-    // It's a new password
-    passwords.value.push(updatedPassword);
+    // It's a new login
+    logins.value.push(updatedLogin);
   }
 };
 
-const handleAddPassword = () => {
-  showAddPassword.value = true;
+const handleAddLogin = () => {
+  showAddLogin.value = true;
 };
 
-const closeAddPassword = () => {
-  showAddPassword.value = false;
+const closeAddLogin = () => {
+  showAddLogin.value = false;
 };
 
-// Create a new password template
-const newPasswordTemplate = computed<Password>(() => ({
-  id: "new", // Temporary ID for new passwords
+// Create a new login template
+const newLoginTemplate = computed<Login>(() => ({
+  id: "new", // Temporary ID for new logins
   website: "",
   username: "",
   password: "",

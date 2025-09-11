@@ -21,6 +21,6 @@ const router = useRouter();
 const isSignup = ref(false);
 
 const handleAuthSuccess = () => {
-  router.push("/passwords");
+  router.push("/logins");
 };
 </script>

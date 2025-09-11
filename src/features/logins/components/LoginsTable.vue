@@ -4,11 +4,11 @@
     <div
       class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"
     ></div>
-    <p class="mt-2 text-gray-600 dark:text-gray-400">Loading passwords...</p>
+    <p class="mt-2 text-gray-600 dark:text-gray-400">Loading logins...</p>
   </div>
 
   <!-- Empty state -->
-  <div v-else-if="passwords.length === 0" class="text-center py-8">
+  <div v-else-if="logins.length === 0" class="text-center py-8">
     <svg
       class="mx-auto h-12 w-12 text-gray-400"
       fill="none"
@@ -23,13 +23,13 @@
       />
     </svg>
     <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">
-      No passwords found
+      No logins found
     </h3>
     <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
       {{
         searchTerm
           ? "Try adjusting your search terms."
-          : "Get started by adding your first password."
+          : "Get started by adding your first login."
       }}
     </p>
   </div>
@@ -73,9 +73,9 @@
           class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700"
         >
           <tr
-            v-for="password in passwords"
-            :key="password.id"
-            @click="openPasswordDetail(password)"
+            v-for="login in logins"
+            :key="login.id"
+            @click="openLoginDetail(login)"
             class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 cursor-pointer"
           >
             <!-- Item name column with icon -->
@@ -86,7 +86,7 @@
                   <div
                     class="h-10 w-10 rounded-lg bg-gray-100 dark:bg-gray-600 flex items-center justify-center text-lg"
                   >
-                    {{ password.favicon || getWebsiteIcon(password.website) }}
+                    {{ login.favicon || getWebsiteIcon(login.website) }}
                   </div>
                 </div>
                 <!-- Website name and username -->
@@ -94,10 +94,10 @@
                   <div
                     class="text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    {{ password.website }}
+                    {{ login.website }}
                   </div>
                   <div class="text-sm text-gray-500 dark:text-gray-400">
-                    {{ password.username }}
+                    {{ login.username }}
                   </div>
                 </div>
               </div>
@@ -107,23 +107,21 @@
             <td
               class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"
             >
-              {{ formatLastUsed(password.lastUsed) }}
+              {{ formatLastUsed(login.lastUsed) }}
             </td>
 
             <!-- Collections column -->
             <td class="px-6 py-4 whitespace-nowrap">
               <div class="flex flex-wrap gap-1">
                 <span
-                  v-for="collection in password.collections"
+                  v-for="collection in login.collections"
                   :key="collection"
                   class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200"
                 >
                   {{ collection }}
                 </span>
                 <span
-                  v-if="
-                    !password.collections || password.collections.length === 0
-                  "
+                  v-if="!login.collections || login.collections.length === 0"
                   class="text-sm text-gray-400 dark:text-gray-500"
                 >
                   —
@@ -139,9 +137,9 @@
               <div class="flex items-center justify-end space-x-2">
                 <!-- Copy password button -->
                 <button
-                  @click="$emit('copy-password', password.id)"
+                  @click="$emit('copy-password', login.id)"
                   class="p-2 text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
-                  :aria-label="`Copy password for ${password.website}`"
+                  :aria-label="`Copy password for ${login.website}`"
                   title="Copy password"
                 >
                   <svg
@@ -162,9 +160,9 @@
                 <!-- More actions dropdown -->
                 <div class="relative" ref="dropdownRef">
                   <button
-                    @click="toggleDropdown(password.id)"
+                    @click="toggleDropdown(login.id)"
                     class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
-                    :aria-label="`More actions for ${password.website}`"
+                    :aria-label="`More actions for ${login.website}`"
                   >
                     <svg
                       class="w-4 h-4"
@@ -191,12 +189,12 @@
                     leave-to-class="transform opacity-0 scale-95"
                   >
                     <div
-                      v-if="activeDropdown === password.id"
+                      v-if="activeDropdown === login.id"
                       class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
                     >
                       <div class="py-1">
                         <button
-                          @click="handleEdit(password)"
+                          @click="handleEdit(login)"
                           class="group flex items-center w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
                         >
                           <svg
@@ -215,7 +213,7 @@
                           Edit
                         </button>
                         <button
-                          @click="handleDelete(password.id)"
+                          @click="handleDelete(login.id)"
                           class="group flex items-center w-full px-4 py-2 text-sm text-red-700 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
                         >
                           <svg
@@ -245,23 +243,23 @@
     </div>
   </div>
 
-  <!-- Password Detail Panel -->
-  <PasswordDetailPanel
-    :is-open="!!selectedPassword"
-    :password="selectedPassword || passwords[0]"
-    @close="closePasswordDetail"
-    @save="handlePasswordSave"
-    @delete="handlePasswordDelete"
+  <!-- Login Detail Panel -->
+  <LoginDetailPanel
+    :is-open="!!selectedLogin"
+    :login="selectedLogin || logins[0]"
+    @close="closeLoginDetail"
+    @save="handleLoginSave"
+    @delete="handleLoginDelete"
   />
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
-import type { Password } from "../model";
-import PasswordDetailPanel from "./PasswordDetailPanel.vue";
+import type { Login } from "../model";
+import LoginDetailPanel from "./LoginDetailPanel.vue";
 
 interface Props {
-  passwords: Password[];
+  logins: Login[];
   loading: boolean;
   searchTerm: string;
 }
@@ -270,14 +268,14 @@ const props = defineProps<Props>();
 
 const emit = defineEmits<{
   "copy-password": [id: string];
-  "edit-password": [password: Password];
-  "delete-password": [id: string];
-  "password-updated": [password: Password];
+  "edit-login": [login: Login];
+  "delete-login": [id: string];
+  "login-updated": [login: Login];
 }>();
 
-// Active dropdown and selected password state
+// Active dropdown and selected login state
 const activeDropdown = ref<string | null>(null);
-const selectedPassword = ref<Password | null>(null);
+const selectedLogin = ref<Login | null>(null);
 
 // Helper functions
 const getWebsiteIcon = (website: string): string => {
@@ -329,9 +327,8 @@ const formatLastUsed = (lastUsed?: Date): string => {
 };
 
 // Dropdown handlers
-const toggleDropdown = (passwordId: string) => {
-  activeDropdown.value =
-    activeDropdown.value === passwordId ? null : passwordId;
+const toggleDropdown = (loginId: string) => {
+  activeDropdown.value = activeDropdown.value === loginId ? null : loginId;
 };
 
 const closeDropdown = () => {
@@ -339,34 +336,34 @@ const closeDropdown = () => {
 };
 
 // Action handlers
-const handleEdit = (password: Password) => {
-  emit("edit-password", password);
+const handleEdit = (login: Login) => {
+  emit("edit-login", login);
   closeDropdown();
 };
 
-const handleDelete = (passwordId: string) => {
-  emit("delete-password", passwordId);
+const handleDelete = (loginId: string) => {
+  emit("delete-login", loginId);
   closeDropdown();
 };
 
-// Password detail panel handlers
-const openPasswordDetail = (password: Password) => {
-  selectedPassword.value = password;
+// Login detail panel handlers
+const openLoginDetail = (login: Login) => {
+  selectedLogin.value = login;
   closeDropdown(); // Close any open dropdown
 };
 
-const closePasswordDetail = () => {
-  selectedPassword.value = null;
+const closeLoginDetail = () => {
+  selectedLogin.value = null;
 };
 
-const handlePasswordSave = (updatedPassword: Password) => {
-  emit("password-updated", updatedPassword);
-  closePasswordDetail();
+const handleLoginSave = (updatedLogin: Login) => {
+  emit("login-updated", updatedLogin);
+  closeLoginDetail();
 };
 
-const handlePasswordDelete = (passwordId: string) => {
-  emit("delete-password", passwordId);
-  closePasswordDetail();
+const handleLoginDelete = (loginId: string) => {
+  emit("delete-login", loginId);
+  closeLoginDetail();
 };
 
 // Close dropdown when clicking outside

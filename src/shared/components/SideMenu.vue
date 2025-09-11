@@ -64,10 +64,10 @@
         <!-- Authenticated Navigation -->
         <div v-if="user" class="space-y-1">
           <router-link
-            to="/passwords"
+            to="/logins"
             class="group nav-link"
             :class="
-              $route.path === '/passwords'
+              $route.path === '/logins'
                 ? 'nav-link-active'
                 : 'nav-link-inactive'
             "
@@ -76,7 +76,7 @@
             <svg
               class="nav-icon"
               :class="
-                $route.path === '/passwords'
+                $route.path === '/logins'
                   ? 'nav-icon-active'
                   : 'nav-icon-inactive'
               "
@@ -91,7 +91,7 @@
                 d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
               />
             </svg>
-            {{ t("nav.passwords") }}
+            {{ t("nav.logins") }}
           </router-link>
 
           <router-link

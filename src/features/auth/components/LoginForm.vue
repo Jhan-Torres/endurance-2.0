@@ -238,7 +238,7 @@ const handleLogin = async () => {
     } else {
       const success = await login(email.value, password.value);
       if (success) {
-        router.push("/passwords");
+        router.push("/logins");
       } else {
         error.value = "Invalid credentials";
       }

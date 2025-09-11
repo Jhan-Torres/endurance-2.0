@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LandingPage from "../features/landing/components/LandingPage.vue";
-import PasswordsPage from "../features/passwords/components/PasswordsPage.vue";
+import LoginsPage from "../features/logins/components/LoginsPage.vue";
 import NotesPage from "../features/notes/components/NotesPage.vue";
 import ProfilePage from "../features/profile/components/ProfilePage.vue";
 import { useAuthModal } from "../features/auth/composables/useAuthModal";
@@ -19,10 +19,15 @@ const router = createRouter({
       component: LandingPage,
     },
     {
+      path: "/logins",
+      name: "Logins",
+      component: LoginsPage,
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/passwords",
       name: "Passwords",
-      component: PasswordsPage,
-      meta: { requiresAuth: true },
+      redirect: "/logins", // Redirect old password route to logins
     },
     {
       path: "/notes",

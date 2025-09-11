@@ -171,7 +171,7 @@
           v-if="loading"
           class="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
         ></span>
-        {{ isNew ? "Add Password" : "Save Changes" }}
+        {{ isNew ? "Add Login" : "Save Changes" }}
       </button>
       <button
         type="button"
@@ -186,15 +186,15 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
-import type { Password } from "../model";
+import type { Login } from "../model";
 
 interface Props {
-  password?: Password;
+  login?: Login;
   isNew?: boolean;
 }
 
 interface Emits {
-  (e: "save", password: Password): void;
+  (e: "save", login: Login): void;
   (e: "cancel"): void;
 }
 
@@ -222,18 +222,18 @@ const collectionsInput = ref("");
 
 // Initialize form data
 const initializeForm = () => {
-  if (props.password) {
+  if (props.login) {
     formData.value = {
-      website: props.password.website || "",
-      url: props.password.url || "",
-      username: props.password.username || "",
-      password: props.password.password || "",
-      notes: props.password.notes || "",
-      favicon: props.password.favicon || "",
+      website: props.login.website || "",
+      url: props.login.url || "",
+      username: props.login.username || "",
+      password: props.login.password || "",
+      notes: props.login.notes || "",
+      favicon: props.login.favicon || "",
     };
-    collectionsInput.value = props.password.collections?.join(", ") || "";
+    collectionsInput.value = props.login.collections?.join(", ") || "";
   } else {
-    // Reset for new password
+    // Reset for new login
     formData.value = {
       website: "",
       url: "",
@@ -246,8 +246,8 @@ const initializeForm = () => {
   }
 };
 
-// Watch for password prop changes
-watch(() => props.password, initializeForm, { immediate: true });
+// Watch for login prop changes
+watch(() => props.login, initializeForm, { immediate: true });
 
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value;
@@ -303,8 +303,8 @@ const handleSubmit = async () => {
       .map((c) => c.trim())
       .filter((c) => c.length > 0);
 
-    const passwordData: Password = {
-      id: props.password?.id || `pwd_${Date.now()}`,
+    const loginData: Login = {
+      id: props.login?.id || `login_${Date.now()}`,
       website: formData.value.website.trim(),
       url: formData.value.url.trim() || undefined,
       username: formData.value.username.trim(),
@@ -312,14 +312,14 @@ const handleSubmit = async () => {
       notes: formData.value.notes.trim() || undefined,
       favicon: formData.value.favicon || undefined,
       collections: collections.length > 0 ? collections : undefined,
-      lastUsed: props.password?.lastUsed,
-      createdAt: props.password?.createdAt || new Date(),
+      lastUsed: props.login?.lastUsed,
+      createdAt: props.login?.createdAt || new Date(),
       updatedAt: new Date(),
     };
 
-    emit("save", passwordData);
+    emit("save", loginData);
   } catch (err) {
-    error.value = "Failed to save password. Please try again.";
+    error.value = "Failed to save login. Please try again.";
   } finally {
     loading.value = false;
   }
