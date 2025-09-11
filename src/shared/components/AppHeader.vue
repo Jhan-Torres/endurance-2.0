@@ -57,10 +57,10 @@
           <!-- Auth Buttons (when not authenticated) -->
           <div v-if="!isLoggedIn" class="flex items-center space-x-3">
             <button @click="openLoginModal" class="btn-ghost">
-              {{ isSpanish ? "Iniciar Sesión" : "Sign In" }}
+              {{ t("nav.signIn") }}
             </button>
             <button @click="openSignupModal" class="btn-primary">
-              {{ isSpanish ? "Registrarse" : "Sign Up" }}
+              {{ t("nav.signUp") }}
             </button>
           </div>
         </div>
@@ -77,7 +77,7 @@ import { useAuth } from "../../features/auth/composables/useAuth";
 import { useAuthModal } from "../../features/auth/composables/useAuthModal";
 
 const router = useRouter();
-const { isSpanish } = useLanguage();
+const { t } = useLanguage();
 const { toggleSideMenu } = useSideMenu();
 const { isAuthenticated: isLoggedIn, user, logout } = useAuth();
 const { openLoginModal, openSignupModal } = useAuthModal();

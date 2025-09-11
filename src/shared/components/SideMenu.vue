@@ -1,6 +1,6 @@
 <template>
   <!-- Backdrop -->
-  <div v-if="isSideMenuOpen" class="backdrop lg:hidden" @click="closeSideMenu">
+  <div v-if="isSideMenuOpen" class="backdrop" @click="closeSideMenu">
     <div class="backdrop-overlay"></div>
   </div>
 
@@ -77,7 +77,7 @@
               d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
             />
           </svg>
-          {{ isSpanish ? "Contraseñas" : "Passwords" }}
+          {{ t("nav.passwords") }}
         </router-link>
 
         <router-link
@@ -104,7 +104,7 @@
               d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
             />
           </svg>
-          {{ isSpanish ? "Notas" : "Notes" }}
+          {{ t("nav.notes") }}
         </router-link>
       </div>
 
@@ -132,7 +132,7 @@
               d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
             />
           </svg>
-          {{ isSpanish ? "Inicio" : "Home" }}
+          {{ t("nav.home") }}
         </router-link>
 
         <div class="h-px bg-gray-200 dark:bg-gray-700 my-4"></div>
@@ -155,7 +155,7 @@
               d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
             />
           </svg>
-          {{ isSpanish ? "Iniciar Sesión" : "Sign In" }}
+          {{ t("nav.signIn") }}
         </button>
 
         <button
@@ -175,7 +175,7 @@
               d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
             />
           </svg>
-          {{ isSpanish ? "Registrarse" : "Sign Up" }}
+          {{ t("nav.signUp") }}
         </button>
       </div>
     </nav>
@@ -200,7 +200,7 @@
               />
             </svg>
             <span class="flex-1 text-left">
-              {{ isSpanish ? "Idioma" : "Language" }}
+              {{ t("nav.language") }}
             </span>
             <span
               class="text-sm font-medium text-primary-600 dark:text-primary-400"
@@ -306,7 +306,7 @@
             />
           </svg>
           <span class="flex-1 text-left">
-            {{ isSpanish ? "Modo Oscuro" : "Dark Mode" }}
+            {{ t("settings.darkMode") }}
           </span>
 
           <!-- Toggle Switch -->
@@ -384,7 +384,7 @@ import { useAuthModal } from "../../features/auth/composables/useAuthModal";
 
 const router = useRouter();
 const { isSideMenuOpen, closeSideMenu } = useSideMenu();
-const { isSpanish, setLanguage } = useLanguage();
+const { isSpanish, setLanguage, t } = useLanguage();
 const { isDark, toggleDarkMode } = useDarkMode();
 const { user, logout } = useAuth();
 const { openLoginModal, openSignupModal } = useAuthModal();
@@ -413,7 +413,7 @@ const handleClickOutside = (event: MouseEvent) => {
 
   // Close side menu if clicking outside (only on desktop)
   const sideMenu = target.closest(".side-menu");
-  const hamburgerButton = target.closest(".hamburger-menu");
+  const hamburgerButton = target.closest(".hamburger-btn");
   if (
     !sideMenu &&
     !hamburgerButton &&

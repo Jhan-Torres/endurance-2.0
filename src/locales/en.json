@@ -1,0 +1,128 @@
+{
+  "nav": {
+    "home": "Home",
+    "passwords": "Passwords",
+    "notes": "Notes",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "language": "Language"
+  },
+  "hero": {
+    "title": "The Ultimate",
+    "subtitle": "Password Manager",
+    "description": "Generate, store and manage all your passwords securely with military-grade encryption. Everything stays on your device, no external access.",
+    "getStarted": "Get Started Free",
+    "getStartedDescription": "Create your free account and start securing your passwords today"
+  },
+  "features": {
+    "title": "Why Choose Endurance?",
+    "subtitle": "Military-grade security meets user-friendly design",
+    "localFirst": {
+      "title": "Local-First Security",
+      "description": "Your passwords never leave your device. Everything is encrypted locally with AES-256 encryption."
+    },
+    "crossPlatform": {
+      "title": "Cross-Platform Sync",
+      "description": "Seamlessly sync across all your devices while maintaining end-to-end encryption."
+    },
+    "zeroKnowledge": {
+      "title": "Zero-Knowledge Architecture",
+      "description": "We can't see your passwords even if we wanted to. Your master password is your key."
+    },
+    "generator": {
+      "title": "Smart Password Generator",
+      "description": "Generate strong, unique passwords with customizable rules and complexity settings."
+    },
+    "autofill": {
+      "title": "Secure Autofill",
+      "description": "One-click password filling with biometric authentication for maximum convenience."
+    },
+    "audit": {
+      "title": "Security Audit",
+      "description": "Regular security checks to identify weak, reused, or compromised passwords."
+    }
+  },
+  "security": {
+    "title": "Enterprise-Grade Security",
+    "subtitle": "Your digital life deserves military-grade protection",
+    "description": "Endurance employs the same encryption standards used by governments and financial institutions to protect your most sensitive information.",
+    "encryption": {
+      "title": "AES-256 Encryption",
+      "description": "Industry-standard encryption that would take billions of years to crack"
+    },
+    "zeroTrust": {
+      "title": "Zero-Trust Architecture",
+      "description": "We never have access to your unencrypted data, ensuring complete privacy"
+    },
+    "biometric": {
+      "title": "Biometric Protection",
+      "description": "Fingerprint and face recognition for secure, convenient access"
+    },
+    "audit": {
+      "title": "Regular Security Audits",
+      "description": "Continuous monitoring and third-party security assessments"
+    }
+  },
+  "tools": {
+    "title": "Powerful Security Tools",
+    "subtitle": "Everything you need for digital security",
+    "generator": {
+      "title": "Password Generator",
+      "description": "Create strong, unique passwords with customizable complexity settings and rules."
+    },
+    "breach": {
+      "title": "Breach Monitor",
+      "description": "Get instant alerts when your accounts are found in data breaches."
+    },
+    "analyzer": {
+      "title": "Security Analyzer",
+      "description": "Identify weak, reused, or old passwords that need to be updated."
+    },
+    "vault": {
+      "title": "Secure Digital Vault",
+      "description": "Store sensitive documents, notes, and files with military-grade encryption."
+    }
+  },
+  "platforms": {
+    "title": "Available Everywhere",
+    "subtitle": "Access your passwords on any device, anywhere",
+    "description": "Endurance works seamlessly across all your devices with native apps and browser extensions.",
+    "comingSoon": "Coming Soon",
+    "available": "Available Now"
+  },
+  "cta": {
+    "title": "Ready to Secure Your Digital Life?",
+    "subtitle": "Join thousands of users who trust Endurance with their most important passwords",
+    "description": "Start your free trial today and experience the peace of mind that comes with military-grade password security.",
+    "getStarted": "Get Started Free",
+    "noCard": "No credit card required",
+    "trial": "30-day free trial",
+    "support": "24/7 expert support"
+  },
+  "footer": {
+    "description": "The ultimate password manager with enterprise-grade security and privacy-first approach. Protect your digital life with military-grade encryption.",
+    "product": "Product",
+    "features": "Features",
+    "security": "Security",
+    "pricing": "Pricing",
+    "download": "Download",
+    "company": "Company",
+    "about": "About Us",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "contact": "Contact",
+    "support": "Support",
+    "help": "Help Center",
+    "community": "Community",
+    "blog": "Blog",
+    "rights": "All rights reserved."
+  },
+  "settings": {
+    "darkMode": "Dark Mode"
+  },
+  "profile": {
+    "title": "User Profile",
+    "description": "Manage your account settings and security preferences",
+    "logins": "Logins"
+  }
+}

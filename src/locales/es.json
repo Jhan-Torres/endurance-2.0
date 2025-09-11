@@ -1,0 +1,128 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "passwords": "Contraseñas",
+    "notes": "Notas",
+    "signIn": "Iniciar Sesión",
+    "signUp": "Registrarse",
+    "language": "Idioma"
+  },
+  "hero": {
+    "title": "El Mejor",
+    "subtitle": "Gestor de Contraseñas",
+    "description": "Genera, almacena y gestiona todas tus contraseñas de forma segura con cifrado militar. Todo en tu dispositivo, sin acceso externo.",
+    "getStarted": "Comenzar Gratis",
+    "getStartedDescription": "Crea tu cuenta gratuita y comienza a proteger tus contraseñas hoy"
+  },
+  "features": {
+    "title": "¿Por Qué Elegir Endurance?",
+    "subtitle": "Seguridad de grado militar con diseño fácil de usar",
+    "localFirst": {
+      "title": "Seguridad Local",
+      "description": "Tus contraseñas nunca salen de tu dispositivo. Todo se cifra localmente con cifrado AES-256."
+    },
+    "crossPlatform": {
+      "title": "Sincronización Multiplataforma",
+      "description": "Sincroniza sin problemas en todos tus dispositivos manteniendo el cifrado de extremo a extremo."
+    },
+    "zeroKnowledge": {
+      "title": "Arquitectura de Conocimiento Cero",
+      "description": "No podemos ver tus contraseñas aunque quisiéramos. Tu contraseña maestra es tu clave."
+    },
+    "generator": {
+      "title": "Generador Inteligente de Contraseñas",
+      "description": "Genera contraseñas fuertes y únicas con reglas personalizables y configuraciones de complejidad."
+    },
+    "autofill": {
+      "title": "Autocompletado Seguro",
+      "description": "Relleno de contraseñas con un clic con autenticación biométrica para máxima conveniencia."
+    },
+    "audit": {
+      "title": "Auditoría de Seguridad",
+      "description": "Verificaciones regulares de seguridad para identificar contraseñas débiles, reutilizadas o comprometidas."
+    }
+  },
+  "security": {
+    "title": "Seguridad de Grado Empresarial",
+    "subtitle": "Tu vida digital merece protección de grado militar",
+    "description": "Endurance emplea los mismos estándares de cifrado utilizados por gobiernos e instituciones financieras para proteger tu información más sensible.",
+    "encryption": {
+      "title": "Cifrado AES-256",
+      "description": "Cifrado estándar de la industria que tomaría miles de millones de años descifrar"
+    },
+    "zeroTrust": {
+      "title": "Arquitectura de Confianza Cero",
+      "description": "Nunca tenemos acceso a tus datos sin cifrar, garantizando privacidad completa"
+    },
+    "biometric": {
+      "title": "Protección Biométrica",
+      "description": "Reconocimiento de huella dactilar y facial para acceso seguro y conveniente"
+    },
+    "audit": {
+      "title": "Auditorías de Seguridad Regulares",
+      "description": "Monitoreo continuo y evaluaciones de seguridad por terceros"
+    }
+  },
+  "tools": {
+    "title": "Herramientas de Seguridad Potentes",
+    "subtitle": "Todo lo que necesitas para la seguridad digital",
+    "generator": {
+      "title": "Generador de Contraseñas",
+      "description": "Crea contraseñas fuertes y únicas con configuraciones de complejidad y reglas personalizables."
+    },
+    "breach": {
+      "title": "Monitor de Brechas",
+      "description": "Recibe alertas instantáneas cuando tus cuentas son encontradas en brechas de datos."
+    },
+    "analyzer": {
+      "title": "Analizador de Seguridad",
+      "description": "Identifica contraseñas débiles, reutilizadas o antiguas que necesitan actualizarse."
+    },
+    "vault": {
+      "title": "Bóveda Digital Segura",
+      "description": "Almacena documentos sensibles, notas y archivos con cifrado de grado militar."
+    }
+  },
+  "platforms": {
+    "title": "Disponible en Todas Partes",
+    "subtitle": "Accede a tus contraseñas en cualquier dispositivo, en cualquier lugar",
+    "description": "Endurance funciona sin problemas en todos tus dispositivos con aplicaciones nativas y extensiones de navegador.",
+    "comingSoon": "Próximamente",
+    "available": "Disponible Ahora"
+  },
+  "cta": {
+    "title": "¿Listo para Asegurar Tu Vida Digital?",
+    "subtitle": "Únete a miles de usuarios que confían en Endurance con sus contraseñas más importantes",
+    "description": "Comienza tu prueba gratuita hoy y experimenta la tranquilidad que viene con la seguridad de contraseñas de grado militar.",
+    "getStarted": "Comenzar Gratis",
+    "noCard": "No se requiere tarjeta de crédito",
+    "trial": "Prueba gratuita de 30 días",
+    "support": "Soporte experto 24/7"
+  },
+  "footer": {
+    "description": "El mejor gestor de contraseñas con seguridad de grado empresarial y enfoque de privacidad. Protege tu vida digital con cifrado de grado militar.",
+    "product": "Producto",
+    "features": "Características",
+    "security": "Seguridad",
+    "pricing": "Precios",
+    "download": "Descargar",
+    "company": "Empresa",
+    "about": "Acerca de",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio",
+    "contact": "Contacto",
+    "support": "Soporte",
+    "help": "Centro de Ayuda",
+    "community": "Comunidad",
+    "blog": "Blog",
+    "rights": "Todos los derechos reservados."
+  },
+  "settings": {
+    "darkMode": "Modo Oscuro"
+  },
+  "profile": {
+    "title": "Perfil de Usuario",
+    "description": "Gestiona la configuración de tu cuenta y preferencias de seguridad",
+    "logins": "Inicios de Sesión"
+  }
+}

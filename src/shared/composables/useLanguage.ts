@@ -1,12 +1,13 @@
 import { ref, computed } from "vue";
+import { useI18n } from "vue-i18n";
 
 export type Language = "en" | "es";
 
-const currentLanguage = ref<Language>("en");
-
 export function useLanguage() {
+  const { locale, t } = useI18n();
+
   const setLanguage = (lang: Language) => {
-    currentLanguage.value = lang;
+    locale.value = lang;
     localStorage.setItem("endurance_language", lang);
   };
 
@@ -15,16 +16,17 @@ export function useLanguage() {
       "endurance_language"
     ) as Language;
     if (savedLanguage && ["en", "es"].includes(savedLanguage)) {
-      currentLanguage.value = savedLanguage;
+      locale.value = savedLanguage;
     }
   };
 
   const toggleLanguage = () => {
-    setLanguage(currentLanguage.value === "en" ? "es" : "en");
+    setLanguage(locale.value === "en" ? "es" : "en");
   };
 
-  const isSpanish = computed(() => currentLanguage.value === "es");
-  const isEnglish = computed(() => currentLanguage.value === "en");
+  const isSpanish = computed(() => locale.value === "es");
+  const isEnglish = computed(() => locale.value === "en");
+  const currentLanguage = computed(() => locale.value as Language);
 
   return {
     currentLanguage,
@@ -33,5 +35,6 @@ export function useLanguage() {
     setLanguage,
     toggleLanguage,
     initializeLanguage,
+    t, // Export the translation function
   };
 }
