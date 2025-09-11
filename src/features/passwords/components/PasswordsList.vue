@@ -75,7 +75,8 @@
           <tr
             v-for="password in passwords"
             :key="password.id"
-            class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150"
+            @click="openPasswordDetail(password)"
+            class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 cursor-pointer"
           >
             <!-- Item name column with icon -->
             <td class="px-6 py-4 whitespace-nowrap">
@@ -133,6 +134,7 @@
             <!-- Actions column -->
             <td
               class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+              @click.stop
             >
               <div class="flex items-center justify-end space-x-2">
                 <!-- Copy password button -->
@@ -242,11 +244,21 @@
       </table>
     </div>
   </div>
+
+  <!-- Password Detail Panel -->
+  <PasswordDetailPanel
+    :is-open="!!selectedPassword"
+    :password="selectedPassword || passwords[0]"
+    @close="closePasswordDetail"
+    @save="handlePasswordSave"
+    @delete="handlePasswordDelete"
+  />
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
 import type { Password } from "../model";
+import PasswordDetailPanel from "./PasswordDetailPanel.vue";
 
 interface Props {
   passwords: Password[];
@@ -260,10 +272,12 @@ const emit = defineEmits<{
   "copy-password": [id: string];
   "edit-password": [password: Password];
   "delete-password": [id: string];
+  "password-updated": [password: Password];
 }>();
 
-// Active dropdown state
+// Active dropdown and selected password state
 const activeDropdown = ref<string | null>(null);
+const selectedPassword = ref<Password | null>(null);
 
 // Helper functions
 const getWebsiteIcon = (website: string): string => {
@@ -333,6 +347,26 @@ const handleEdit = (password: Password) => {
 const handleDelete = (passwordId: string) => {
   emit("delete-password", passwordId);
   closeDropdown();
+};
+
+// Password detail panel handlers
+const openPasswordDetail = (password: Password) => {
+  selectedPassword.value = password;
+  closeDropdown(); // Close any open dropdown
+};
+
+const closePasswordDetail = () => {
+  selectedPassword.value = null;
+};
+
+const handlePasswordSave = (updatedPassword: Password) => {
+  emit("password-updated", updatedPassword);
+  closePasswordDetail();
+};
+
+const handlePasswordDelete = (passwordId: string) => {
+  emit("delete-password", passwordId);
+  closePasswordDetail();
 };
 
 // Close dropdown when clicking outside

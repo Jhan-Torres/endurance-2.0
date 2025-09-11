@@ -1,0 +1,451 @@
+<template>
+  <!-- Side Panel Backdrop -->
+  <Transition
+    name="backdrop"
+    enter-active-class="duration-300 ease-out"
+    enter-from-class="opacity-0"
+    enter-to-class="opacity-100"
+    leave-active-class="duration-200 ease-in"
+    leave-from-class="opacity-100"
+    leave-to-class="opacity-0"
+  >
+    <div
+      v-if="isOpen"
+      class="fixed inset-0 z-40 bg-gray-500 bg-opacity-75"
+      @click="closePanel"
+    />
+  </Transition>
+
+  <!-- Side Panel -->
+  <Transition
+    name="sidepanel"
+    enter-active-class="duration-300 ease-out"
+    enter-from-class="translate-x-full"
+    enter-to-class="translate-x-0"
+    leave-active-class="duration-250 ease-in"
+    leave-from-class="translate-x-0"
+    leave-to-class="translate-x-full"
+  >
+    <div
+      v-if="isOpen"
+      class="fixed right-0 top-0 z-50 h-full w-96 bg-white dark:bg-gray-800 shadow-xl overflow-y-auto"
+    >
+      <!-- Panel Header -->
+      <div
+        class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700"
+      >
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
+          {{ isEditing ? "Edit Password" : "Password Details" }}
+        </h2>
+        <button
+          @click="closePanel"
+          class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Panel Content -->
+      <div class="p-6">
+        <div v-if="!isEditing" class="space-y-6">
+          <!-- Website Icon and Name -->
+          <div class="flex items-center space-x-4">
+            <div class="flex-shrink-0 h-12 w-12">
+              <div
+                class="h-12 w-12 rounded-lg bg-gray-100 dark:bg-gray-600 flex items-center justify-center text-xl"
+              >
+                {{ password.favicon || getWebsiteIcon(password.website) }}
+              </div>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                {{ password.website }}
+              </h3>
+              <p class="text-sm text-gray-500 dark:text-gray-400">
+                {{
+                  password.url || `https://${password.website.toLowerCase()}`
+                }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Password Details -->
+          <div class="space-y-4">
+            <!-- Username -->
+            <div>
+              <label
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
+                Username
+              </label>
+              <div class="flex items-center space-x-2">
+                <div
+                  class="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm"
+                >
+                  {{ password.username }}
+                </div>
+                <button
+                  @click="copyToClipboard(password.username, 'Username')"
+                  class="p-2 text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
+                  title="Copy username"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div>
+              <label
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
+                Password
+              </label>
+              <div class="flex items-center space-x-2">
+                <div
+                  class="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-mono"
+                >
+                  {{ showPassword ? password.password : "••••••••••••" }}
+                </div>
+                <button
+                  @click="togglePasswordVisibility"
+                  class="p-2 text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
+                  title="Toggle password visibility"
+                >
+                  <svg
+                    v-if="showPassword"
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"
+                    />
+                  </svg>
+                  <svg
+                    v-else
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                </button>
+                <button
+                  @click="copyToClipboard(password.password, 'Password')"
+                  class="p-2 text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
+                  title="Copy password"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- URL -->
+            <div v-if="password.url">
+              <label
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
+                Website URL
+              </label>
+              <div class="flex items-center space-x-2">
+                <div
+                  class="flex-1 px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm"
+                >
+                  {{ password.url }}
+                </div>
+                <button
+                  @click="openWebsite"
+                  class="p-2 text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
+                  title="Open website"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Collections -->
+            <div>
+              <label
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
+                Collections
+              </label>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  v-for="collection in password.collections"
+                  :key="collection"
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200"
+                >
+                  {{ collection }}
+                </span>
+                <span
+                  v-if="
+                    !password.collections || password.collections.length === 0
+                  "
+                  class="text-sm text-gray-400 dark:text-gray-500"
+                >
+                  No collections
+                </span>
+              </div>
+            </div>
+
+            <!-- Notes -->
+            <div v-if="password.notes">
+              <label
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
+                Notes
+              </label>
+              <div
+                class="px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm"
+              >
+                {{ password.notes }}
+              </div>
+            </div>
+
+            <!-- Metadata -->
+            <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
+              <div
+                class="grid grid-cols-1 gap-3 text-xs text-gray-500 dark:text-gray-400"
+              >
+                <div v-if="password.lastUsed">
+                  <span class="font-medium">Last used:</span>
+                  {{ formatLastUsed(password.lastUsed) }}
+                </div>
+                <div>
+                  <span class="font-medium">Created:</span>
+                  {{ formatDate(password.createdAt) }}
+                </div>
+                <div>
+                  <span class="font-medium">Modified:</span>
+                  {{ formatDate(password.updatedAt) }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div
+            class="flex space-x-3 pt-6 border-t border-gray-200 dark:border-gray-700"
+          >
+            <button @click="startEditing" class="flex-1 btn-primary">
+              Edit Password
+            </button>
+            <button
+              @click="deletePassword"
+              class="px-4 py-2 text-red-600 dark:text-red-400 border border-red-300 dark:border-red-600 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+
+        <!-- Edit Form -->
+        <PasswordEditForm
+          v-else
+          :password="password"
+          @save="handleSave"
+          @cancel="cancelEditing"
+        />
+      </div>
+    </div>
+  </Transition>
+</template>
+
+<script setup lang="ts">
+import { ref, computed } from "vue";
+import type { Password } from "../model";
+import PasswordEditForm from "./PasswordEditForm.vue";
+
+interface Props {
+  isOpen: boolean;
+  password: Password;
+}
+
+interface Emits {
+  (e: "close"): void;
+  (e: "save", password: Password): void;
+  (e: "delete", id: string): void;
+}
+
+const props = defineProps<Props>();
+const emit = defineEmits<Emits>();
+
+const isEditing = ref(false);
+const showPassword = ref(false);
+
+// Helper functions
+const getWebsiteIcon = (website: string): string => {
+  const icons: Record<string, string> = {
+    amazon: "🛒",
+    gmail: "📧",
+    github: "🐙",
+    facebook: "📘",
+    twitter: "🐦",
+    instagram: "📷",
+    youtube: "📺",
+    netflix: "🎬",
+    spotify: "🎵",
+    google: "🔍",
+    microsoft: "🪟",
+    apple: "🍎",
+    default: "🌐",
+  };
+
+  const siteName = website.toLowerCase();
+  for (const [key, icon] of Object.entries(icons)) {
+    if (siteName.includes(key)) {
+      return icon;
+    }
+  }
+  return icons.default;
+};
+
+const formatLastUsed = (lastUsed?: Date): string => {
+  if (!lastUsed) return "Never";
+
+  const now = new Date();
+  const diffTime = now.getTime() - lastUsed.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  const diffMonths = Math.floor(diffDays / 30);
+  const diffYears = Math.floor(diffDays / 365);
+
+  if (diffYears > 0) {
+    return diffYears === 1 ? "about 1 year ago" : `over ${diffYears} years ago`;
+  } else if (diffMonths > 0) {
+    return diffMonths === 1
+      ? "about 1 month ago"
+      : `about ${diffMonths} months ago`;
+  } else if (diffDays > 0) {
+    return diffDays === 1 ? "1 day ago" : `${diffDays} days ago`;
+  } else {
+    return "Today";
+  }
+};
+
+const formatDate = (date: Date): string => {
+  return new Date(date).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
+// Actions
+const closePanel = () => {
+  isEditing.value = false;
+  showPassword.value = false;
+  emit("close");
+};
+
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value;
+};
+
+const copyToClipboard = async (text: string, type: string) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    // TODO: Show toast notification
+    console.log(`${type} copied to clipboard`);
+  } catch (err) {
+    console.error("Failed to copy to clipboard:", err);
+  }
+};
+
+const openWebsite = () => {
+  if (props.password.url) {
+    window.open(props.password.url, "_blank");
+  }
+};
+
+const startEditing = () => {
+  isEditing.value = true;
+};
+
+const cancelEditing = () => {
+  isEditing.value = false;
+};
+
+const handleSave = (updatedPassword: Password) => {
+  emit("save", updatedPassword);
+  isEditing.value = false;
+};
+
+const deletePassword = () => {
+  if (
+    confirm(
+      `Are you sure you want to delete the password for ${props.password.website}?`
+    )
+  ) {
+    emit("delete", props.password.id);
+    closePanel();
+  }
+};
+</script>

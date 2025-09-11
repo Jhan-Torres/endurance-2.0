@@ -1,6 +1,6 @@
 <template>
   <main class="container mx-auto px-4 py-8">
-    <PasswordsHeader />
+    <PasswordsHeader @add-password="handleAddPassword" />
 
     <div class="mt-8">
       <PasswordsSearch v-model:search-term="searchTerm" />
@@ -14,8 +14,18 @@
         @copy-password="handleCopyPassword"
         @edit-password="handleEditPassword"
         @delete-password="handleDeletePassword"
+        @password-updated="handlePasswordUpdate"
       />
     </div>
+
+    <!-- Add Password Side Panel -->
+    <PasswordDetailPanel
+      :is-open="showAddPassword"
+      :password="newPasswordTemplate"
+      @close="closeAddPassword"
+      @save="handlePasswordUpdate"
+      @delete="() => {}"
+    />
   </main>
 </template>
 
@@ -24,10 +34,12 @@ import { ref, computed } from "vue";
 import PasswordsHeader from "./PasswordsHeader.vue";
 import PasswordsSearch from "./PasswordsSearch.vue";
 import PasswordsList from "./PasswordsList.vue";
+import PasswordDetailPanel from "./PasswordDetailPanel.vue";
 import type { Password } from "../model";
 
 const searchTerm = ref("");
 const loading = ref(false);
+const showAddPassword = ref(false);
 const passwords = ref<Password[]>([
   {
     id: "1",
@@ -105,5 +117,42 @@ const handleEditPassword = (password: Password) => {
 const handleDeletePassword = (id: string) => {
   console.log("Delete password:", id);
   // TODO: Implement delete password
+  const index = passwords.value.findIndex((p) => p.id === id);
+  if (index > -1) {
+    passwords.value.splice(index, 1);
+  }
 };
+
+const handlePasswordUpdate = (updatedPassword: Password) => {
+  const index = passwords.value.findIndex((p) => p.id === updatedPassword.id);
+  if (index > -1) {
+    passwords.value[index] = updatedPassword;
+  } else {
+    // It's a new password
+    passwords.value.push(updatedPassword);
+  }
+};
+
+const handleAddPassword = () => {
+  showAddPassword.value = true;
+};
+
+const closeAddPassword = () => {
+  showAddPassword.value = false;
+};
+
+// Create a new password template
+const newPasswordTemplate = computed<Password>(() => ({
+  id: "new", // Temporary ID for new passwords
+  website: "",
+  username: "",
+  password: "",
+  url: "",
+  favicon: "",
+  notes: "",
+  collections: [],
+  lastUsed: new Date(),
+  createdAt: new Date(),
+  updatedAt: new Date(),
+}));
 </script>
