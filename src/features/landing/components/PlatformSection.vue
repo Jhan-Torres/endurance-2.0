@@ -124,16 +124,14 @@
 
         <!-- Platform Visual -->
         <div class="relative">
-          <div
-            class="bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900 dark:to-primary-800 rounded-3xl p-8 lg:p-12"
-          >
+          <div class="bg-white dark:bg-gray-800 rounded-3xl p-8 lg:p-12">
             <div class="grid grid-cols-2 gap-6">
               <!-- Desktop -->
               <div
                 class="bg-white dark:bg-gray-700 rounded-2xl p-6 shadow-lg transform rotate-3 hover:rotate-0 transition-transform duration-300"
               >
                 <div
-                  class="flex items-center justify-center h-16 bg-primary-100 dark:bg-primary-800 rounded-lg mb-4"
+                  class="flex items-center justify-center h-16 bg-white dark:bg-white rounded-lg mb-4"
                 >
                   <svg
                     class="w-8 h-8 text-primary-600 dark:text-primary-400"
@@ -161,7 +159,7 @@
                 class="bg-white dark:bg-gray-700 rounded-2xl p-6 shadow-lg transform -rotate-3 hover:rotate-0 transition-transform duration-300"
               >
                 <div
-                  class="flex items-center justify-center h-16 bg-primary-100 dark:bg-primary-800 rounded-lg mb-4"
+                  class="flex items-center justify-center h-16 bg-white dark:bg-white rounded-lg mb-4"
                 >
                   <svg
                     class="w-8 h-8 text-primary-600 dark:text-primary-400"
@@ -189,7 +187,7 @@
                 class="bg-white dark:bg-gray-700 rounded-2xl p-6 shadow-lg transform rotate-2 hover:rotate-0 transition-transform duration-300"
               >
                 <div
-                  class="flex items-center justify-center h-16 bg-primary-100 dark:bg-primary-800 rounded-lg mb-4"
+                  class="flex items-center justify-center h-16 bg-white dark:bg-white rounded-lg mb-4"
                 >
                   <svg
                     class="w-8 h-8 text-primary-600 dark:text-primary-400"
@@ -217,7 +215,7 @@
                 class="bg-white dark:bg-gray-700 rounded-2xl p-6 shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300"
               >
                 <div
-                  class="flex items-center justify-center h-16 bg-primary-100 dark:bg-primary-800 rounded-lg mb-4"
+                  class="flex items-center justify-center h-16 bg-white dark:bg-white rounded-lg mb-4"
                 >
                   <svg
                     class="w-8 h-8 text-primary-600 dark:text-primary-400"
