@@ -37,7 +37,7 @@
         <div class="modal-content">
           <div class="modal-content-inner">
             <AuthHeader :is-signup="isSignup" />
-            <div class="mt-6">
+            <div class="mt-4">
               <LoginForm
                 :is-signup="isSignup"
                 @toggle-mode="toggleAuthMode"

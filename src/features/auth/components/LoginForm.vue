@@ -1,11 +1,26 @@
 <template>
-  <form class="mt-8 space-y-6" @submit.prevent="handleLogin">
-    <div class="space-y-4">
+  <form class="mt-4 space-y-4" @submit.prevent="handleLogin">
+    <!-- Toggle between login and signup - moved to top -->
+    <div class="text-center pb-3">
+      <button
+        type="button"
+        @click="$emit('toggle-mode')"
+        class="text-sm text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300"
+      >
+        {{
+          isSignup
+            ? "Already have an account? Sign in"
+            : "Don't have an account? Sign up"
+        }}
+      </button>
+    </div>
+
+    <div class="space-y-3">
       <!-- Name field for signup -->
       <div v-if="isSignup">
         <label
           for="name"
-          class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
         >
           Full Name
         </label>
@@ -16,7 +31,7 @@
           type="text"
           autocomplete="name"
           required
-          class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+          class="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
           placeholder="Enter your full name"
           :disabled="loading"
         />
@@ -25,7 +40,7 @@
       <div>
         <label
           for="email"
-          class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
         >
           Email address
         </label>
@@ -36,7 +51,7 @@
           type="email"
           autocomplete="email"
           required
-          class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+          class="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
           placeholder="Enter your email"
           :disabled="loading"
         />
@@ -44,7 +59,7 @@
       <div>
         <label
           for="password"
-          class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
         >
           Password
         </label>
@@ -55,7 +70,7 @@
           type="password"
           :autocomplete="isSignup ? 'new-password' : 'current-password'"
           required
-          class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+          class="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
           :placeholder="
             isSignup ? 'Choose a strong password' : 'Enter your password'
           "
@@ -67,7 +82,7 @@
       <div v-if="isSignup">
         <label
           for="confirmPassword"
-          class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
         >
           Confirm Password
         </label>
@@ -78,7 +93,7 @@
           type="password"
           autocomplete="new-password"
           required
-          class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+          class="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
           placeholder="Confirm your password"
           :disabled="loading"
         />
@@ -92,7 +107,7 @@
       {{ error }}
     </div>
 
-    <div>
+    <div class="pt-2">
       <button
         type="submit"
         :disabled="
@@ -137,27 +152,6 @@
             : "Sign in"
         }}
       </button>
-    </div>
-
-    <!-- Toggle between login and signup -->
-    <div class="text-center">
-      <button
-        type="button"
-        @click="$emit('toggle-mode')"
-        class="text-sm text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300"
-      >
-        {{
-          isSignup
-            ? "Already have an account? Sign in"
-            : "Don't have an account? Sign up"
-        }}
-      </button>
-    </div>
-
-    <div class="text-center">
-      <p class="text-sm text-gray-600 dark:text-gray-400">
-        Demo credentials: any email and password
-      </p>
     </div>
   </form>
 </template>

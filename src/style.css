@@ -270,17 +270,21 @@
   }
 
   .modal-container {
-    @apply flex min-h-full items-end justify-center p-4 text-center;
-    @apply sm:items-center sm:p-0;
+    @apply flex min-h-full items-center justify-center p-2 text-center;
+    @apply sm:p-4;
   }
 
   .modal-panel {
-    @apply relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all;
-    @apply dark:bg-gray-800 sm:my-8 sm:w-full sm:max-w-md sm:p-6;
+    @apply relative transform overflow-hidden rounded-lg bg-white px-4 py-4 text-left shadow-xl transition-all;
+    @apply dark:bg-gray-800 sm:px-5 sm:py-5;
+    /* Mobile first: 90% of viewport width, then constrain to 550px on larger screens */
+    @apply w-full max-w-[90vw] sm:max-w-[550px] mx-auto;
+    /* Ensure modal fits within viewport height */
+    @apply max-h-[90vh] overflow-y-auto;
   }
 
   .modal-close-container {
-    @apply absolute right-0 top-0 pr-4 pt-4;
+    @apply absolute right-0 top-0 pr-3 pt-3;
   }
 
   .modal-close-btn {
@@ -293,8 +297,8 @@
   }
 
   .modal-content-inner {
-    @apply w-full mt-3 text-center;
-    @apply sm:mt-0 sm:text-left;
+    @apply w-full text-center;
+    @apply sm:text-left;
   }
 
   /* DIVIDER */
@@ -560,4 +564,36 @@
   outline: none;
   box-shadow: 0 0 0 2px var(--tw-ring-offset-color),
     0 0 0 calc(4px + 2px) rgb(59 130 246 / 0.5);
+}
+
+/* ========================================
+   SCROLL PREVENTION FOR MODALS AND OVERLAYS
+======================================== */
+
+/* Prevent body scroll when modals or side menus are open */
+body[style*="overflow: hidden"] {
+  /* Additional styles to ensure scroll is completely disabled */
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+/* Ensure scrollbar space is preserved to prevent layout shift */
+@media (min-width: 1024px) {
+  body[style*="overflow: hidden"] {
+    padding-right: var(--scrollbar-width, 0px);
+  }
+}
+
+/* Mobile-specific fixes for iOS Safari and other mobile browsers */
+@media (max-width: 1023px) {
+  body[style*="overflow: hidden"] {
+    /* Prevent bounce scrolling on iOS */
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
 }

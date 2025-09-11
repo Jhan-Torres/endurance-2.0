@@ -430,6 +430,10 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.removeEventListener("click", handleClickOutside);
+  // Ensure side menu is closed and scroll is restored on unmount
+  if (isSideMenuOpen.value) {
+    closeSideMenu();
+  }
 });
 
 const handleLogout = () => {
