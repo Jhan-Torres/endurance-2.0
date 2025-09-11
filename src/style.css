@@ -118,11 +118,11 @@
   }
 
   .backdrop-overlay {
-    @apply fixed inset-0 bg-gray-600 bg-opacity-75;
+    @apply fixed inset-0 bg-gray-600 bg-opacity-75 transition-opacity duration-300;
   }
 
   .sidemenu-container {
-    @apply fixed top-0 left-0 z-50 h-full w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out;
+    @apply fixed top-0 left-0 z-50 h-full w-64 bg-white shadow-xl;
     @apply dark:bg-gray-800;
   }
 
@@ -266,7 +266,7 @@
   }
 
   .modal-overlay {
-    @apply fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity;
+    @apply fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-300;
   }
 
   .modal-container {
