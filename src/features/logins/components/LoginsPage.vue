@@ -18,13 +18,11 @@
       />
     </div>
 
-    <!-- Add Login Side Panel -->
-    <LoginDetailPanel
+    <!-- Add Login Modal -->
+    <AddLoginModal
       :is-open="showAddLogin"
-      :login="newLoginTemplate"
       @close="closeAddLogin"
-      @save="handleLoginUpdate"
-      @delete="() => {}"
+      @save="handleAddNewLogin"
     />
   </main>
 </template>
@@ -34,7 +32,7 @@ import { ref, computed } from "vue";
 import LoginsHeader from "./LoginsHeader.vue";
 import LoginsSearch from "./LoginsSearch.vue";
 import LoginsTable from "./LoginsTable.vue";
-import LoginDetailPanel from "./LoginDetailPanel.vue";
+import AddLoginModal from "./AddLoginModal.vue";
 import type { Login } from "../model";
 
 const searchTerm = ref("");
@@ -137,22 +135,12 @@ const handleAddLogin = () => {
   showAddLogin.value = true;
 };
 
-const closeAddLogin = () => {
+const handleAddNewLogin = (newLogin: Login) => {
+  logins.value.push(newLogin);
   showAddLogin.value = false;
 };
 
-// Create a new login template
-const newLoginTemplate = computed<Login>(() => ({
-  id: "new", // Temporary ID for new logins
-  website: "",
-  username: "",
-  password: "",
-  url: "",
-  favicon: "",
-  notes: "",
-  collections: [],
-  lastUsed: new Date(),
-  createdAt: new Date(),
-  updatedAt: new Date(),
-}));
+const closeAddLogin = () => {
+  showAddLogin.value = false;
+};
 </script>

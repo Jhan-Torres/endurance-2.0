@@ -16,24 +16,31 @@
     />
   </Transition>
 
-  <!-- Side Panel -->
+  <!-- Desktop Side Panel / Mobile Modal -->
   <Transition
     name="sidepanel"
     enter-active-class="duration-300 ease-out"
-    enter-from-class="translate-x-full"
-    enter-to-class="translate-x-0"
+    enter-from-class="md:translate-x-full translate-y-full md:translate-y-0"
+    enter-to-class="translate-x-0 translate-y-0"
     leave-active-class="duration-250 ease-in"
-    leave-from-class="translate-x-0"
-    leave-to-class="translate-x-full"
+    leave-from-class="translate-x-0 translate-y-0"
+    leave-to-class="md:translate-x-full translate-y-full md:translate-y-0"
   >
     <div
       v-if="isOpen"
-      class="fixed right-0 top-0 z-50 h-full w-80 bg-white dark:bg-gray-800 shadow-xl overflow-y-auto"
+      class="fixed md:right-0 md:top-0 bottom-0 left-0 right-0 md:left-auto z-50 h-full md:w-[500px] w-full bg-white dark:bg-gray-800 shadow-xl overflow-y-auto md:rounded-none rounded-t-2xl"
     >
       <!-- Panel Header -->
       <div
         class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700"
       >
+        <!-- Mobile drag handle -->
+        <div
+          class="md:hidden w-full flex justify-center absolute -top-3 left-0"
+        >
+          <div class="w-12 h-1 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+        </div>
+
         <h2 class="text-base font-semibold text-gray-900 dark:text-white">
           {{ isEditing ? "Edit Login" : "Login Details" }}
         </h2>
@@ -60,24 +67,68 @@
       <!-- Panel Content -->
       <div class="p-4">
         <div v-if="!isEditing" class="space-y-4">
-          <!-- Website Icon and Name -->
-          <div class="flex items-center space-x-3">
-            <div class="flex-shrink-0 h-10 w-10">
-              <div
-                class="h-10 w-10 rounded-lg bg-gray-100 dark:bg-gray-600 flex items-center justify-center text-lg"
-              >
-                {{ login.favicon || getWebsiteIcon(login.website) }}
+          <!-- Website Icon, Name and Action Buttons -->
+          <div class="flex items-start justify-between">
+            <div class="flex items-center space-x-3 flex-1 min-w-0">
+              <div class="flex-shrink-0 h-10 w-10">
+                <div
+                  class="h-10 w-10 rounded-lg bg-gray-100 dark:bg-gray-600 flex items-center justify-center text-lg"
+                >
+                  {{ login.favicon || getWebsiteIcon(login.website) }}
+                </div>
+              </div>
+              <div class="min-w-0 flex-1">
+                <h3
+                  class="text-lg font-semibold text-gray-900 dark:text-white truncate"
+                >
+                  {{ login.website }}
+                </h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400 truncate">
+                  {{ login.url || `https://${login.website.toLowerCase()}` }}
+                </p>
               </div>
             </div>
-            <div class="min-w-0 flex-1">
-              <h3
-                class="text-lg font-semibold text-gray-900 dark:text-white truncate"
+
+            <!-- Action Buttons (Edit and Delete) -->
+            <div class="flex items-center space-x-2 flex-shrink-0">
+              <button
+                @click="startEditing"
+                class="p-2 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
+                title="Edit login"
               >
-                {{ login.website }}
-              </h3>
-              <p class="text-xs text-gray-500 dark:text-gray-400 truncate">
-                {{ login.url || `https://${login.website.toLowerCase()}` }}
-              </p>
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
+                </svg>
+              </button>
+              <button
+                @click="deleteLogin"
+                class="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
+                title="Delete login"
+              >
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+              </button>
             </div>
           </div>
 
@@ -286,24 +337,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Action Buttons -->
-          <div
-            class="flex space-x-2 pt-4 border-t border-gray-200 dark:border-gray-700"
-          >
-            <button
-              @click="startEditing"
-              class="flex-1 btn-primary text-sm py-2"
-            >
-              Edit Login
-            </button>
-            <button
-              @click="deleteLogin"
-              class="px-3 py-2 text-red-600 dark:text-red-400 border border-red-300 dark:border-red-600 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors text-sm"
-            >
-              Delete
-            </button>
-          </div>
         </div>
 
         <!-- Edit Form -->
@@ -319,7 +352,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, watch, onUnmounted } from "vue";
 import type { Login } from "../model";
 import LoginEditForm from "./LoginEditForm.vue";
 
@@ -339,6 +372,33 @@ const emit = defineEmits<Emits>();
 
 const isEditing = ref(false);
 const showPassword = ref(false);
+
+// Body scroll lock functionality
+const lockBodyScroll = () => {
+  document.body.style.overflow = "hidden";
+};
+
+const unlockBodyScroll = () => {
+  document.body.style.overflow = "";
+};
+
+// Watch for panel open/close to manage body scroll
+watch(
+  () => props.isOpen,
+  (newValue) => {
+    if (newValue) {
+      lockBodyScroll();
+    } else {
+      unlockBodyScroll();
+    }
+  },
+  { immediate: true }
+);
+
+// Cleanup on component unmount
+onUnmounted(() => {
+  unlockBodyScroll();
+});
 
 // Helper functions
 const getWebsiteIcon = (website: string): string => {
@@ -399,6 +459,7 @@ const formatDate = (date: Date): string => {
 
 // Actions
 const closePanel = () => {
+  unlockBodyScroll();
   emit("close");
   isEditing.value = false;
   showPassword.value = false;
