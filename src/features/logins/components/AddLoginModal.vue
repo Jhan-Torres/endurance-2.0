@@ -31,18 +31,18 @@
       class="fixed inset-0 z-50 flex items-center justify-center p-4"
     >
       <div
-        class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md mx-auto"
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg mx-auto max-h-[90vh] overflow-y-auto"
       >
         <!-- Modal Header -->
         <div
-          class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700"
+          class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700"
         >
           <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
             Add New Login
           </h2>
           <button
             @click="closeModal"
-            class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+            class="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
           >
             <svg
               class="w-5 h-5"
@@ -61,41 +61,30 @@
         </div>
 
         <!-- Modal Content -->
-        <div class="p-6">
-          <form @submit.prevent="handleSubmit" class="space-y-4">
-            <!-- Website Name -->
-            <div>
-              <label
-                for="website"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-              >
-                Website Name *
-              </label>
-              <input
-                id="website"
-                v-model="formData.website"
-                type="text"
-                required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                placeholder="e.g., Google, Facebook, GitHub"
-              />
-            </div>
-
-            <!-- Website URL -->
+        <div class="p-4">
+          <form @submit.prevent="handleSubmit" class="space-y-3">
+            <!-- Website URL (Required) -->
             <div>
               <label
                 for="url"
                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
-                Website URL
+                Website URL *
               </label>
               <input
                 id="url"
                 v-model="formData.url"
                 type="url"
+                required
                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                 placeholder="https://example.com"
               />
+              <p
+                v-if="extractedWebsiteName"
+                class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+              >
+                Website: {{ extractedWebsiteName }}
+              </p>
             </div>
 
             <!-- Username/Email -->
@@ -112,7 +101,7 @@
                 type="text"
                 required
                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                placeholder="Enter username or email"
+                placeholder="Username or email"
               />
             </div>
 
@@ -130,14 +119,15 @@
                   v-model="formData.password"
                   :type="showPassword ? 'text' : 'password'"
                   required
-                  class="w-full px-3 py-2 pr-20 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                  placeholder="Enter password"
+                  class="w-full px-3 py-2 pr-16 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                  placeholder="Password"
                 />
                 <div class="absolute inset-y-0 right-0 flex items-center">
                   <button
                     type="button"
                     @click="togglePasswordVisibility"
-                    class="px-2 py-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                    class="px-1.5 py-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                    title="Toggle password visibility"
                   >
                     <svg
                       v-if="showPassword"
@@ -177,7 +167,7 @@
                   <button
                     type="button"
                     @click="generatePassword"
-                    class="px-2 py-1 text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300 text-xs font-medium"
+                    class="px-1.5 py-1 text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300 text-xs font-medium"
                     title="Generate password"
                   >
                     Gen
@@ -186,24 +176,30 @@
               </div>
             </div>
 
-            <!-- Collections -->
+            <!-- Collection -->
             <div>
               <label
                 for="collections"
                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
-                Collections
+                Collection
               </label>
-              <input
+              <select
                 id="collections"
-                v-model="collectionsInput"
-                type="text"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                placeholder="Work, Personal, Social (comma separated)"
-              />
-              <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                Separate multiple collections with commas
-              </p>
+                v-model="selectedCollection"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+              >
+                <option value="">Select a collection</option>
+                <option value="Work">Work</option>
+                <option value="Personal">Personal</option>
+                <option value="Social">Social</option>
+                <option value="Finance">Finance</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Education">Education</option>
+                <option value="Health">Health</option>
+                <option value="Travel">Travel</option>
+              </select>
             </div>
 
             <!-- Notes -->
@@ -217,9 +213,9 @@
               <textarea
                 id="notes"
                 v-model="formData.notes"
-                rows="3"
+                rows="2"
                 class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm resize-none"
-                placeholder="Add any additional notes..."
+                placeholder="Optional notes..."
               />
             </div>
 
@@ -229,7 +225,7 @@
             </div>
 
             <!-- Modal Actions -->
-            <div class="flex space-x-3 pt-4">
+            <div class="flex space-x-3 pt-3">
               <button
                 type="submit"
                 :disabled="loading"
@@ -257,7 +253,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onUnmounted } from "vue";
+import { ref, watch, onUnmounted, computed } from "vue";
 import type { Login } from "../model";
 
 interface Props {
@@ -278,15 +274,35 @@ const showPassword = ref(false);
 
 // Form data
 const formData = ref({
-  website: "",
   url: "",
   username: "",
   password: "",
   notes: "",
-  favicon: "",
 });
 
-const collectionsInput = ref("");
+const selectedCollection = ref<string>("");
+
+// Extract website name from URL
+const extractedWebsiteName = computed(() => {
+  if (!formData.value.url) return "";
+
+  try {
+    const url = new URL(formData.value.url);
+    const hostname = url.hostname;
+
+    // Remove 'www.' if present
+    const domain = hostname.replace(/^www\./, "");
+
+    // Extract the main domain name (before the first dot)
+    const domainParts = domain.split(".");
+    const mainDomain = domainParts[0];
+
+    // Capitalize first letter
+    return mainDomain.charAt(0).toUpperCase() + mainDomain.slice(1);
+  } catch {
+    return "";
+  }
+});
 
 // Body scroll lock functionality
 const lockBodyScroll = () => {
@@ -319,14 +335,12 @@ onUnmounted(() => {
 // Form functions
 const resetForm = () => {
   formData.value = {
-    website: "",
     url: "",
     username: "",
     password: "",
     notes: "",
-    favicon: "",
   };
-  collectionsInput.value = "";
+  selectedCollection.value = "";
   error.value = "";
   showPassword.value = false;
   loading.value = false;
@@ -352,8 +366,16 @@ const generatePassword = () => {
 const validateForm = (): boolean => {
   error.value = "";
 
-  if (!formData.value.website.trim()) {
-    error.value = "Website name is required";
+  if (!formData.value.url.trim()) {
+    error.value = "Website URL is required";
+    return false;
+  }
+
+  // Validate URL format
+  try {
+    new URL(formData.value.url);
+  } catch {
+    error.value = "Please enter a valid URL";
     return false;
   }
 
@@ -386,10 +408,8 @@ const handleSubmit = async () => {
   loading.value = true;
 
   try {
-    const collections = collectionsInput.value
-      .split(",")
-      .map((c) => c.trim())
-      .filter((c) => c.length > 0);
+    // Use extracted website name
+    const websiteName = extractedWebsiteName.value || "Unknown";
 
     // Generate favicon emoji based on website name
     const generateFavicon = (website: string): string => {
@@ -427,13 +447,15 @@ const handleSubmit = async () => {
 
     const loginData: Login = {
       id: `login_${Date.now()}`,
-      website: formData.value.website.trim(),
-      url: formData.value.url.trim() || undefined,
+      website: websiteName,
+      url: formData.value.url.trim(),
       username: formData.value.username.trim(),
       password: formData.value.password,
       notes: formData.value.notes.trim() || undefined,
-      favicon: generateFavicon(formData.value.website.trim()),
-      collections: collections.length > 0 ? collections : undefined,
+      favicon: generateFavicon(websiteName),
+      collections: selectedCollection.value
+        ? [selectedCollection.value]
+        : undefined,
       lastUsed: undefined,
       createdAt: new Date(),
       updatedAt: new Date(),
