@@ -1,14 +1,20 @@
 <template>
   <main class="container mx-auto px-4 py-8">
     <NotesHeader />
-    <NotesSearch v-model:search-term="searchTerm" />
-    <NotesList
-      :notes="filteredNotes"
-      :loading="loading"
-      :search-term="searchTerm"
-      @edit-note="handleEditNote"
-      @delete-note="handleDeleteNote"
-    />
+
+    <div class="mt-8">
+      <NotesSearch v-model:search-term="searchTerm" />
+    </div>
+
+    <div class="mt-6">
+      <NotesList
+        :notes="filteredNotes"
+        :loading="loading"
+        :search-term="searchTerm"
+        @edit-note="handleEditNote"
+        @delete-note="handleDeleteNote"
+      />
+    </div>
   </main>
 </template>
 

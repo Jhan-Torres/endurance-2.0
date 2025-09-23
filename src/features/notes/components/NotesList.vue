@@ -1,14 +1,14 @@
 <template>
-  <div v-if="loading" class="text-center py-8">
+  <div v-if="loading" class="text-center py-12">
     <div
-      class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"
+      class="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-primary-600"
     ></div>
-    <p class="mt-2 text-gray-600 dark:text-gray-400">Loading notes...</p>
+    <p class="mt-4 text-gray-600 dark:text-gray-400">Loading notes...</p>
   </div>
 
-  <div v-else-if="notes.length === 0" class="text-center py-8">
+  <div v-else-if="notes.length === 0" class="text-center py-16">
     <svg
-      class="mx-auto h-12 w-12 text-gray-400"
+      class="mx-auto h-16 w-16 text-gray-400 mb-4"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
@@ -20,10 +20,10 @@
         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
       />
     </svg>
-    <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">
+    <h3 class="mt-2 text-lg font-medium text-gray-900 dark:text-white">
       No notes found
     </h3>
-    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 max-w-sm mx-auto">
       {{
         searchTerm
           ? "Try adjusting your search terms."
@@ -32,13 +32,13 @@
     </p>
   </div>
 
-  <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+  <div v-else class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
     <div
       v-for="note in notes"
       :key="note.id"
-      class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-shadow duration-200"
+      class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-all duration-200"
     >
-      <div class="flex justify-between items-start mb-3">
+      <div class="flex justify-between items-start mb-4">
         <h3
           class="text-lg font-semibold text-gray-900 dark:text-white truncate"
         >
@@ -86,11 +86,15 @@
         </div>
       </div>
 
-      <p class="text-gray-600 dark:text-gray-300 text-sm mb-3 line-clamp-3">
+      <p
+        class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3 leading-relaxed"
+      >
         {{ note.content }}
       </p>
 
-      <div class="text-xs text-gray-500 dark:text-gray-400">
+      <div
+        class="text-xs text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-100 dark:border-gray-700"
+      >
         {{ formatDate(note.updatedAt) }}
       </div>
     </div>
