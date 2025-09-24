@@ -1,27 +1,24 @@
 {
-  "name": "endurance",
+  "name": "endurance-monorepo",
   "private": true,
   "version": "1.0.0",
-  "description": "Endurance - The Ultimate Password Manager with enterprise-grade security and privacy-first approach",
+  "description": "Endurance - The Ultimate Password Manager monorepo",
   "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc && vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@heroicons/vue": "^2.2.0",
-    "vue": "^3.5.13",
-    "vue-i18n": "^12.0.0-alpha.3",
-    "vue-router": "^4.5.0"
+    "dev": "npm run dev --workspace=@endurance/frontend",
+    "dev:frontend": "npm run dev --workspace=@endurance/frontend",
+    "build": "npm run build --workspace=@endurance/shared-types && npm run build --workspace=@endurance/frontend",
+    "build:types": "npm run build --workspace=@endurance/shared-types",
+    "build:frontend": "npm run build --workspace=@endurance/frontend",
+    "preview": "npm run preview --workspace=@endurance/frontend",
+    "type-check": "npm run type-check --workspace=@endurance/frontend",
+    "install-all": "npm install",
+    "clean": "rm -rf packages/*/node_modules packages/*/dist"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.1",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.17",
-    "typescript": "^5.7.3",
-    "vite": "^6.3.5",
-    "vue-tsc": "^2.2.10"
+    "typescript": "^5.7.3"
   }
 }

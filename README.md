@@ -2,6 +2,26 @@
 
 The Ultimate Password Manager with enterprise-grade security and privacy-first approach.
 
+## 🏗️ Monorepo Structure
+
+This project is organized as a monorepo with the following packages:
+
+- **`packages/shared-types`** - Shared TypeScript types for frontend and backend
+- **`packages/frontend`** - Vue.js frontend application
+
+## 🚀 Quick Start
+
+```bash
+# Install all dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build the entire project
+npm run build
+```
+
 ## 🔐 Features
 
 ### Password Management
@@ -32,7 +52,7 @@ The Ultimate Password Manager with enterprise-grade security and privacy-first a
 ### Prerequisites
 
 - Node.js 18 or higher
-- npm or yarn
+- npm (comes with Node.js)
 
 ### Installation
 
@@ -43,7 +63,7 @@ git clone https://github.com/your-username/endurance.git
 cd endurance
 ```
 
-2. Install dependencies:
+2. Install all workspace dependencies:
 
 ```bash
 npm install
@@ -56,6 +76,25 @@ npm run dev
 ```
 
 4. Open your browser and navigate to `http://localhost:3000`
+
+## 🛠️ Development Commands
+
+```bash
+# Development
+npm run dev              # Start frontend development server
+npm run dev:frontend     # Same as above
+
+# Building
+npm run build           # Build shared types + frontend
+npm run build:types     # Build only shared types
+npm run build:frontend  # Build only frontend
+
+# Type checking
+npm run type-check      # Check frontend types
+
+# Preview
+npm run preview         # Preview built frontend
+```
 
 ### Building for Production
 
