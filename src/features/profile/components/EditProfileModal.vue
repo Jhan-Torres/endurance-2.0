@@ -38,7 +38,7 @@
           class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700"
         >
           <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
-            {{ isSpanish ? "Editar Información" : "Edit Information" }}
+            {{ t("profile.editInformation") }}
           </h2>
           <button
             @click="closeModal"
@@ -68,7 +68,7 @@
               <label
                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
-                {{ isSpanish ? "Nombre Completo" : "Full Name" }}
+                {{ t("profile.accountInfo.fullName") }}
               </label>
               <input
                 v-model="formData.name"
@@ -83,7 +83,7 @@
               <label
                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
-                {{ isSpanish ? "Correo Electrónico" : "Email Address" }}
+                {{ t("profile.accountInfo.email") }}
               </label>
               <input
                 v-model="formData.email"
@@ -104,22 +104,14 @@
                   v-if="loading"
                   class="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"
                 ></span>
-                {{
-                  loading
-                    ? isSpanish
-                      ? "Guardando..."
-                      : "Saving..."
-                    : isSpanish
-                    ? "Guardar Cambios"
-                    : "Save Changes"
-                }}
+                {{ loading ? t("common.saving") : t("common.saveChanges") }}
               </button>
               <button
                 type="button"
                 @click="closeModal"
                 class="px-3 py-2 text-gray-700 dark:text-gray-300 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors"
               >
-                {{ isSpanish ? "Cancelar" : "Cancel" }}
+                {{ t("common.cancel") }}
               </button>
             </div>
           </form>
@@ -133,7 +125,7 @@
 import { ref, watch, onMounted, onUnmounted } from "vue";
 import { useLanguage } from "../../../shared/composables/useLanguage";
 
-const { isSpanish } = useLanguage();
+const { t } = useLanguage();
 
 interface UserProfile {
   id: string;

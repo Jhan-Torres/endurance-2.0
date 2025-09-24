@@ -9,6 +9,7 @@ const messages = {
       signIn: "Sign In",
       signUp: "Sign Up",
       language: "Language",
+      languageCode: "EN",
     },
     hero: {
       title: "The Ultimate",
@@ -22,10 +23,34 @@ const messages = {
     settings: {
       darkMode: "Dark Mode",
     },
+    common: {
+      cancel: "Cancel",
+      save: "Save",
+      saveChanges: "Save Changes",
+      saving: "Saving...",
+      edit: "Edit",
+    },
     profile: {
       title: "User Profile",
-      description: "Manage your account settings and security preferences",
-      logins: "Logins",
+      description: "Manage your personal information and account settings",
+      accountInfo: "Account Information",
+      editInformation: "Edit Information",
+      fullName: "Full Name",
+      email: "Email Address",
+      memberSince: "Member Since",
+      lastLogin: "Last Login",
+      security: "Security",
+      passwordChange: "Want to change your password?",
+      passwordChangeDesc: "We'll send you a reset link via email",
+      requestChange: "Request Change",
+      profileSaved: "Profile saved successfully",
+      passwordResetSent:
+        "A password reset link has been sent to your email address",
+      roles: {
+        admin: "Administrator",
+        user: "User",
+        guest: "Guest",
+      },
     },
   },
   es: {
@@ -36,6 +61,7 @@ const messages = {
       signIn: "Iniciar Sesión",
       signUp: "Registrarse",
       language: "Idioma",
+      languageCode: "ES",
     },
     hero: {
       title: "El Mejor",
@@ -49,11 +75,36 @@ const messages = {
     settings: {
       darkMode: "Modo Oscuro",
     },
+    common: {
+      cancel: "Cancelar",
+      save: "Guardar",
+      saveChanges: "Guardar Cambios",
+      saving: "Guardando...",
+      edit: "Editar",
+    },
     profile: {
       title: "Perfil de Usuario",
       description:
-        "Gestiona la configuración de tu cuenta y preferencias de seguridad",
-      logins: "Inicios de Sesión",
+        "Administra tu información personal y configuración de cuenta",
+      accountInfo: "Información de Cuenta",
+      editInformation: "Editar Información",
+      fullName: "Nombre Completo",
+      email: "Correo Electrónico",
+      memberSince: "Fecha de Registro",
+      lastLogin: "Último Acceso",
+      security: "Seguridad",
+      passwordChange: "¿Deseas cambiar tu contraseña?",
+      passwordChangeDesc:
+        "Te enviaremos un enlace de restablecimiento por correo",
+      requestChange: "Solicitar Cambio",
+      profileSaved: "Perfil guardado exitosamente",
+      passwordResetSent:
+        "Se ha enviado un enlace de restablecimiento a tu correo electrónico",
+      roles: {
+        admin: "Administrador",
+        user: "Usuario",
+        guest: "Invitado",
+      },
     },
   },
 };

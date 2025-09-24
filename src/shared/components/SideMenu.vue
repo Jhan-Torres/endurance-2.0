@@ -226,7 +226,7 @@
               <span
                 class="text-sm font-medium text-primary-600 dark:text-primary-400"
               >
-                {{ isSpanish ? "ES" : "EN" }}
+                {{ t("nav.languageCode") }}
               </span>
               <svg
                 class="dropdown-arrow"

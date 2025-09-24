@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import { useLanguage } from "../../../shared/composables/useLanguage";
 
-const { isSpanish } = useLanguage();
+const { t } = useLanguage();
 
 interface UserProfile {
   id: string;
@@ -62,9 +62,9 @@ defineProps<Props>();
 // Helper functions
 const getRoleLabel = (role: string) => {
   const labels = {
-    admin: isSpanish.value ? "Administrador" : "Administrator",
-    user: isSpanish.value ? "Usuario" : "User",
-    guest: isSpanish.value ? "Invitado" : "Guest",
+    admin: t("profile.roles.admin"),
+    user: t("profile.roles.user"),
+    guest: t("profile.roles.guest"),
   };
   return labels[role as keyof typeof labels] || role;
 };

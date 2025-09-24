@@ -6,14 +6,10 @@
       <!-- Page Header -->
       <header class="mb-8">
         <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
-          {{ isSpanish ? "Perfil de Usuario" : "User Profile" }}
+          {{ t("profile.title") }}
         </h1>
         <p class="mt-2 text-gray-600 dark:text-gray-400">
-          {{
-            isSpanish
-              ? "Administra tu información personal y configuración de cuenta"
-              : "Manage your personal information and account settings"
-          }}
+          {{ t("profile.description") }}
         </p>
       </header>
 
@@ -30,16 +26,14 @@
             <div class="p-6">
               <div class="flex items-center justify-between mb-6">
                 <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-                  {{
-                    isSpanish ? "Información de Cuenta" : "Account Information"
-                  }}
+                  {{ t("profile.accountInfo") }}
                 </h3>
                 <button
                   @click="openEditModal"
                   type="button"
                   class="px-3 py-1.5 text-sm bg-primary-600 hover:bg-primary-700 text-white rounded-md transition-colors duration-200"
                 >
-                  {{ isSpanish ? "Editar" : "Edit" }}
+                  {{ t("common.edit") }}
                 </button>
               </div>
 
@@ -52,7 +46,7 @@
                   <span
                     class="text-sm font-medium text-gray-700 dark:text-gray-300"
                   >
-                    {{ isSpanish ? "Nombre Completo" : "Full Name" }}
+                    {{ t("profile.fullName") }}
                   </span>
                   <span class="text-sm text-gray-900 dark:text-white">
                     {{ userProfile.name }}
@@ -66,7 +60,7 @@
                   <span
                     class="text-sm font-medium text-gray-700 dark:text-gray-300"
                   >
-                    {{ isSpanish ? "Correo Electrónico" : "Email Address" }}
+                    {{ t("profile.email") }}
                   </span>
                   <span class="text-sm text-gray-900 dark:text-white">
                     {{ userProfile.email }}
@@ -80,7 +74,7 @@
                   <span
                     class="text-sm font-medium text-gray-700 dark:text-gray-300"
                   >
-                    {{ isSpanish ? "Fecha de Registro" : "Member Since" }}
+                    {{ t("profile.memberSince") }}
                   </span>
                   <span class="text-sm text-gray-900 dark:text-white">
                     {{ formatDate(userProfile.createdAt) }}
@@ -94,7 +88,7 @@
                   <span
                     class="text-sm font-medium text-gray-700 dark:text-gray-300"
                   >
-                    {{ isSpanish ? "Último Acceso" : "Last Login" }}
+                    {{ t("profile.lastLogin") }}
                   </span>
                   <span class="text-sm text-gray-900 dark:text-white">
                     {{ formatDate(userProfile.lastLogin) }}
@@ -109,23 +103,15 @@
                 <h4
                   class="text-md font-medium text-gray-900 dark:text-white mb-4"
                 >
-                  {{ isSpanish ? "Seguridad" : "Security" }}
+                  {{ t("profile.security") }}
                 </h4>
                 <div class="flex items-center justify-between">
                   <div>
                     <p class="text-sm text-gray-700 dark:text-gray-300">
-                      {{
-                        isSpanish
-                          ? "¿Deseas cambiar tu contraseña?"
-                          : "Want to change your password?"
-                      }}
+                      {{ t("profile.passwordChange") }}
                     </p>
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                      {{
-                        isSpanish
-                          ? "Te enviaremos un enlace de restablecimiento por correo"
-                          : "We'll send you a reset link via email"
-                      }}
+                      {{ t("profile.passwordChangeDesc") }}
                     </p>
                   </div>
                   <button
@@ -133,7 +119,7 @@
                     @click="requestPasswordChange"
                     class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-md transition-colors duration-200 text-sm font-medium"
                   >
-                    {{ isSpanish ? "Solicitar Cambio" : "Request Change" }}
+                    {{ t("profile.requestChange") }}
                   </button>
                 </div>
               </div>
@@ -160,7 +146,7 @@ import { useAuth } from "../../auth/composables/useAuth";
 import ProfileCard from "./ProfileCard.vue";
 import EditProfileModal from "./EditProfileModal.vue";
 
-const { isSpanish } = useLanguage();
+const { t, isSpanish } = useLanguage();
 const { user } = useAuth();
 
 // User profile data
@@ -194,11 +180,7 @@ const handleSaveProfile = (profileData: { name: string; email: string }) => {
 
   // TODO: Implement API call to save profile
   console.log("Saving profile:", userProfile.value);
-  alert(
-    isSpanish.value
-      ? "Perfil guardado exitosamente"
-      : "Profile saved successfully"
-  );
+  alert(t("profile.profileSaved"));
 };
 
 const openEditModal = () => {
@@ -212,11 +194,7 @@ const closeEditModal = () => {
 const requestPasswordChange = () => {
   // TODO: Implement password change request API call
   console.log("Requesting password change for user:", userProfile.value.email);
-  alert(
-    isSpanish.value
-      ? "Se ha enviado un enlace de restablecimiento a tu correo electrónico"
-      : "A password reset link has been sent to your email address"
-  );
+  alert(t("profile.passwordResetSent"));
 };
 
 // Initialize profile data
