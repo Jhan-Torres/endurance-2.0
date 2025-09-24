@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
-import LandingPage from "../features/landing/components/LandingPage.vue";
-import LoginsPage from "../features/logins/components/LoginsPage.vue";
-import NotesPage from "../features/notes/components/NotesPage.vue";
-import ProfilePage from "../features/profile/components/ProfilePage.vue";
-import { useAuthModal } from "../features/auth/composables/useAuthModal";
+import LandingPage from "../../features/landing/components/LandingPage.vue";
+import LoginsPage from "../../features/logins/components/LoginsPage.vue";
+import NotesPage from "../../features/notes/components/NotesPage.vue";
+import ProfilePage from "../../features/profile/components/ProfilePage.vue";
+import { useAuthModal } from "../../features/auth/composables/useAuthModal";
 
 // Simple authentication check
 const isAuthenticated = (): boolean => {

@@ -1,8 +1,8 @@
 import { createApp } from "vue";
-import "./style.css";
+import "./assets/styles/main.css";
 import App from "./App.vue";
-import router from "./router";
-import i18n from "./i18n";
+import router from "./shared/router";
+import i18n from "./shared/composables/i18n";
 import { useAuth } from "./features/auth/composables/useAuth";
 
 // Initialize authentication status
