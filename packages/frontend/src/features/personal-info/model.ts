@@ -28,13 +28,13 @@ export interface PersonalInfoFormState {
   firstName: string;
   lastName: string;
   phoneNumbers: Array<{
-    type: 'home' | 'work' | 'mobile' | 'other';
+    type: "home" | "work" | "mobile" | "other";
     number: string;
     countryCode: string;
     isPrimary: boolean;
   }>;
   emails: Array<{
-    type: 'personal' | 'work' | 'other';
+    type: "personal" | "work" | "other";
     email: string;
     isPrimary: boolean;
   }>;
@@ -47,7 +47,7 @@ export interface PersonalInfoFormState {
     country: string;
   };
   dateOfBirth?: Date;
-  gender?: 'male' | 'female' | 'other' | 'prefer-not-to-say';
+  gender?: "male" | "female" | "other" | "prefer-not-to-say";
   nationality?: string;
   occupation?: string;
   company?: string;

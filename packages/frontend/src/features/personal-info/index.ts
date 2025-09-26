@@ -1,7 +1,7 @@
 // Personal Info composables
 export * from "./composables";
 
-// Personal Info services  
+// Personal Info services
 export * from "./services";
 
 // Personal Info types (local types only)

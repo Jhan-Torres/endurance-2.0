@@ -127,7 +127,9 @@
             to="/personal-info"
             class="group nav-link"
             :class="
-              $route.path === '/personal-info' ? 'nav-link-active' : 'nav-link-inactive'
+              $route.path === '/personal-info'
+                ? 'nav-link-active'
+                : 'nav-link-inactive'
             "
             @click="closeSideMenu"
           >

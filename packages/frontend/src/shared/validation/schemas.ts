@@ -197,31 +197,31 @@ export const personalInfoModalSchema: ValidationSchema = {
       },
     ],
   },
-  'phoneNumbers.0.number': {
+  "phoneNumbers.0.number": {
     required: false,
     rules: [
       (value: string) => {
         if (!value) return true;
         const phonePattern = /^[\+]?[1-9][\d]{0,15}$/;
-        return phonePattern.test(value.replace(/[\s\-\(\)]/g, ''))
+        return phonePattern.test(value.replace(/[\s\-\(\)]/g, ""))
           ? true
           : "Enter a valid phone number";
       },
     ],
   },
-  'phoneNumbers.1.number': {
+  "phoneNumbers.1.number": {
     required: false,
     rules: [
       (value: string) => {
         if (!value) return true;
         const phonePattern = /^[\+]?[1-9][\d]{0,15}$/;
-        return phonePattern.test(value.replace(/[\s\-\(\)]/g, ''))
+        return phonePattern.test(value.replace(/[\s\-\(\)]/g, ""))
           ? true
           : "Enter a valid phone number";
       },
     ],
   },
-  'emails.0.email': {
+  "emails.0.email": {
     required: false,
     rules: [
       (value: string) => {
@@ -230,7 +230,7 @@ export const personalInfoModalSchema: ValidationSchema = {
       },
     ],
   },
-  'emails.1.email': {
+  "emails.1.email": {
     required: false,
     rules: [
       (value: string) => {
@@ -239,28 +239,28 @@ export const personalInfoModalSchema: ValidationSchema = {
       },
     ],
   },
-  'address.street': {
+  "address.street": {
     required: true,
     rules: [
       validationRules.minLength(1, "Street address is required"),
       validationRules.maxLength(100, "Cannot exceed 100 characters"),
     ],
   },
-  'address.city': {
+  "address.city": {
     required: true,
     rules: [
       validationRules.minLength(1, "City is required"),
       validationRules.maxLength(50, "Cannot exceed 50 characters"),
     ],
   },
-  'address.zipCode': {
+  "address.zipCode": {
     required: true,
     rules: [
       validationRules.minLength(1, "ZIP code is required"),
       validationRules.maxLength(20, "Cannot exceed 20 characters"),
     ],
   },
-  'address.country': {
+  "address.country": {
     required: true,
     rules: [
       validationRules.minLength(1, "Country is required"),
@@ -273,7 +273,7 @@ export const personalInfoModalSchema: ValidationSchema = {
       (value: string) => {
         if (!value) return true;
         try {
-          new URL(value.startsWith('http') ? value : `https://${value}`);
+          new URL(value.startsWith("http") ? value : `https://${value}`);
           return true;
         } catch {
           return "Enter a valid website URL";

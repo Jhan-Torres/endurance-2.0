@@ -38,7 +38,11 @@
           class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700"
         >
           <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
-            {{ isEditing ? 'Edit Personal Information' : 'Add Personal Information' }}
+            {{
+              isEditing
+                ? "Edit Personal Information"
+                : "Add Personal Information"
+            }}
           </h2>
           <button
             @click="closeModal"
@@ -68,7 +72,7 @@
               <h3 class="text-lg font-medium text-gray-900 dark:text-white">
                 Basic Information
               </h3>
-              
+
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormInput
                   id="firstName"
@@ -92,7 +96,9 @@
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Date of Birth
                   </label>
                   <input
@@ -101,9 +107,11 @@
                     class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   />
                 </div>
-                
+
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Gender
                   </label>
                   <select
@@ -135,7 +143,7 @@
                   + Add Phone
                 </button>
               </div>
-              
+
               <div
                 v-for="(phone, index) in formData.phoneNumbers"
                 :key="index"
@@ -163,11 +171,17 @@
                       type="tel"
                       placeholder="Phone number"
                       class="col-span-2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
-                      :class="{ 'border-red-500': getFieldError(`phoneNumbers.${index}.number`) }"
+                      :class="{
+                        'border-red-500': getFieldError(
+                          `phoneNumbers.${index}.number`
+                        ),
+                      }"
                     />
                   </div>
                   <div class="flex items-center mt-2">
-                    <label class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                    <label
+                      class="flex items-center text-sm text-gray-600 dark:text-gray-300"
+                    >
                       <input
                         v-model="phone.isPrimary"
                         type="checkbox"
@@ -177,7 +191,10 @@
                       Primary phone
                     </label>
                   </div>
-                  <p v-if="getFieldError(`phoneNumbers.${index}.number`)" class="text-red-500 text-sm mt-1">
+                  <p
+                    v-if="getFieldError(`phoneNumbers.${index}.number`)"
+                    class="text-red-500 text-sm mt-1"
+                  >
                     {{ getFieldError(`phoneNumbers.${index}.number`) }}
                   </p>
                 </div>
@@ -186,8 +203,18 @@
                   @click="removePhoneNumber(index)"
                   class="mt-2 p-1 text-red-500 hover:text-red-700 transition-colors"
                 >
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
                   </svg>
                 </button>
               </div>
@@ -208,7 +235,7 @@
                   + Add Email
                 </button>
               </div>
-              
+
               <div
                 v-for="(email, index) in formData.emails"
                 :key="index"
@@ -229,11 +256,17 @@
                       type="email"
                       placeholder="Email address"
                       class="col-span-3 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
-                      :class="{ 'border-red-500': getFieldError(`emails.${index}.email`) }"
+                      :class="{
+                        'border-red-500': getFieldError(
+                          `emails.${index}.email`
+                        ),
+                      }"
                     />
                   </div>
                   <div class="flex items-center mt-2">
-                    <label class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                    <label
+                      class="flex items-center text-sm text-gray-600 dark:text-gray-300"
+                    >
                       <input
                         v-model="email.isPrimary"
                         type="checkbox"
@@ -243,7 +276,10 @@
                       Primary email
                     </label>
                   </div>
-                  <p v-if="getFieldError(`emails.${index}.email`)" class="text-red-500 text-sm mt-1">
+                  <p
+                    v-if="getFieldError(`emails.${index}.email`)"
+                    class="text-red-500 text-sm mt-1"
+                  >
                     {{ getFieldError(`emails.${index}.email`) }}
                   </p>
                 </div>
@@ -252,8 +288,18 @@
                   @click="removeEmail(index)"
                   class="mt-2 p-1 text-red-500 hover:text-red-700 transition-colors"
                 >
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
                   </svg>
                 </button>
               </div>
@@ -264,7 +310,7 @@
               <h3 class="text-lg font-medium text-gray-900 dark:text-white">
                 Address
               </h3>
-              
+
               <FormInput
                 id="street"
                 v-model="formData.address.street"
@@ -274,15 +320,15 @@
                 :error="getFieldError('address.street')"
                 required
               />
-              
+
               <FormInput
                 id="street2"
-                v-model="formData.address.street2"
+                v-model="street2Value"
                 label="Street Address 2 (Optional)"
                 type="text"
                 placeholder="Apartment, suite, etc."
               />
-              
+
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <FormInput
                   id="city"
@@ -295,7 +341,7 @@
                 />
                 <FormInput
                   id="state"
-                  v-model="formData.address.state"
+                  v-model="stateValue"
                   label="State/Province"
                   type="text"
                   placeholder="Enter state/province"
@@ -310,7 +356,7 @@
                   required
                 />
               </div>
-              
+
               <FormInput
                 id="country"
                 v-model="formData.address.country"
@@ -327,35 +373,35 @@
               <h3 class="text-lg font-medium text-gray-900 dark:text-white">
                 Professional Information (Optional)
               </h3>
-              
+
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormInput
                   id="occupation"
-                  v-model="formData.occupation"
+                  v-model="occupationValue"
                   label="Occupation"
                   type="text"
                   placeholder="Enter your occupation"
                 />
                 <FormInput
                   id="company"
-                  v-model="formData.company"
+                  v-model="companyValue"
                   label="Company"
                   type="text"
                   placeholder="Enter your company"
                 />
               </div>
-              
+
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormInput
                   id="nationality"
-                  v-model="formData.nationality"
+                  v-model="nationalityValue"
                   label="Nationality"
                   type="text"
                   placeholder="Enter your nationality"
                 />
                 <FormInput
                   id="website"
-                  v-model="formData.website"
+                  v-model="websiteValue"
                   label="Website"
                   type="url"
                   placeholder="https://example.com"
@@ -404,7 +450,7 @@
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               ></path>
             </svg>
-            {{ isSubmitting ? 'Saving...' : (isEditing ? 'Update' : 'Create') }}
+            {{ isSubmitting ? "Saving..." : isEditing ? "Update" : "Create" }}
           </button>
         </div>
       </div>
@@ -418,7 +464,10 @@ import { useFormValidation } from "../../../shared/composables";
 import { personalInfoModalSchema } from "../../../shared/validation";
 import { usePersonalInfo } from "../composables/usePersonalInfo";
 import FormInput from "../../../shared/components/FormInput.vue";
-import type { PersonalInfo, CreatePersonalInfoRequest } from "@endurance/shared-types";
+import type {
+  PersonalInfo,
+  CreatePersonalInfoRequest,
+} from "@endurance/shared-types";
 
 // Props
 interface Props {
@@ -449,18 +498,18 @@ const formData = reactive<CreatePersonalInfoRequest>({
   emails: [],
   address: {
     street: "",
-    street2: "",
+    street2: "", // Initialize as empty string instead of undefined
     city: "",
-    state: "",
+    state: "", // Initialize as empty string instead of undefined
     zipCode: "",
     country: "",
   },
   dateOfBirth: undefined,
   gender: undefined,
-  nationality: "",
-  occupation: "",
-  company: "",
-  website: "",
+  nationality: "", // Initialize as empty string instead of undefined
+  occupation: "", // Initialize as empty string instead of undefined
+  company: "", // Initialize as empty string instead of undefined
+  website: "", // Initialize as empty string instead of undefined
 });
 
 // Form validation
@@ -475,6 +524,49 @@ const {
 // Helper function to get field errors
 const getFieldError = (field: string) => errors[field];
 
+// Computed properties to handle optional string fields for form inputs
+const street2Value = computed({
+  get: () => formData.address.street2 || "",
+  set: (value: string) => {
+    formData.address.street2 = value || undefined;
+  },
+});
+
+const stateValue = computed({
+  get: () => formData.address.state || "",
+  set: (value: string) => {
+    formData.address.state = value || undefined;
+  },
+});
+
+const nationalityValue = computed({
+  get: () => formData.nationality || "",
+  set: (value: string) => {
+    formData.nationality = value || undefined;
+  },
+});
+
+const occupationValue = computed({
+  get: () => formData.occupation || "",
+  set: (value: string) => {
+    formData.occupation = value || undefined;
+  },
+});
+
+const companyValue = computed({
+  get: () => formData.company || "",
+  set: (value: string) => {
+    formData.company = value || undefined;
+  },
+});
+
+const websiteValue = computed({
+  get: () => formData.website || "",
+  set: (value: string) => {
+    formData.website = value || undefined;
+  },
+});
+
 // Watch for prop changes to populate form
 watch(
   () => props.personalInfo,
@@ -483,16 +575,16 @@ watch(
       Object.assign(formData, {
         firstName: personalInfo.firstName,
         lastName: personalInfo.lastName,
-        phoneNumbers: personalInfo.phoneNumbers.map(phone => ({
+        phoneNumbers: personalInfo.phoneNumbers.map((phone) => ({
           type: phone.type,
           number: phone.number,
           countryCode: phone.countryCode,
-          isPrimary: phone.isPrimary
+          isPrimary: phone.isPrimary,
         })),
-        emails: personalInfo.emails.map(email => ({
+        emails: personalInfo.emails.map((email) => ({
           type: email.type,
           email: email.email,
-          isPrimary: email.isPrimary
+          isPrimary: email.isPrimary,
         })),
         address: { ...personalInfo.address },
         dateOfBirth: personalInfo.dateOfBirth,
@@ -543,10 +635,10 @@ const closeModal = () => {
 const addPhoneNumber = () => {
   if (formData.phoneNumbers.length < 2) {
     formData.phoneNumbers.push({
-      type: 'mobile',
-      number: '',
-      countryCode: '+1',
-      isPrimary: formData.phoneNumbers.length === 0
+      type: "mobile",
+      number: "",
+      countryCode: "+1",
+      isPrimary: formData.phoneNumbers.length === 0,
     });
   }
 };
@@ -554,7 +646,10 @@ const addPhoneNumber = () => {
 const removePhoneNumber = (index: number) => {
   formData.phoneNumbers.splice(index, 1);
   // If we removed the primary phone, make the first one primary
-  if (formData.phoneNumbers.length > 0 && !formData.phoneNumbers.some(p => p.isPrimary)) {
+  if (
+    formData.phoneNumbers.length > 0 &&
+    !formData.phoneNumbers.some((p) => p.isPrimary)
+  ) {
     formData.phoneNumbers[0].isPrimary = true;
   }
 };
@@ -569,9 +664,9 @@ const handlePrimaryPhoneChange = (index: number) => {
 const addEmail = () => {
   if (formData.emails.length < 2) {
     formData.emails.push({
-      type: 'personal',
-      email: '',
-      isPrimary: formData.emails.length === 0
+      type: "personal",
+      email: "",
+      isPrimary: formData.emails.length === 0,
     });
   }
 };
@@ -579,7 +674,7 @@ const addEmail = () => {
 const removeEmail = (index: number) => {
   formData.emails.splice(index, 1);
   // If we removed the primary email, make the first one primary
-  if (formData.emails.length > 0 && !formData.emails.some(e => e.isPrimary)) {
+  if (formData.emails.length > 0 && !formData.emails.some((e) => e.isPrimary)) {
     formData.emails[0].isPrimary = true;
   }
 };
@@ -604,7 +699,7 @@ const handleSubmit = async () => {
     if (isEditing.value && props.personalInfo) {
       const success = await updatePersonalInfo({
         id: props.personalInfo.id,
-        ...formData
+        ...formData,
       });
       if (success) {
         result = props.personalInfo; // In real app, this would be the updated data
@@ -625,14 +720,18 @@ const handleSubmit = async () => {
 };
 
 // Initialize with at least one phone and email if creating new
-watch(() => props.isOpen, (isOpen) => {
-  if (isOpen && !isEditing.value) {
-    if (formData.phoneNumbers.length === 0) {
-      addPhoneNumber();
+watch(
+  () => props.isOpen,
+  (isOpen) => {
+    if (isOpen && !isEditing.value) {
+      if (formData.phoneNumbers.length === 0) {
+        addPhoneNumber();
+      }
+      if (formData.emails.length === 0) {
+        addEmail();
+      }
     }
-    if (formData.emails.length === 0) {
-      addEmail();
-    }
-  }
-}, { immediate: true });
+  },
+  { immediate: true }
+);
 </script>

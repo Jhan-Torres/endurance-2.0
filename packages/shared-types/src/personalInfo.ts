@@ -8,7 +8,7 @@ export interface PersonalInfo {
   emails: EmailAddress[];
   address: Address;
   dateOfBirth?: Date;
-  gender?: 'male' | 'female' | 'other' | 'prefer-not-to-say';
+  gender?: "male" | "female" | "other" | "prefer-not-to-say";
   nationality?: string;
   occupation?: string;
   company?: string;
@@ -19,7 +19,7 @@ export interface PersonalInfo {
 
 export interface PhoneNumber {
   id: string;
-  type: 'home' | 'work' | 'mobile' | 'other';
+  type: "home" | "work" | "mobile" | "other";
   number: string;
   countryCode: string;
   isPrimary: boolean;
@@ -27,7 +27,7 @@ export interface PhoneNumber {
 
 export interface EmailAddress {
   id: string;
-  type: 'personal' | 'work' | 'other';
+  type: "personal" | "work" | "other";
   email: string;
   isPrimary: boolean;
 }
@@ -45,18 +45,19 @@ export interface Address {
 export interface CreatePersonalInfoRequest {
   firstName: string;
   lastName: string;
-  phoneNumbers: Omit<PhoneNumber, 'id'>[];
-  emails: Omit<EmailAddress, 'id'>[];
+  phoneNumbers: Omit<PhoneNumber, "id">[];
+  emails: Omit<EmailAddress, "id">[];
   address: Address;
   dateOfBirth?: Date;
-  gender?: 'male' | 'female' | 'other' | 'prefer-not-to-say';
+  gender?: "male" | "female" | "other" | "prefer-not-to-say";
   nationality?: string;
   occupation?: string;
   company?: string;
   website?: string;
 }
 
-export interface UpdatePersonalInfoRequest extends Partial<CreatePersonalInfoRequest> {
+export interface UpdatePersonalInfoRequest
+  extends Partial<CreatePersonalInfoRequest> {
   id: string;
 }
 

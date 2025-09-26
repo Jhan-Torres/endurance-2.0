@@ -11,7 +11,9 @@ import type {
 export class PersonalInfoApiService {
   private baseUrl = "/api/personal-info";
 
-  async getPersonalInfo(query?: PersonalInfoSearchQuery): Promise<PersonalInfoResponse> {
+  async getPersonalInfo(
+    query?: PersonalInfoSearchQuery
+  ): Promise<PersonalInfoResponse> {
     const params = new URLSearchParams();
     if (query?.userId) params.append("userId", query.userId);
     if (query?.search) params.append("search", query.search);
@@ -37,7 +39,9 @@ export class PersonalInfoApiService {
     return result.data;
   }
 
-  async createPersonalInfo(data: CreatePersonalInfoRequest): Promise<PersonalInfo> {
+  async createPersonalInfo(
+    data: CreatePersonalInfoRequest
+  ): Promise<PersonalInfo> {
     const response = await fetch(this.baseUrl, {
       method: "POST",
       headers: {
@@ -55,7 +59,9 @@ export class PersonalInfoApiService {
     return result.data;
   }
 
-  async updatePersonalInfo(data: UpdatePersonalInfoRequest): Promise<PersonalInfo> {
+  async updatePersonalInfo(
+    data: UpdatePersonalInfoRequest
+  ): Promise<PersonalInfo> {
     const response = await fetch(`${this.baseUrl}/${data.id}`, {
       method: "PUT",
       headers: {
