@@ -122,6 +122,35 @@
             </svg>
             {{ t("nav.notes") }}
           </router-link>
+
+          <router-link
+            to="/personal-info"
+            class="group nav-link"
+            :class="
+              $route.path === '/personal-info' ? 'nav-link-active' : 'nav-link-inactive'
+            "
+            @click="closeSideMenu"
+          >
+            <svg
+              class="nav-icon"
+              :class="
+                $route.path === '/personal-info'
+                  ? 'nav-icon-active'
+                  : 'nav-icon-inactive'
+              "
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
+            </svg>
+            {{ t("nav.personalInfo") }}
+          </router-link>
         </div>
 
         <!-- Non-authenticated Navigation -->

@@ -166,3 +166,119 @@ export const profileModalSchema: ValidationSchema = {
     ],
   },
 };
+
+// Personal Info Form Schema
+export const personalInfoModalSchema: ValidationSchema = {
+  firstName: {
+    required: true,
+    rules: [
+      validationRules.minLength(1, "First name is required"),
+      validationRules.maxLength(50, "Cannot exceed 50 characters"),
+      (value: string) => {
+        if (!value) return true;
+        const invalidChars = /[<>:"\/\\|?*\x00-\x1f\d]/;
+        return !invalidChars.test(value)
+          ? true
+          : "Numbers and special characters not allowed";
+      },
+    ],
+  },
+  lastName: {
+    required: true,
+    rules: [
+      validationRules.minLength(1, "Last name is required"),
+      validationRules.maxLength(50, "Cannot exceed 50 characters"),
+      (value: string) => {
+        if (!value) return true;
+        const invalidChars = /[<>:"\/\\|?*\x00-\x1f\d]/;
+        return !invalidChars.test(value)
+          ? true
+          : "Numbers and special characters not allowed";
+      },
+    ],
+  },
+  'phoneNumbers.0.number': {
+    required: false,
+    rules: [
+      (value: string) => {
+        if (!value) return true;
+        const phonePattern = /^[\+]?[1-9][\d]{0,15}$/;
+        return phonePattern.test(value.replace(/[\s\-\(\)]/g, ''))
+          ? true
+          : "Enter a valid phone number";
+      },
+    ],
+  },
+  'phoneNumbers.1.number': {
+    required: false,
+    rules: [
+      (value: string) => {
+        if (!value) return true;
+        const phonePattern = /^[\+]?[1-9][\d]{0,15}$/;
+        return phonePattern.test(value.replace(/[\s\-\(\)]/g, ''))
+          ? true
+          : "Enter a valid phone number";
+      },
+    ],
+  },
+  'emails.0.email': {
+    required: false,
+    rules: [
+      (value: string) => {
+        if (!value) return true;
+        return validationRules.email()(value);
+      },
+    ],
+  },
+  'emails.1.email': {
+    required: false,
+    rules: [
+      (value: string) => {
+        if (!value) return true;
+        return validationRules.email()(value);
+      },
+    ],
+  },
+  'address.street': {
+    required: true,
+    rules: [
+      validationRules.minLength(1, "Street address is required"),
+      validationRules.maxLength(100, "Cannot exceed 100 characters"),
+    ],
+  },
+  'address.city': {
+    required: true,
+    rules: [
+      validationRules.minLength(1, "City is required"),
+      validationRules.maxLength(50, "Cannot exceed 50 characters"),
+    ],
+  },
+  'address.zipCode': {
+    required: true,
+    rules: [
+      validationRules.minLength(1, "ZIP code is required"),
+      validationRules.maxLength(20, "Cannot exceed 20 characters"),
+    ],
+  },
+  'address.country': {
+    required: true,
+    rules: [
+      validationRules.minLength(1, "Country is required"),
+      validationRules.maxLength(50, "Cannot exceed 50 characters"),
+    ],
+  },
+  website: {
+    required: false,
+    rules: [
+      (value: string) => {
+        if (!value) return true;
+        try {
+          new URL(value.startsWith('http') ? value : `https://${value}`);
+          return true;
+        } catch {
+          return "Enter a valid website URL";
+        }
+      },
+    ],
+  },
+};

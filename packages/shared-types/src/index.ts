@@ -3,6 +3,7 @@ export * from "./auth";
 export * from "./login";
 export * from "./note";
 export * from "./user";
+export * from "./personalInfo";
 export * from "./api";
 
 // Common utility types

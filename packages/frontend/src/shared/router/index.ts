@@ -3,6 +3,7 @@ import LandingPage from "../../features/landing/components/LandingPage.vue";
 import LoginsPage from "../../features/logins/components/LoginsPage.vue";
 import NotesPage from "../../features/notes/components/NotesPage.vue";
 import ProfilePage from "../../features/profile/components/ProfilePage.vue";
+import PersonalInfoPage from "../../features/personal-info/components/PersonalInfoPage.vue";
 import { useAuthModal } from "../../features/auth/composables/useAuthModal";
 
 // Simple authentication check
@@ -39,6 +40,12 @@ const router = createRouter({
       path: "/profile",
       name: "Profile",
       component: ProfilePage,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/personal-info",
+      name: "PersonalInfo",
+      component: PersonalInfoPage,
       meta: { requiresAuth: true },
     },
     // Redirect any unknown routes to home
