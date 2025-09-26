@@ -286,13 +286,73 @@ const resetForm = () => {
 const validateForm = (): boolean => {
   error.value = "";
 
+  // Title validation
   if (!formData.value.title.trim()) {
-    error.value = "Title is required";
+    error.value = "Note title is required";
     return false;
   }
 
+  if (formData.value.title.trim().length < 1) {
+    error.value = "Note title cannot be empty";
+    return false;
+  }
+
+  if (formData.value.title.trim().length > 100) {
+    error.value = "Note title is too long (maximum 100 characters)";
+    return false;
+  }
+
+  // Check for invalid characters in title
+  const invalidTitleChars = /[<>:"\/\\|?*\x00-\x1f]/;
+  if (invalidTitleChars.test(formData.value.title)) {
+    error.value = "Note title contains invalid characters";
+    return false;
+  }
+
+  // Content validation
   if (!formData.value.content.trim()) {
-    error.value = "Content is required";
+    error.value = "Note content is required";
+    return false;
+  }
+
+  if (formData.value.content.trim().length < 1) {
+    error.value = "Note content cannot be empty";
+    return false;
+  }
+
+  if (formData.value.content.length > 10000) {
+    error.value = "Note content is too long (maximum 10,000 characters)";
+    return false;
+  }
+
+  // Tags validation
+  if (formData.value.tags.length > 10) {
+    error.value = "Too many tags (maximum 10 tags allowed)";
+    return false;
+  }
+
+  // Validate individual tags
+  for (const tag of formData.value.tags) {
+    if (tag.length > 20) {
+      error.value = `Tag "${tag}" is too long (maximum 20 characters per tag)`;
+      return false;
+    }
+
+    if (tag.includes(" ")) {
+      error.value = `Tag "${tag}" cannot contain spaces`;
+      return false;
+    }
+
+    if (!/^[a-zA-Z0-9_-]+$/.test(tag)) {
+      error.value = `Tag "${tag}" contains invalid characters (only letters, numbers, hyphens, and underscores allowed)`;
+      return false;
+    }
+  }
+
+  // Check for duplicate tags
+  const uniqueTags = new Set(formData.value.tags);
+  if (uniqueTags.size !== formData.value.tags.length) {
+    error.value = "Duplicate tags are not allowed";
     return false;
   }
 

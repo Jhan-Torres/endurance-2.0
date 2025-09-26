@@ -269,24 +269,119 @@ const generatePassword = () => {
 const validateForm = (): boolean => {
   error.value = "";
 
+  // Website name validation
   if (!formData.value.website.trim()) {
     error.value = "Website name is required";
     return false;
   }
 
-  if (!formData.value.username.trim()) {
-    error.value = "Username is required";
+  if (formData.value.website.trim().length < 1) {
+    error.value = "Website name cannot be empty";
     return false;
   }
 
+  if (formData.value.website.trim().length > 50) {
+    error.value = "Website name is too long (maximum 50 characters)";
+    return false;
+  }
+
+  // Website URL validation (if provided)
+  if (formData.value.url.trim()) {
+    try {
+      const url = new URL(formData.value.url.trim());
+
+      // Check if URL has valid protocol
+      if (!["http:", "https:"].includes(url.protocol)) {
+        error.value = "URL must start with http:// or https://";
+        return false;
+      }
+
+      // Check if URL has valid hostname
+      if (!url.hostname || url.hostname.length < 3) {
+        error.value = "Please enter a valid website URL";
+        return false;
+      }
+    } catch {
+      error.value = "Please enter a valid URL (e.g., https://example.com)";
+      return false;
+    }
+
+    if (formData.value.url.trim().length > 2048) {
+      error.value = "Website URL is too long (maximum 2048 characters)";
+      return false;
+    }
+  }
+
+  // Username validation
+  if (!formData.value.username.trim()) {
+    error.value = "Username or email is required";
+    return false;
+  }
+
+  if (formData.value.username.trim().length < 1) {
+    error.value = "Username cannot be empty";
+    return false;
+  }
+
+  if (formData.value.username.trim().length > 100) {
+    error.value = "Username is too long (maximum 100 characters)";
+    return false;
+  }
+
+  // If username looks like an email, validate email format
+  if (formData.value.username.includes("@")) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.value.username.trim())) {
+      error.value = "Please enter a valid email address";
+      return false;
+    }
+  }
+
+  // Password validation
   if (!formData.value.password.trim()) {
     error.value = "Password is required";
     return false;
   }
 
-  if (formData.value.password.length < 4) {
-    error.value = "Password must be at least 4 characters long";
+  if (formData.value.password.length < 1) {
+    error.value = "Password cannot be empty";
     return false;
+  }
+
+  if (formData.value.password.length > 512) {
+    error.value = "Password is too long (maximum 512 characters)";
+    return false;
+  }
+
+  // Notes validation (optional field)
+  if (formData.value.notes && formData.value.notes.length > 1000) {
+    error.value = "Notes are too long (maximum 1000 characters)";
+    return false;
+  }
+
+  // Collections validation
+  if (collectionsInput.value) {
+    const collections = collectionsInput.value
+      .split(",")
+      .map((c) => c.trim())
+      .filter((c) => c.length > 0);
+
+    if (collections.length > 5) {
+      error.value = "Too many collections (maximum 5 collections allowed)";
+      return false;
+    }
+
+    for (const collection of collections) {
+      if (collection.length > 20) {
+        error.value = `Collection "${collection}" is too long (maximum 20 characters per collection)`;
+        return false;
+      }
+
+      if (!/^[a-zA-Z0-9\s_-]+$/.test(collection)) {
+        error.value = `Collection "${collection}" contains invalid characters`;
+        return false;
+      }
+    }
   }
 
   return true;

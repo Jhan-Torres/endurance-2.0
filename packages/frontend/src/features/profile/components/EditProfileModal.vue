@@ -207,7 +207,81 @@ const loadUserData = () => {
   }
 };
 
-// Form functions
+// Form validation function
+const validateForm = (): boolean => {
+  // Name validation
+  if (!formData.value.name.trim()) {
+    return false;
+  }
+
+  if (formData.value.name.trim().length < 2) {
+    return false;
+  }
+
+  if (formData.value.name.trim().length > 50) {
+    return false;
+  }
+
+  // Check for invalid characters in name
+  const invalidNameChars = /[<>:"\/\\|?*\x00-\x1f\d]/;
+  if (invalidNameChars.test(formData.value.name)) {
+    return false;
+  }
+
+  // Email validation
+  if (!formData.value.email.trim()) {
+    return false;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(formData.value.email.trim())) {
+    return false;
+  }
+
+  if (formData.value.email.trim().length > 254) {
+    return false;
+  }
+
+  return true;
+};
+
+// Form error messages
+const getFormErrors = (): string => {
+  // Name validation
+  if (!formData.value.name.trim()) {
+    return "Full name is required";
+  }
+
+  if (formData.value.name.trim().length < 2) {
+    return "Full name must be at least 2 characters long";
+  }
+
+  if (formData.value.name.trim().length > 50) {
+    return "Full name cannot exceed 50 characters";
+  }
+
+  // Check for invalid characters in name
+  const invalidNameChars = /[<>:"\/\\|?*\x00-\x1f\d]/;
+  if (invalidNameChars.test(formData.value.name)) {
+    return "Full name contains invalid characters (numbers and special characters not allowed)";
+  }
+
+  // Email validation
+  if (!formData.value.email.trim()) {
+    return "Email address is required";
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(formData.value.email.trim())) {
+    return "Please enter a valid email address";
+  }
+
+  if (formData.value.email.trim().length > 254) {
+    return "Email address is too long";
+  }
+
+  return "";
+};
 const resetForm = () => {
   formData.value = {
     name: "",
@@ -223,7 +297,12 @@ const closeModal = () => {
 };
 
 const handleSubmit = async () => {
-  if (!formData.value.name.trim() || !formData.value.email.trim()) return;
+  if (!validateForm()) {
+    const errorMessage = getFormErrors();
+    // You could add error display here if needed
+    console.warn("Form validation failed:", errorMessage);
+    return;
+  }
 
   loading.value = true;
 

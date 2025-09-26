@@ -366,6 +366,7 @@ const generatePassword = () => {
 const validateForm = (): boolean => {
   error.value = "";
 
+  // Website URL validation
   if (!formData.value.url.trim()) {
     error.value = "Website URL is required";
     return false;
@@ -373,24 +374,74 @@ const validateForm = (): boolean => {
 
   // Validate URL format
   try {
-    new URL(formData.value.url);
+    const url = new URL(formData.value.url.trim());
+
+    // Check if URL has valid protocol
+    if (!["http:", "https:"].includes(url.protocol)) {
+      error.value = "URL must start with http:// or https://";
+      return false;
+    }
+
+    // Check if URL has valid hostname
+    if (!url.hostname || url.hostname.length < 3) {
+      error.value = "Please enter a valid website URL";
+      return false;
+    }
   } catch {
-    error.value = "Please enter a valid URL";
+    error.value = "Please enter a valid URL (e.g., https://example.com)";
     return false;
   }
 
+  // URL length validation
+  if (formData.value.url.trim().length > 2048) {
+    error.value = "Website URL is too long (maximum 2048 characters)";
+    return false;
+  }
+
+  // Username validation
   if (!formData.value.username.trim()) {
-    error.value = "Username is required";
+    error.value = "Username or email is required";
     return false;
   }
 
+  if (formData.value.username.trim().length < 1) {
+    error.value = "Username cannot be empty";
+    return false;
+  }
+
+  if (formData.value.username.trim().length > 100) {
+    error.value = "Username is too long (maximum 100 characters)";
+    return false;
+  }
+
+  // If username looks like an email, validate email format
+  if (formData.value.username.includes("@")) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.value.username.trim())) {
+      error.value = "Please enter a valid email address";
+      return false;
+    }
+  }
+
+  // Password validation
   if (!formData.value.password.trim()) {
     error.value = "Password is required";
     return false;
   }
 
-  if (formData.value.password.length < 4) {
-    error.value = "Password must be at least 4 characters long";
+  if (formData.value.password.length < 1) {
+    error.value = "Password cannot be empty";
+    return false;
+  }
+
+  if (formData.value.password.length > 512) {
+    error.value = "Password is too long (maximum 512 characters)";
+    return false;
+  }
+
+  // Notes validation (optional field)
+  if (formData.value.notes && formData.value.notes.length > 1000) {
+    error.value = "Notes are too long (maximum 1000 characters)";
     return false;
   }
 

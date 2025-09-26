@@ -31,10 +31,23 @@
           type="text"
           autocomplete="name"
           required
-          class="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+          @blur="validateField('name', name)"
+          @input="validateField('name', name)"
+          :class="[
+            'appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm',
+            fieldErrors.name
+              ? 'border-red-300 dark:border-red-600'
+              : 'border-gray-300 dark:border-gray-600',
+          ]"
           placeholder="Enter your full name"
           :disabled="loading"
         />
+        <p
+          v-if="fieldErrors.name"
+          class="mt-1 text-sm text-red-600 dark:text-red-400"
+        >
+          {{ fieldErrors.name }}
+        </p>
       </div>
 
       <div>
@@ -51,10 +64,23 @@
           type="email"
           autocomplete="email"
           required
-          class="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+          @blur="validateField('email', email)"
+          @input="validateField('email', email)"
+          :class="[
+            'appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm',
+            fieldErrors.email
+              ? 'border-red-300 dark:border-red-600'
+              : 'border-gray-300 dark:border-gray-600',
+          ]"
           placeholder="Enter your email"
           :disabled="loading"
         />
+        <p
+          v-if="fieldErrors.email"
+          class="mt-1 text-sm text-red-600 dark:text-red-400"
+        >
+          {{ fieldErrors.email }}
+        </p>
       </div>
       <div>
         <label
@@ -70,12 +96,25 @@
           type="password"
           :autocomplete="isSignup ? 'new-password' : 'current-password'"
           required
-          class="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+          @blur="validateField('password', password)"
+          @input="validateField('password', password)"
+          :class="[
+            'appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm',
+            fieldErrors.password
+              ? 'border-red-300 dark:border-red-600'
+              : 'border-gray-300 dark:border-gray-600',
+          ]"
           :placeholder="
             isSignup ? 'Choose a strong password' : 'Enter your password'
           "
           :disabled="loading"
         />
+        <p
+          v-if="fieldErrors.password"
+          class="mt-1 text-sm text-red-600 dark:text-red-400"
+        >
+          {{ fieldErrors.password }}
+        </p>
       </div>
 
       <!-- Confirm password field for signup -->
@@ -93,10 +132,23 @@
           type="password"
           autocomplete="new-password"
           required
-          class="appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+          @blur="validateField('confirmPassword', confirmPassword)"
+          @input="validateField('confirmPassword', confirmPassword)"
+          :class="[
+            'appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm',
+            fieldErrors.confirmPassword
+              ? 'border-red-300 dark:border-red-600'
+              : 'border-gray-300 dark:border-gray-600',
+          ]"
           placeholder="Confirm your password"
           :disabled="loading"
         />
+        <p
+          v-if="fieldErrors.confirmPassword"
+          class="mt-1 text-sm text-red-600 dark:text-red-400"
+        >
+          {{ fieldErrors.confirmPassword }}
+        </p>
       </div>
     </div>
 
@@ -187,10 +239,83 @@ const error = ref("");
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 
+// Validation state
+const fieldErrors = ref({
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+});
+
 const { isSignup } = toRefs(props);
 
-const togglePasswordVisibility = () => {
-  showPassword.value = !showPassword.value;
+// Real-time field validation
+const validateField = (
+  field: keyof typeof fieldErrors.value,
+  value: string
+) => {
+  switch (field) {
+    case "name":
+      if (isSignup.value) {
+        if (!value.trim()) {
+          fieldErrors.value.name = "Full name is required";
+        } else if (value.trim().length < 2) {
+          fieldErrors.value.name = "Must be at least 2 characters";
+        } else if (value.trim().length > 50) {
+          fieldErrors.value.name = "Cannot exceed 50 characters";
+        } else {
+          fieldErrors.value.name = "";
+        }
+      }
+      break;
+
+    case "email":
+      if (!value.trim()) {
+        fieldErrors.value.email = "Email is required";
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) {
+        fieldErrors.value.email = "Please enter a valid email";
+      } else if (value.trim().length > 254) {
+        fieldErrors.value.email = "Email is too long";
+      } else {
+        fieldErrors.value.email = "";
+      }
+      break;
+
+    case "password":
+      if (!value) {
+        fieldErrors.value.password = "Password is required";
+      } else if (isSignup.value && value.length < 8) {
+        fieldErrors.value.password = "Must be at least 8 characters";
+      } else if (value.length > 128) {
+        fieldErrors.value.password = "Cannot exceed 128 characters";
+      } else if (isSignup.value) {
+        const hasRequirements =
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/.test(
+            value
+          );
+        if (!hasRequirements) {
+          fieldErrors.value.password =
+            "Must contain uppercase, lowercase, number, and special character";
+        } else {
+          fieldErrors.value.password = "";
+        }
+      } else {
+        fieldErrors.value.password = "";
+      }
+      break;
+
+    case "confirmPassword":
+      if (isSignup.value) {
+        if (!value) {
+          fieldErrors.value.confirmPassword = "Please confirm your password";
+        } else if (value !== password.value) {
+          fieldErrors.value.confirmPassword = "Passwords do not match";
+        } else {
+          fieldErrors.value.confirmPassword = "";
+        }
+      }
+      break;
+  }
 };
 
 const toggleConfirmPasswordVisibility = () => {
@@ -198,27 +323,82 @@ const toggleConfirmPasswordVisibility = () => {
 };
 
 const validateForm = () => {
-  if (!email.value || !password.value) {
-    error.value = "Email and password are required";
+  error.value = "";
+
+  // Name validation for signup
+  if (isSignup.value && !name.value?.trim()) {
+    error.value = "Full name is required";
+    return false;
+  }
+
+  if (isSignup.value && name.value?.trim().length < 2) {
+    error.value = "Full name must be at least 2 characters long";
+    return false;
+  }
+
+  if (isSignup.value && name.value?.trim().length > 50) {
+    error.value = "Full name cannot exceed 50 characters";
+    return false;
+  }
+
+  // Email validation
+  if (!email.value?.trim()) {
+    error.value = "Email address is required";
+    return false;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email.value.trim())) {
+    error.value = "Please enter a valid email address";
+    return false;
+  }
+
+  if (email.value.trim().length > 254) {
+    error.value = "Email address is too long";
+    return false;
+  }
+
+  // Password validation
+  if (!password.value) {
+    error.value = "Password is required";
     return false;
   }
 
   if (isSignup.value) {
-    if (!name.value) {
-      error.value = "Name is required";
-      return false;
-    }
-    if (password.value !== confirmPassword.value) {
-      error.value = "Passwords do not match";
-      return false;
-    }
     if (password.value.length < 8) {
       error.value = "Password must be at least 8 characters long";
       return false;
     }
+
+    if (password.value.length > 128) {
+      error.value = "Password cannot exceed 128 characters";
+      return false;
+    }
+
+    // Password strength requirements for signup
+    const hasUppercase = /[A-Z]/.test(password.value);
+    const hasLowercase = /[a-z]/.test(password.value);
+    const hasNumbers = /\d/.test(password.value);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password.value);
+
+    if (!hasUppercase || !hasLowercase || !hasNumbers || !hasSpecialChar) {
+      error.value =
+        "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character";
+      return false;
+    }
+
+    // Confirm password validation
+    if (!confirmPassword.value) {
+      error.value = "Please confirm your password";
+      return false;
+    }
+
+    if (password.value !== confirmPassword.value) {
+      error.value = "Passwords do not match";
+      return false;
+    }
   }
 
-  error.value = "";
   return true;
 };
 
