@@ -492,9 +492,8 @@ const copyToClipboard = async (text: string, type: string) => {
   try {
     await navigator.clipboard.writeText(text);
     // TODO: Add toast notification
-    console.log(`${type} copied to clipboard`);
   } catch (err) {
-    console.error("Failed to copy:", err);
+    // TODO: Handle copy error with user feedback
   }
 };
 

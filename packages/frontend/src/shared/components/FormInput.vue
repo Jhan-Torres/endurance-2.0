@@ -1,13 +1,13 @@
 <template>
   <div class="form-field">
-    <label 
-      v-if="label" 
+    <label
+      v-if="label"
       :for="id"
       class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
     >
       {{ label }} <span v-if="required" class="text-red-500">*</span>
     </label>
-    
+
     <div class="relative">
       <textarea
         v-if="type === 'textarea'"
@@ -20,7 +20,7 @@
         @input="handleInput"
         @blur="handleBlur"
       />
-      
+
       <input
         v-else
         :id="id"
@@ -33,7 +33,7 @@
         @input="handleInput"
         @blur="handleBlur"
       />
-      
+
       <!-- Password visibility toggle -->
       <button
         v-if="type === 'password'"
@@ -42,7 +42,10 @@
         class="absolute inset-y-0 right-0 pr-3 flex items-center"
       >
         <svg
-          :class="['h-4 w-4', disabled ? 'text-gray-400' : 'text-gray-500 hover:text-gray-700']"
+          :class="[
+            'h-4 w-4',
+            disabled ? 'text-gray-400' : 'text-gray-500 hover:text-gray-700',
+          ]"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -64,24 +67,21 @@
         </svg>
       </button>
     </div>
-    
+
     <!-- Error message -->
-    <p 
-      v-if="error"
-      class="mt-1 text-sm text-red-600 dark:text-red-400"
-    >
+    <p v-if="error" class="mt-1 text-sm text-red-600 dark:text-red-400">
       {{ error }}
     </p>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed } from "vue";
 
 interface Props {
   id: string;
   modelValue: string;
-  type?: 'text' | 'email' | 'password' | 'url' | 'textarea';
+  type?: "text" | "email" | "password" | "url" | "textarea";
   label?: string;
   placeholder?: string;
   required?: boolean;
@@ -93,16 +93,16 @@ interface Props {
 }
 
 interface Emits {
-  (e: 'update:modelValue', value: string): void;
-  (e: 'blur'): void;
+  (e: "update:modelValue", value: string): void;
+  (e: "blur"): void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  type: 'text',
+  type: "text",
   required: false,
   disabled: false,
   touched: false,
-  rows: 3
+  rows: 3,
 });
 
 const emit = defineEmits<Emits>();
@@ -110,36 +110,36 @@ const emit = defineEmits<Emits>();
 const showPassword = ref(false);
 
 const inputType = computed(() => {
-  if (props.type === 'password') {
-    return showPassword.value ? 'text' : 'password';
+  if (props.type === "password") {
+    return showPassword.value ? "text" : "password";
   }
   return props.type;
 });
 
 const inputClasses = computed(() => [
-  'appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm',
-  props.type === 'password' ? 'pr-10' : '',
-  props.error 
-    ? 'border-red-300 dark:border-red-600' 
-    : 'border-gray-300 dark:border-gray-600',
-  props.disabled ? 'opacity-50 cursor-not-allowed' : ''
+  "appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm",
+  props.type === "password" ? "pr-10" : "",
+  props.error
+    ? "border-red-300 dark:border-red-600"
+    : "border-gray-300 dark:border-gray-600",
+  props.disabled ? "opacity-50 cursor-not-allowed" : "",
 ]);
 
 const textareaClasses = computed(() => [
-  'appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm resize-none',
-  props.error 
-    ? 'border-red-300 dark:border-red-600' 
-    : 'border-gray-300 dark:border-gray-600',
-  props.disabled ? 'opacity-50 cursor-not-allowed' : ''
+  "appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-800 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm resize-none",
+  props.error
+    ? "border-red-300 dark:border-red-600"
+    : "border-gray-300 dark:border-gray-600",
+  props.disabled ? "opacity-50 cursor-not-allowed" : "",
 ]);
 
 const handleInput = (event: Event) => {
   const target = event.target as HTMLInputElement | HTMLTextAreaElement;
-  emit('update:modelValue', target.value);
+  emit("update:modelValue", target.value);
 };
 
 const handleBlur = () => {
-  emit('blur');
+  emit("blur");
 };
 
 const togglePasswordVisibility = () => {

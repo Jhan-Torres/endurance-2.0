@@ -72,7 +72,6 @@ const handleEditNote = (note: Note) => {
 };
 
 const handleDeleteNote = (id: string) => {
-  console.log("Delete note:", id);
   // TODO: Implement delete note
   const index = notes.value.findIndex((note) => note.id === id);
   if (index > -1) {

@@ -105,8 +105,8 @@
                   :class="[
                     'w-full px-3 py-2 pr-16 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition-colors',
                     getFieldError('password')
-                      ? 'border-red-300 dark:border-red-500 text-red-900 dark:text-red-100 placeholder-red-300 dark:placeholder-red-400 bg-red-50 dark:bg-red-900/20'
-                      : 'border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-gray-700'
+                      ? 'border-red-300 dark:border-red-600 text-red-900 dark:text-red-100 placeholder-red-300 dark:placeholder-red-400 bg-red-50 dark:bg-red-900/20'
+                      : 'border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-gray-700',
                   ]"
                   placeholder="Password"
                 />
@@ -166,7 +166,7 @@
                 v-if="getFieldError('password')"
                 class="mt-1 text-sm text-red-600 dark:text-red-400"
               >
-                {{ getFieldError('password') }}
+                {{ getFieldError("password") }}
               </p>
             </div>
 
@@ -208,7 +208,10 @@
             />
 
             <!-- Error message -->
-            <div v-if="submitError" class="text-red-600 dark:text-red-400 text-sm">
+            <div
+              v-if="submitError"
+              class="text-red-600 dark:text-red-400 text-sm"
+            >
               {{ submitError }}
             </div>
 
@@ -273,31 +276,49 @@ const formData = ref({
 });
 
 // Use our validation composable
-const { formData: validationFormData, errors, validateField, validateAll, isValid } = useFormValidation(loginModalSchema);
+const {
+  formData: validationFormData,
+  errors,
+  validateField,
+  validateAll,
+  isValid,
+} = useFormValidation(loginModalSchema);
 
 // Helper function to get field errors
 const getFieldError = (field: string) => errors[field];
 
 // Watch form data changes to trigger validation
-watch(() => formData.value.url, (newValue) => {
-  validationFormData.url = newValue;
-  validateField('url', newValue);
-});
+watch(
+  () => formData.value.url,
+  (newValue) => {
+    validationFormData.url = newValue;
+    validateField("url", newValue);
+  }
+);
 
-watch(() => formData.value.username, (newValue) => {
-  validationFormData.username = newValue;
-  validateField('username', newValue);
-});
+watch(
+  () => formData.value.username,
+  (newValue) => {
+    validationFormData.username = newValue;
+    validateField("username", newValue);
+  }
+);
 
-watch(() => formData.value.password, (newValue) => {
-  validationFormData.password = newValue;
-  validateField('password', newValue);
-});
+watch(
+  () => formData.value.password,
+  (newValue) => {
+    validationFormData.password = newValue;
+    validateField("password", newValue);
+  }
+);
 
-watch(() => formData.value.notes, (newValue) => {
-  validationFormData.notes = newValue;
-  validateField('notes', newValue);
-});
+watch(
+  () => formData.value.notes,
+  (newValue) => {
+    validationFormData.notes = newValue;
+    validateField("notes", newValue);
+  }
+);
 
 // Extract website name from URL
 const extractedWebsiteName = computed(() => {

@@ -52,7 +52,9 @@
         v-model="form.formData.password"
         type="password"
         label="Password"
-        :placeholder="isSignup ? 'Choose a strong password' : 'Enter your password'"
+        :placeholder="
+          isSignup ? 'Choose a strong password' : 'Enter your password'
+        "
         :autocomplete="isSignup ? 'new-password' : 'current-password'"
         :required="true"
         :error="form.errors.password"
@@ -74,7 +76,9 @@
         :error="form.errors.confirmPassword"
         :touched="form.touched.confirmPassword"
         :disabled="loading"
-        @blur="form.validateField('confirmPassword', form.formData.confirmPassword)"
+        @blur="
+          form.validateField('confirmPassword', form.formData.confirmPassword)
+        "
       />
     </div>
 
@@ -179,11 +183,14 @@ watch(isSignup, (newValue) => {
 
 // Computed property for submit button state
 const canSubmit = computed(() => {
-  const requiredFields = isSignup.value 
-    ? ['name', 'email', 'password', 'confirmPassword']
-    : ['email', 'password'];
-    
-  return requiredFields.every(field => form.formData[field]?.trim()) && !form.hasErrors.value;
+  const requiredFields = isSignup.value
+    ? ["name", "email", "password", "confirmPassword"]
+    : ["email", "password"];
+
+  return (
+    requiredFields.every((field) => form.formData[field]?.trim()) &&
+    !form.hasErrors.value
+  );
 });
 
 const handleLogin = async () => {

@@ -144,7 +144,10 @@
             </div>
 
             <!-- Error message -->
-            <div v-if="submitError" class="text-red-600 dark:text-red-400 text-sm">
+            <div
+              v-if="submitError"
+              class="text-red-600 dark:text-red-400 text-sm"
+            >
               {{ submitError }}
             </div>
 
@@ -208,21 +211,33 @@ const formData = ref({
 });
 
 // Use our validation composable
-const { formData: validationFormData, errors, validateField, validateAll, isValid } = useFormValidation(noteModalSchema);
+const {
+  formData: validationFormData,
+  errors,
+  validateField,
+  validateAll,
+  isValid,
+} = useFormValidation(noteModalSchema);
 
 // Helper function to get field errors
 const getFieldError = (field: string) => errors[field];
 
 // Watch form data changes to trigger validation
-watch(() => formData.value.title, (newValue) => {
-  validationFormData.title = newValue;
-  validateField('title', newValue);
-});
+watch(
+  () => formData.value.title,
+  (newValue) => {
+    validationFormData.title = newValue;
+    validateField("title", newValue);
+  }
+);
 
-watch(() => formData.value.content, (newValue) => {
-  validationFormData.content = newValue;
-  validateField('content', newValue);
-});
+watch(
+  () => formData.value.content,
+  (newValue) => {
+    validationFormData.content = newValue;
+    validateField("content", newValue);
+  }
+);
 
 // Body scroll lock functionality
 const lockBodyScroll = () => {

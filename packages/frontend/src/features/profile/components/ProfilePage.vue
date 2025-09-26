@@ -179,7 +179,6 @@ const handleSaveProfile = (profileData: { name: string; email: string }) => {
   userProfile.value.email = profileData.email;
 
   // TODO: Implement API call to save profile
-  console.log("Saving profile:", userProfile.value);
   alert(t("profile.profileSaved"));
 };
 
@@ -193,7 +192,6 @@ const closeEditModal = () => {
 
 const requestPasswordChange = () => {
   // TODO: Implement password change request API call
-  console.log("Requesting password change for user:", userProfile.value.email);
   alert(t("profile.passwordResetSent"));
 };
 

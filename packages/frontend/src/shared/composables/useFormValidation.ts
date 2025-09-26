@@ -17,9 +17,9 @@ export function useFormValidation(schema: ValidationSchema) {
   const touched = reactive<Record<string, boolean>>({});
 
   // Initialize form data
-  Object.keys(schema).forEach(field => {
-    formData[field] = '';
-    errors[field] = '';
+  Object.keys(schema).forEach((field) => {
+    formData[field] = "";
+    errors[field] = "";
     touched[field] = false;
   });
 
@@ -31,10 +31,10 @@ export function useFormValidation(schema: ValidationSchema) {
     touched[field] = true;
 
     // Clear previous error
-    errors[field] = '';
+    errors[field] = "";
 
     // Check required
-    if (fieldConfig.required && (!value || value.toString().trim() === '')) {
+    if (fieldConfig.required && (!value || value.toString().trim() === "")) {
       errors[field] = `${field} is required`;
       return;
     }
@@ -51,8 +51,8 @@ export function useFormValidation(schema: ValidationSchema) {
 
   const validateAll = (): boolean => {
     let isValid = true;
-    
-    Object.keys(schema).forEach(field => {
+
+    Object.keys(schema).forEach((field) => {
       validateField(field, formData[field]);
       if (errors[field]) {
         isValid = false;
@@ -63,26 +63,28 @@ export function useFormValidation(schema: ValidationSchema) {
   };
 
   const clearErrors = () => {
-    Object.keys(errors).forEach(key => {
-      errors[key] = '';
+    Object.keys(errors).forEach((key) => {
+      errors[key] = "";
     });
   };
 
   const reset = () => {
-    Object.keys(formData).forEach(key => {
-      formData[key] = '';
-      errors[key] = '';
+    Object.keys(formData).forEach((key) => {
+      formData[key] = "";
+      errors[key] = "";
       touched[key] = false;
     });
   };
 
   const isValid = computed(() => {
-    return Object.values(errors).every(error => !error) && 
-           Object.keys(touched).some(key => touched[key]);
+    return (
+      Object.values(errors).every((error) => !error) &&
+      Object.keys(touched).some((key) => touched[key])
+    );
   });
 
   const hasErrors = computed(() => {
-    return Object.values(errors).some(error => error);
+    return Object.values(errors).some((error) => error);
   });
 
   return {
@@ -94,67 +96,91 @@ export function useFormValidation(schema: ValidationSchema) {
     validateField,
     validateAll,
     clearErrors,
-    reset
+    reset,
   };
 }
 
 // Common validation rules
 export const validationRules = {
-  required: (message = 'This field is required'): ValidationRule => 
-    (value: any) => value && value.toString().trim() !== '' ? true : message,
+  required:
+    (message = "This field is required"): ValidationRule =>
+    (value: any) =>
+      value && value.toString().trim() !== "" ? true : message,
 
-  email: (message = 'Please enter a valid email address'): ValidationRule => 
+  email:
+    (message = "Please enter a valid email address"): ValidationRule =>
     (value: string) => {
       if (!value) return true; // Let required handle empty values
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return emailRegex.test(value.trim()) ? true : message;
     },
 
-  minLength: (min: number, message?: string): ValidationRule => 
+  minLength:
+    (min: number, message?: string): ValidationRule =>
     (value: string) => {
       if (!value) return true; // Let required handle empty values
-      return value.length >= min ? true : message || `Must be at least ${min} characters`;
+      return value.length >= min
+        ? true
+        : message || `Must be at least ${min} characters`;
     },
 
-  maxLength: (max: number, message?: string): ValidationRule => 
+  maxLength:
+    (max: number, message?: string): ValidationRule =>
     (value: string) => {
       if (!value) return true;
-      return value.length <= max ? true : message || `Cannot exceed ${max} characters`;
+      return value.length <= max
+        ? true
+        : message || `Cannot exceed ${max} characters`;
     },
 
-  url: (message = 'Please enter a valid URL'): ValidationRule => 
+  url:
+    (message = "Please enter a valid URL"): ValidationRule =>
     (value: string) => {
       if (!value) return true;
       try {
         const url = new URL(value);
-        return ['http:', 'https:'].includes(url.protocol) ? true : message;
+        return ["http:", "https:"].includes(url.protocol) ? true : message;
       } catch {
         return message;
       }
     },
 
-  passwordStrength: (message = 'Password must contain uppercase, lowercase, number, and special character'): ValidationRule => 
+  passwordStrength:
+    (
+      message = "Password must contain uppercase, lowercase, number, and special character"
+    ): ValidationRule =>
     (value: string) => {
       if (!value) return true;
-      const hasRequirements = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/.test(value);
+      const hasRequirements =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])/.test(
+          value
+        );
       return hasRequirements ? true : message;
     },
 
-  match: (targetField: string, getMessage: (field: string) => string): ValidationRule => 
+  match:
+    (
+      targetField: string,
+      getMessage: (field: string) => string
+    ): ValidationRule =>
     (value: string, formData?: any) => {
       if (!value || !formData) return true;
       return value === formData[targetField] ? true : getMessage(targetField);
     },
 
-  noSpaces: (message = 'Spaces are not allowed'): ValidationRule => 
+  noSpaces:
+    (message = "Spaces are not allowed"): ValidationRule =>
     (value: string) => {
       if (!value) return true;
-      return !value.includes(' ') ? true : message;
+      return !value.includes(" ") ? true : message;
     },
 
-  alphanumericWithSpecial: (message = 'Only letters, numbers, hyphens, and underscores allowed'): ValidationRule => 
+  alphanumericWithSpecial:
+    (
+      message = "Only letters, numbers, hyphens, and underscores allowed"
+    ): ValidationRule =>
     (value: string) => {
       if (!value) return true;
       return /^[a-zA-Z0-9_-]+$/.test(value) ? true : message;
-    }
+    },
 };

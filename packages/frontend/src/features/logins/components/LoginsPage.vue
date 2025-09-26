@@ -103,17 +103,14 @@ const filteredLogins = computed(() => {
 });
 
 const handleCopyPassword = (id: string) => {
-  console.log("Copy password:", id);
   // TODO: Implement copy to clipboard
 };
 
 const handleEditLogin = (login: Login) => {
-  console.log("Edit login:", login);
   // TODO: Implement edit login
 };
 
 const handleDeleteLogin = (id: string) => {
-  console.log("Delete login:", id);
   // TODO: Implement delete login
   const index = logins.value.findIndex((l) => l.id === id);
   if (index > -1) {

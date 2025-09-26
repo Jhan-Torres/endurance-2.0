@@ -149,21 +149,33 @@ const formData = ref({
 });
 
 // Use our validation composable
-const { formData: validationFormData, errors, validateField, validateAll, isValid } = useFormValidation(profileModalSchema);
+const {
+  formData: validationFormData,
+  errors,
+  validateField,
+  validateAll,
+  isValid,
+} = useFormValidation(profileModalSchema);
 
 // Helper function to get field errors
 const getFieldError = (field: string) => errors[field];
 
 // Watch form data changes to trigger validation
-watch(() => formData.value.name, (newValue) => {
-  validationFormData.name = newValue;
-  validateField('name', newValue);
-});
+watch(
+  () => formData.value.name,
+  (newValue) => {
+    validationFormData.name = newValue;
+    validateField("name", newValue);
+  }
+);
 
-watch(() => formData.value.email, (newValue) => {
-  validationFormData.email = newValue;
-  validateField('email', newValue);
-});
+watch(
+  () => formData.value.email,
+  (newValue) => {
+    validationFormData.email = newValue;
+    validateField("email", newValue);
+  }
+);
 
 // Body scroll lock functionality
 const lockBodyScroll = () => {
