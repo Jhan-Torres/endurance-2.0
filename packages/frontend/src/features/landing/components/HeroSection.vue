@@ -83,7 +83,7 @@
 
 <script setup lang="ts">
 import { useAuthModal } from "../../auth/composables/useAuthModal";
-import { useLanguage } from "../../../shared/composables/useLanguage";
+import { useLanguage } from "../../../shared/composables";
 
 const { openLoginModal, openSignupModal } = useAuthModal();
 const { t } = useLanguage();

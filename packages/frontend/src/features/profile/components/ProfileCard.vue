@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { useLanguage } from "../../../shared/composables/useLanguage";
+import { useLanguage } from "../../../shared/composables";
 
 const { t } = useLanguage();
 

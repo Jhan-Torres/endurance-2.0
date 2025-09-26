@@ -246,8 +246,8 @@
 <script setup lang="ts">
 import { ref, watch, onUnmounted, computed } from "vue";
 import type { Login } from "../model";
-import { useFormValidation } from "../../../shared/composables/useFormValidation";
-import { loginModalSchema } from "../../../shared/validation/schemas";
+import { useFormValidation } from "../../../shared/composables";
+import { loginModalSchema } from "../../../shared/validation";
 import FormInput from "../../../shared/components/FormInput.vue";
 
 interface Props {

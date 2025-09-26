@@ -1,5 +1,5 @@
 import { ref, watch } from "vue";
-import { useBodyScroll } from "../../../shared/composables/useBodyScroll";
+import { useBodyScroll } from "../../../shared/composables";
 
 const isAuthModalOpen = ref(false);
 const authModalMode = ref<"login" | "signup">("login");

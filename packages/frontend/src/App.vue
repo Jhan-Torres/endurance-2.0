@@ -40,7 +40,7 @@ import SideMenu from "./shared/components/SideMenu.vue";
 import AuthModal from "./features/auth/components/AuthModal.vue";
 import { useAuth } from "./features/auth/composables/useAuth";
 import { useAuthModal } from "./features/auth/composables/useAuthModal";
-import { useLanguage } from "./shared/composables/useLanguage";
+import { useLanguage } from "./shared/composables";
 
 const router = useRouter();
 const { initializeAuth } = useAuth();

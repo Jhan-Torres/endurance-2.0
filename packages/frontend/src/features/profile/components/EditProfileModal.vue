@@ -111,9 +111,9 @@
 
 <script setup lang="ts">
 import { ref, watch, onUnmounted } from "vue";
-import { useLanguage } from "../../../shared/composables/useLanguage";
-import { useFormValidation } from "../../../shared/composables/useFormValidation";
-import { profileModalSchema } from "../../../shared/validation/schemas";
+import { useLanguage } from "../../../shared/composables";
+import { useFormValidation } from "../../../shared/composables";
+import { profileModalSchema } from "../../../shared/validation";
 import FormInput from "../../../shared/components/FormInput.vue";
 
 const { t } = useLanguage();

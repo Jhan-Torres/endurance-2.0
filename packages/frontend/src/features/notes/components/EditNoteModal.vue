@@ -182,8 +182,8 @@
 <script setup lang="ts">
 import { ref, watch, onUnmounted } from "vue";
 import type { Note } from "../model";
-import { useFormValidation } from "../../../shared/composables/useFormValidation";
-import { noteModalSchema } from "../../../shared/validation/schemas";
+import { useFormValidation } from "../../../shared/composables";
+import { noteModalSchema } from "../../../shared/validation";
 import FormInput from "../../../shared/components/FormInput.vue";
 
 interface Props {

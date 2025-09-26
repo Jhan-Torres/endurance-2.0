@@ -139,8 +139,8 @@
 import { ref, computed, toRefs, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useAuth } from "../composables/useAuth";
-import { useFormValidation } from "../../../shared/composables/useFormValidation";
-import { authFormSchema } from "../../../shared/validation/schemas";
+import { useFormValidation } from "../../../shared/composables";
+import { authFormSchema } from "../../../shared/validation";
 import FormInput from "../../../shared/components/FormInput.vue";
 
 interface Props {

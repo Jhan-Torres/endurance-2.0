@@ -141,7 +141,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { useLanguage } from "../../../shared/composables/useLanguage";
+import { useLanguage } from "../../../shared/composables";
 import { useAuth } from "../../auth/composables/useAuth";
 import ProfileCard from "./ProfileCard.vue";
 import EditProfileModal from "./EditProfileModal.vue";
