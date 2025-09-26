@@ -1,5 +1,5 @@
 // Casos de uso de notas
-import { Note, NotesState } from "./model";
+import { Note } from "./model";
 
 export const getNotes = async (): Promise<Note[]> => {
   // Get notes logic here

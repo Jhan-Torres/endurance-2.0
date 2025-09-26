@@ -122,7 +122,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted } from "vue";
+import { ref, watch, onUnmounted } from "vue";
 import { useLanguage } from "../../../shared/composables/useLanguage";
 
 const { t } = useLanguage();

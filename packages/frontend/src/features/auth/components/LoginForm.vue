@@ -209,10 +209,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, toRefs } from "vue";
+import { ref, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import { useAuth } from "../composables/useAuth";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline";
 
 interface Props {
   isSignup?: boolean;
@@ -236,8 +235,6 @@ const password = ref("");
 const name = ref("");
 const confirmPassword = ref("");
 const error = ref("");
-const showPassword = ref(false);
-const showConfirmPassword = ref(false);
 
 // Validation state
 const fieldErrors = ref({
@@ -316,10 +313,6 @@ const validateField = (
       }
       break;
   }
-};
-
-const toggleConfirmPasswordVisibility = () => {
-  showConfirmPassword.value = !showConfirmPassword.value;
 };
 
 const validateForm = () => {

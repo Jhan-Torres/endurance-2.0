@@ -140,7 +140,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useLanguage } from "../../../shared/composables/useLanguage";
 import { useAuth } from "../../auth/composables/useAuth";
 import ProfileCard from "./ProfileCard.vue";

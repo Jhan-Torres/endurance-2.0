@@ -1,5 +1,5 @@
 // Casos de uso de landing
-import { LandingContent, LandingState } from "./model";
+import { LandingContent } from "./model";
 
 export const getLandingContent = async (): Promise<LandingContent[]> => {
   // Get landing content logic here
