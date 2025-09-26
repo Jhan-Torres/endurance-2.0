@@ -1,7 +1,7 @@
 // Auth composables
 export * from "./composables";
 
-// Auth services  
+// Auth services
 export * from "./services";
 
 // Auth types (local types only)
