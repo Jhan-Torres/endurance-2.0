@@ -64,40 +64,25 @@
         <div class="p-4">
           <form @submit.prevent="handleSubmit" class="space-y-3">
             <!-- Title -->
-            <div>
-              <label
-                for="title"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-              >
-                Title *
-              </label>
-              <input
-                id="title"
-                v-model="formData.title"
-                type="text"
-                required
-                class="w-full px-3 py-1.5 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                placeholder="Enter note title"
-              />
-            </div>
+            <FormInput
+              id="title"
+              label="Title *"
+              type="text"
+              v-model="formData.title"
+              :error="getFieldError('title')"
+              placeholder="Enter note title"
+            />
 
             <!-- Content -->
-            <div>
-              <label
-                for="content"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-              >
-                Content *
-              </label>
-              <textarea
-                id="content"
-                v-model="formData.content"
-                required
-                rows="5"
-                class="w-full px-3 py-1.5 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm resize-none"
-                placeholder="Write your note content here..."
-              />
-            </div>
+            <FormInput
+              id="content"
+              label="Content *"
+              type="textarea"
+              v-model="formData.content"
+              :error="getFieldError('content')"
+              placeholder="Write your note content here..."
+              :rows="5"
+            />
 
             <!-- Tags -->
             <div>
@@ -159,15 +144,15 @@
             </div>
 
             <!-- Error message -->
-            <div v-if="error" class="text-red-600 dark:text-red-400 text-sm">
-              {{ error }}
+            <div v-if="submitError" class="text-red-600 dark:text-red-400 text-sm">
+              {{ submitError }}
             </div>
 
             <!-- Modal Actions -->
             <div class="flex space-x-2 pt-3">
               <button
                 type="submit"
-                :disabled="loading"
+                :disabled="loading || !isValid"
                 class="flex-1 inline-flex justify-center items-center px-3 py-1.5 bg-primary-600 text-white text-sm font-medium rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 <span
@@ -194,6 +179,9 @@
 <script setup lang="ts">
 import { ref, watch, onUnmounted } from "vue";
 import type { Note } from "../model";
+import { useFormValidation } from "../../../shared/composables/useFormValidation";
+import { noteModalSchema } from "../../../shared/validation/schemas";
+import FormInput from "../../../shared/components/FormInput.vue";
 
 interface Props {
   isOpen: boolean;
@@ -209,7 +197,8 @@ const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 const loading = ref(false);
-const error = ref("");
+const submitError = ref("");
+const selectedTag = ref("");
 
 // Form data
 const formData = ref({
@@ -218,7 +207,22 @@ const formData = ref({
   tags: [] as string[],
 });
 
-const selectedTag = ref("");
+// Use our validation composable
+const { formData: validationFormData, errors, validateField, validateAll, isValid } = useFormValidation(noteModalSchema);
+
+// Helper function to get field errors
+const getFieldError = (field: string) => errors[field];
+
+// Watch form data changes to trigger validation
+watch(() => formData.value.title, (newValue) => {
+  validationFormData.title = newValue;
+  validateField('title', newValue);
+});
+
+watch(() => formData.value.content, (newValue) => {
+  validationFormData.content = newValue;
+  validateField('content', newValue);
+});
 
 // Body scroll lock functionality
 const lockBodyScroll = () => {
@@ -279,84 +283,8 @@ const resetForm = () => {
     tags: [],
   };
   selectedTag.value = "";
-  error.value = "";
+  submitError.value = "";
   loading.value = false;
-};
-
-const validateForm = (): boolean => {
-  error.value = "";
-
-  // Title validation
-  if (!formData.value.title.trim()) {
-    error.value = "Note title is required";
-    return false;
-  }
-
-  if (formData.value.title.trim().length < 1) {
-    error.value = "Note title cannot be empty";
-    return false;
-  }
-
-  if (formData.value.title.trim().length > 100) {
-    error.value = "Note title is too long (maximum 100 characters)";
-    return false;
-  }
-
-  // Check for invalid characters in title
-  const invalidTitleChars = /[<>:"\/\\|?*\x00-\x1f]/;
-  if (invalidTitleChars.test(formData.value.title)) {
-    error.value = "Note title contains invalid characters";
-    return false;
-  }
-
-  // Content validation
-  if (!formData.value.content.trim()) {
-    error.value = "Note content is required";
-    return false;
-  }
-
-  if (formData.value.content.trim().length < 1) {
-    error.value = "Note content cannot be empty";
-    return false;
-  }
-
-  if (formData.value.content.length > 10000) {
-    error.value = "Note content is too long (maximum 10,000 characters)";
-    return false;
-  }
-
-  // Tags validation
-  if (formData.value.tags.length > 10) {
-    error.value = "Too many tags (maximum 10 tags allowed)";
-    return false;
-  }
-
-  // Validate individual tags
-  for (const tag of formData.value.tags) {
-    if (tag.length > 20) {
-      error.value = `Tag "${tag}" is too long (maximum 20 characters per tag)`;
-      return false;
-    }
-
-    if (tag.includes(" ")) {
-      error.value = `Tag "${tag}" cannot contain spaces`;
-      return false;
-    }
-
-    if (!/^[a-zA-Z0-9_-]+$/.test(tag)) {
-      error.value = `Tag "${tag}" contains invalid characters (only letters, numbers, hyphens, and underscores allowed)`;
-      return false;
-    }
-  }
-
-  // Check for duplicate tags
-  const uniqueTags = new Set(formData.value.tags);
-  if (uniqueTags.size !== formData.value.tags.length) {
-    error.value = "Duplicate tags are not allowed";
-    return false;
-  }
-
-  return true;
 };
 
 const closeModal = () => {
@@ -381,9 +309,10 @@ const removeTag = (tagToRemove: string) => {
 };
 
 const handleSubmit = async () => {
-  if (!validateForm() || !props.note) return;
+  if (!validateAll() || !props.note) return;
 
   loading.value = true;
+  submitError.value = "";
 
   try {
     const updatedNote: Note = {
@@ -397,7 +326,7 @@ const handleSubmit = async () => {
     emit("save", updatedNote);
     closeModal();
   } catch (err) {
-    error.value = "Failed to save note. Please try again.";
+    submitError.value = "Failed to save note. Please try again.";
   } finally {
     loading.value = false;
   }

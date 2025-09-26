@@ -63,47 +63,31 @@
         <!-- Modal Content -->
         <div class="p-4">
           <form @submit.prevent="handleSubmit" class="space-y-3">
-            <!-- Website URL (Required) -->
-            <div>
-              <label
-                for="url"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-              >
-                Website URL *
-              </label>
-              <input
-                id="url"
-                v-model="formData.url"
-                type="url"
-                required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                placeholder="https://example.com"
-              />
-              <p
-                v-if="extractedWebsiteName"
-                class="mt-1 text-xs text-gray-500 dark:text-gray-400"
-              >
-                Website: {{ extractedWebsiteName }}
-              </p>
-            </div>
+            <!-- Website URL -->
+            <FormInput
+              id="url"
+              label="Website URL *"
+              type="url"
+              v-model="formData.url"
+              :error="getFieldError('url')"
+              placeholder="https://example.com"
+            />
+            <p
+              v-if="extractedWebsiteName"
+              class="mt-1 text-xs text-gray-500 dark:text-gray-400"
+            >
+              Website: {{ extractedWebsiteName }}
+            </p>
 
             <!-- Username/Email -->
-            <div>
-              <label
-                for="username"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-              >
-                Username / Email *
-              </label>
-              <input
-                id="username"
-                v-model="formData.username"
-                type="text"
-                required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-                placeholder="Username or email"
-              />
-            </div>
+            <FormInput
+              id="username"
+              label="Username / Email *"
+              type="text"
+              v-model="formData.username"
+              :error="getFieldError('username')"
+              placeholder="Username or email"
+            />
 
             <!-- Password -->
             <div>
@@ -118,8 +102,12 @@
                   id="password"
                   v-model="formData.password"
                   :type="showPassword ? 'text' : 'password'"
-                  required
-                  class="w-full px-3 py-2 pr-16 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                  :class="[
+                    'w-full px-3 py-2 pr-16 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition-colors',
+                    getFieldError('password')
+                      ? 'border-red-300 dark:border-red-500 text-red-900 dark:text-red-100 placeholder-red-300 dark:placeholder-red-400 bg-red-50 dark:bg-red-900/20'
+                      : 'border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-gray-700'
+                  ]"
                   placeholder="Password"
                 />
                 <div class="absolute inset-y-0 right-0 flex items-center">
@@ -174,6 +162,12 @@
                   </button>
                 </div>
               </div>
+              <p
+                v-if="getFieldError('password')"
+                class="mt-1 text-sm text-red-600 dark:text-red-400"
+              >
+                {{ getFieldError('password') }}
+              </p>
             </div>
 
             <!-- Collection -->
@@ -203,32 +197,26 @@
             </div>
 
             <!-- Notes -->
-            <div>
-              <label
-                for="notes"
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-              >
-                Notes
-              </label>
-              <textarea
-                id="notes"
-                v-model="formData.notes"
-                rows="2"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm resize-none"
-                placeholder="Optional notes..."
-              />
-            </div>
+            <FormInput
+              id="notes"
+              label="Notes"
+              type="textarea"
+              v-model="formData.notes"
+              :error="getFieldError('notes')"
+              placeholder="Optional notes..."
+              :rows="2"
+            />
 
             <!-- Error message -->
-            <div v-if="error" class="text-red-600 dark:text-red-400 text-sm">
-              {{ error }}
+            <div v-if="submitError" class="text-red-600 dark:text-red-400 text-sm">
+              {{ submitError }}
             </div>
 
             <!-- Modal Actions -->
             <div class="flex space-x-3 pt-3">
               <button
                 type="submit"
-                :disabled="loading"
+                :disabled="loading || !isValid"
                 class="flex-1 inline-flex justify-center items-center px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 <span
@@ -255,6 +243,9 @@
 <script setup lang="ts">
 import { ref, watch, onUnmounted, computed } from "vue";
 import type { Login } from "../model";
+import { useFormValidation } from "../../../shared/composables/useFormValidation";
+import { loginModalSchema } from "../../../shared/validation/schemas";
+import FormInput from "../../../shared/components/FormInput.vue";
 
 interface Props {
   isOpen: boolean;
@@ -269,8 +260,9 @@ const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 const loading = ref(false);
-const error = ref("");
+const submitError = ref("");
 const showPassword = ref(false);
+const selectedCollection = ref<string>("");
 
 // Form data
 const formData = ref({
@@ -280,7 +272,32 @@ const formData = ref({
   notes: "",
 });
 
-const selectedCollection = ref<string>("");
+// Use our validation composable
+const { formData: validationFormData, errors, validateField, validateAll, isValid } = useFormValidation(loginModalSchema);
+
+// Helper function to get field errors
+const getFieldError = (field: string) => errors[field];
+
+// Watch form data changes to trigger validation
+watch(() => formData.value.url, (newValue) => {
+  validationFormData.url = newValue;
+  validateField('url', newValue);
+});
+
+watch(() => formData.value.username, (newValue) => {
+  validationFormData.username = newValue;
+  validateField('username', newValue);
+});
+
+watch(() => formData.value.password, (newValue) => {
+  validationFormData.password = newValue;
+  validateField('password', newValue);
+});
+
+watch(() => formData.value.notes, (newValue) => {
+  validationFormData.notes = newValue;
+  validateField('notes', newValue);
+});
 
 // Extract website name from URL
 const extractedWebsiteName = computed(() => {
@@ -289,15 +306,9 @@ const extractedWebsiteName = computed(() => {
   try {
     const url = new URL(formData.value.url);
     const hostname = url.hostname;
-
-    // Remove 'www.' if present
     const domain = hostname.replace(/^www\./, "");
-
-    // Extract the main domain name (before the first dot)
     const domainParts = domain.split(".");
     const mainDomain = domainParts[0];
-
-    // Capitalize first letter
     return mainDomain.charAt(0).toUpperCase() + mainDomain.slice(1);
   } catch {
     return "";
@@ -341,7 +352,7 @@ const resetForm = () => {
     notes: "",
   };
   selectedCollection.value = "";
-  error.value = "";
+  submitError.value = "";
   showPassword.value = false;
   loading.value = false;
 };
@@ -363,103 +374,18 @@ const generatePassword = () => {
   formData.value.password = password;
 };
 
-const validateForm = (): boolean => {
-  error.value = "";
-
-  // Website URL validation
-  if (!formData.value.url.trim()) {
-    error.value = "Website URL is required";
-    return false;
-  }
-
-  // Validate URL format
-  try {
-    const url = new URL(formData.value.url.trim());
-
-    // Check if URL has valid protocol
-    if (!["http:", "https:"].includes(url.protocol)) {
-      error.value = "URL must start with http:// or https://";
-      return false;
-    }
-
-    // Check if URL has valid hostname
-    if (!url.hostname || url.hostname.length < 3) {
-      error.value = "Please enter a valid website URL";
-      return false;
-    }
-  } catch {
-    error.value = "Please enter a valid URL (e.g., https://example.com)";
-    return false;
-  }
-
-  // URL length validation
-  if (formData.value.url.trim().length > 2048) {
-    error.value = "Website URL is too long (maximum 2048 characters)";
-    return false;
-  }
-
-  // Username validation
-  if (!formData.value.username.trim()) {
-    error.value = "Username or email is required";
-    return false;
-  }
-
-  if (formData.value.username.trim().length < 1) {
-    error.value = "Username cannot be empty";
-    return false;
-  }
-
-  if (formData.value.username.trim().length > 100) {
-    error.value = "Username is too long (maximum 100 characters)";
-    return false;
-  }
-
-  // If username looks like an email, validate email format
-  if (formData.value.username.includes("@")) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.value.username.trim())) {
-      error.value = "Please enter a valid email address";
-      return false;
-    }
-  }
-
-  // Password validation
-  if (!formData.value.password.trim()) {
-    error.value = "Password is required";
-    return false;
-  }
-
-  if (formData.value.password.length < 1) {
-    error.value = "Password cannot be empty";
-    return false;
-  }
-
-  if (formData.value.password.length > 512) {
-    error.value = "Password is too long (maximum 512 characters)";
-    return false;
-  }
-
-  // Notes validation (optional field)
-  if (formData.value.notes && formData.value.notes.length > 1000) {
-    error.value = "Notes are too long (maximum 1000 characters)";
-    return false;
-  }
-
-  return true;
-};
-
 const closeModal = () => {
   unlockBodyScroll();
   emit("close");
 };
 
 const handleSubmit = async () => {
-  if (!validateForm()) return;
+  if (!validateAll()) return;
 
   loading.value = true;
+  submitError.value = "";
 
   try {
-    // Use extracted website name
     const websiteName = extractedWebsiteName.value || "Unknown";
 
     // Generate favicon emoji based on website name
@@ -515,7 +441,7 @@ const handleSubmit = async () => {
     emit("save", loginData);
     closeModal();
   } catch (err) {
-    error.value = "Failed to save login. Please try again.";
+    submitError.value = "Failed to save login. Please try again.";
   } finally {
     loading.value = false;
   }

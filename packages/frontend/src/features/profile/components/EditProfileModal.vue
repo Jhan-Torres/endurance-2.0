@@ -64,34 +64,22 @@
         <div class="p-4">
           <form @submit.prevent="handleSubmit" class="space-y-4">
             <!-- Full Name -->
-            <div>
-              <label
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-              >
-                {{ t("profile.accountInfo.fullName") }}
-              </label>
-              <input
-                v-model="formData.name"
-                type="text"
-                required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-              />
-            </div>
+            <FormInput
+              id="name"
+              :label="t('profile.accountInfo.fullName')"
+              type="text"
+              v-model="formData.name"
+              :error="getFieldError('name')"
+            />
 
             <!-- Email -->
-            <div>
-              <label
-                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-              >
-                {{ t("profile.accountInfo.email") }}
-              </label>
-              <input
-                v-model="formData.email"
-                type="email"
-                required
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-              />
-            </div>
+            <FormInput
+              id="email"
+              :label="t('profile.accountInfo.email')"
+              type="email"
+              v-model="formData.email"
+              :error="getFieldError('email')"
+            />
 
             <!-- Modal Actions -->
             <div class="flex space-x-3 pt-4">
@@ -124,6 +112,9 @@
 <script setup lang="ts">
 import { ref, watch, onUnmounted } from "vue";
 import { useLanguage } from "../../../shared/composables/useLanguage";
+import { useFormValidation } from "../../../shared/composables/useFormValidation";
+import { profileModalSchema } from "../../../shared/validation/schemas";
+import FormInput from "../../../shared/components/FormInput.vue";
 
 const { t } = useLanguage();
 
@@ -155,6 +146,23 @@ const loading = ref(false);
 const formData = ref({
   name: "",
   email: "",
+});
+
+// Use our validation composable
+const { formData: validationFormData, errors, validateField, validateAll, isValid } = useFormValidation(profileModalSchema);
+
+// Helper function to get field errors
+const getFieldError = (field: string) => errors[field];
+
+// Watch form data changes to trigger validation
+watch(() => formData.value.name, (newValue) => {
+  validationFormData.name = newValue;
+  validateField('name', newValue);
+});
+
+watch(() => formData.value.email, (newValue) => {
+  validationFormData.email = newValue;
+  validateField('email', newValue);
 });
 
 // Body scroll lock functionality
@@ -207,81 +215,6 @@ const loadUserData = () => {
   }
 };
 
-// Form validation function
-const validateForm = (): boolean => {
-  // Name validation
-  if (!formData.value.name.trim()) {
-    return false;
-  }
-
-  if (formData.value.name.trim().length < 2) {
-    return false;
-  }
-
-  if (formData.value.name.trim().length > 50) {
-    return false;
-  }
-
-  // Check for invalid characters in name
-  const invalidNameChars = /[<>:"\/\\|?*\x00-\x1f\d]/;
-  if (invalidNameChars.test(formData.value.name)) {
-    return false;
-  }
-
-  // Email validation
-  if (!formData.value.email.trim()) {
-    return false;
-  }
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(formData.value.email.trim())) {
-    return false;
-  }
-
-  if (formData.value.email.trim().length > 254) {
-    return false;
-  }
-
-  return true;
-};
-
-// Form error messages
-const getFormErrors = (): string => {
-  // Name validation
-  if (!formData.value.name.trim()) {
-    return "Full name is required";
-  }
-
-  if (formData.value.name.trim().length < 2) {
-    return "Full name must be at least 2 characters long";
-  }
-
-  if (formData.value.name.trim().length > 50) {
-    return "Full name cannot exceed 50 characters";
-  }
-
-  // Check for invalid characters in name
-  const invalidNameChars = /[<>:"\/\\|?*\x00-\x1f\d]/;
-  if (invalidNameChars.test(formData.value.name)) {
-    return "Full name contains invalid characters (numbers and special characters not allowed)";
-  }
-
-  // Email validation
-  if (!formData.value.email.trim()) {
-    return "Email address is required";
-  }
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(formData.value.email.trim())) {
-    return "Please enter a valid email address";
-  }
-
-  if (formData.value.email.trim().length > 254) {
-    return "Email address is too long";
-  }
-
-  return "";
-};
 const resetForm = () => {
   formData.value = {
     name: "",
@@ -297,12 +230,7 @@ const closeModal = () => {
 };
 
 const handleSubmit = async () => {
-  if (!validateForm()) {
-    const errorMessage = getFormErrors();
-    // You could add error display here if needed
-    console.warn("Form validation failed:", errorMessage);
-    return;
-  }
+  if (!validateAll()) return;
 
   loading.value = true;
 
